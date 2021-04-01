@@ -1,3 +1,81 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
 body {
-    background-color: ghostwhite;
+    background: linear-gradient(#0d0221, #541388, #791e94);
+    min-height: 100vh;
+    color: white;
+    display: flex;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    bottom: 10%;
+}
+
+.container-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#splash-logo {
+    font-family: "Permanent Marker";
+    font-size: 5rem;
+}
+
+#mini-logo {
+    font-family: "Permanent Marker";
+    font-size: 2rem;
+}
+
+#registration-component {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#registration-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 80%;
+}
+
+#registration-form > input {
+    border: none;
+    background-color: white;
+    border-radius: 10px;
+    height: 1.5rem;
+    margin: 5px;
+    color: black;
+    font-size: 1rem;
+    padding: 5%;
+}
+
+#registration-form > button {
+    background-color: #f9c80e;
+    border: none;
+    font-size: 1rem;
+    color: black;
+    border-radius: 10px;
+    height: 1.5rem;
+    margin: 5px;
+    width: 50%;
+    align-self: center;
+    transition: 200ms;
+}
+
+#registration-form > button:hover {
+    background-color: #023788;
+    transition: 300ms;
+    color: white;
 }
