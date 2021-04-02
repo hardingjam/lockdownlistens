@@ -99,7 +99,19 @@ input {
     padding: 5%;
 }
 
-#registration-form,
+#registration-form > button {
+    background-color: #f9c80e;
+    border: none;
+    font-size: 1rem;
+    color: black;
+    border-radius: 10px;
+    height: 1.5rem;
+    margin: 5px;
+    width: 50%;
+    align-self: center;
+    transition: 200ms;
+    margin-top: 10%;
+}
 #reset-form > button {
     background-color: #f9c80e;
     border: none;
@@ -111,7 +123,7 @@ input {
     width: 50%;
     align-self: center;
     transition: 200ms;
-    margin-top: 20px;
+    margin-top: 10%;
 }
 
 #registration-form > button:hover {

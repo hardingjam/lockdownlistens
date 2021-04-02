@@ -33,7 +33,16 @@ module.exports.checkCode = function (email, code) {
     const query = `SELECT * FROM codes
                  WHERE email = $1
                  AND code = $2
-                AND CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes';`;
+                AND CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes'`;
     const params = [email, code];
+    return db.query(query, params);
+};
+
+module.exports.updatePassword = function (password, email) {
+    const query = `UPDATE users
+                    SET password = $1
+                    WHERE email = $2
+                    RETURNING first_name;`;
+    const params = [password, email];
     return db.query(query, params);
 };

@@ -40,12 +40,19 @@ export default class Reset extends Component {
                 .catch((err) => console.log(err));
         }
         if (this.state.step == 2) {
+            console.log(this.state);
             axios
                 .post("/password/verify", this.state)
                 .then(({ data }) => {
                     console.log(data);
+                    this.setState({ errors: false, name: data.name });
+                    this.setState({ step: this.state.step + 1 });
                 })
                 .catch((err) => console.log(err));
+        }
+        if (this.state.step == 3) {
+            console.log("clicked login");
+            axios.get("/login");
         }
     }
 
@@ -100,6 +107,7 @@ export default class Reset extends Component {
                             <input
                                 name="password"
                                 placeholder="New Password"
+                                type="password"
                                 onChange={(e) => {
                                     this.handleChange(e);
                                 }}
@@ -114,6 +122,26 @@ export default class Reset extends Component {
                             </button>
                         </div>
                     )}
+
+                    {this.state.step == 3 && (
+                        <div id="successful-update">
+                            <h2>
+                                Thanks, {this.state.name}. You're ready to log
+                                in with your new password
+                            </h2>
+                            <Link to="/login">
+                                <button
+                                    name="next"
+                                    onClick={() => {
+                                        this.handleClick();
+                                    }}
+                                >
+                                    Login
+                                </button>
+                            </Link>
+                        </div>
+                    )}
+
                     {this.state.errors && (
                         <div id="errors">
                             Please check your information and try again

@@ -10,6 +10,7 @@ const {
     storeCode,
     checkForEmail,
     checkCode,
+    updatePassword,
 } = require("./database");
 
 const { sendEmail } = require("./ses");
@@ -90,14 +91,25 @@ app.post("/password/start", (req, res) => {
 
 app.post("/password/verify", (req, res) => {
     console.log("comparing codes");
-    const { code, email } = req.body;
-    checkCode(code, email)
+    const { code, email, password } = req.body;
+    console.log(req.body);
+    checkCode(email, code)
         .then(({ rows }) => {
             console.log(rows[0]);
             if (rows.length) {
                 console.log("correct code");
+                hash(password).then((hash) => {
+                    updatePassword(hash, email)
+                        .then(({ rows }) => {
+                            res.json({
+                                success: true,
+                                name: rows[0].first_name,
+                            });
+                        })
+                        .catch((err) => console.log(err));
+                });
             } else {
-                console("incorrect code");
+                console.log("incorrect code");
                 res.json({ success: false });
             }
         })
@@ -115,7 +127,7 @@ app.post("/login", (req, res) => {
                     if (match) {
                         req.session.userId = rows[0].id;
                         console.log(
-                            "user ID after login: ",
+                            "user ID after successful login: ",
                             req.session.userId
                         );
                         res.redirect("/");
