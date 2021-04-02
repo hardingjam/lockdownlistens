@@ -9,6 +9,7 @@ body {
     color: white;
     display: flex;
     overflow: hidden;
+    font-family: "Poppins";
 }
 
 .container {
@@ -25,11 +26,14 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    min-width: 400px;
 }
 
 #splash-logo {
     font-family: "Permanent Marker";
     font-size: 5rem;
+    display: flex;
+    justify-content: center;
 }
 
 #mini-logo {
@@ -37,10 +41,44 @@ body {
     font-size: 2rem;
 }
 
+#welcome {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    margin-top: 10%;
+}
+
 #registration-component {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
+}
+
+#reset-component {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#reset-form {
+    display: flex;
+    flex-direction: column;
+}
+#reset-form > input {
+    align-self: center;
+    max-width: 70%;
+    margin-top: 5%;
+}
+
+input {
+    border: none;
+    background-color: white;
+    border-radius: 10px;
+    height: 1.5rem;
+    margin: 5px;
+    color: black;
+    font-size: 1rem;
+    padding: 3%;
+    text-align: center;
 }
 
 #registration-form {
@@ -61,7 +99,8 @@ body {
     padding: 5%;
 }
 
-#registration-form > button {
+#registration-form,
+#reset-form > button {
     background-color: #f9c80e;
     border: none;
     font-size: 1rem;
@@ -72,10 +111,34 @@ body {
     width: 50%;
     align-self: center;
     transition: 200ms;
+    margin-top: 20px;
 }
 
 #registration-form > button:hover {
-    background-color: #023788;
-    transition: 300ms;
+    transition: 200ms;
+}
+#registration-form > button:active {
+    border: 2px solid white;
+}
+
+button {
+    cursor: pointer;
+}
+
+.link-to-login-reg {
     color: white;
+    font-weight: 400;
+    text-decoration: none;
+    align-self: center;
+}
+.link-to-login-reg:nth-of-type(2) {
+    color: white;
+    font-weight: 400;
+    text-decoration: none;
+    align-self: center;
+    font-size: 0.8rem;
+}
+
+.error {
+    text-align: center;
 }

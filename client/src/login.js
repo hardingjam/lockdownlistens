@@ -9,10 +9,6 @@ export default class Login extends Component {
         };
     }
 
-    componentDidMount() {
-        console.log("mounted the registration page");
-    }
-
     handleChange(e) {
         this.setState(
             {
@@ -24,16 +20,65 @@ export default class Login extends Component {
         );
     }
 
-    render() {
-        // Do NOT call setState here!! It causes an infinite loop of state updates.
+    handleClick() {
+        axios
+            .post("/login", this.state)
+            .then(({ data }) => {
+                console.log("response from login post");
+                if (data.success) {
+                    console.log("true!");
+                } else {
+                    this.setState({ errors: true });
+                }
+            })
+            .catch((err) => console.log(err));
+    }
 
+    handleKeyPress(e) {
+        console.log(e.charCode);
+        if (e.charCode == 13) {
+            this.handleClick();
+        }
+    }
+
+    render() {
         return (
             <div className="container">
                 <div id="registration-component">
-                    <div id="splash-logo">
-                        <h1 className="logo">Wave</h1>
-                        <h1>Login</h1>
-                        <Link to="/registration">Registration</Link>
+                    {this.state.errors && (
+                        <div className="error">
+                            <p>Invalid email/password</p>
+                        </div>
+                    )}
+                    <div className="container-form">
+                        <div
+                            id="registration-form"
+                            onKeyPress={(e) => this.handleKeyPress(e)}
+                        >
+                            <input
+                                name="email"
+                                placeholder="E-Mail"
+                                onChange={(e) => this.handleChange(e)}
+                            ></input>
+                            <input
+                                name="password"
+                                type="password"
+                                placeholder="Password"
+                                onChange={(e) => this.handleChange(e)}
+                            ></input>
+                            <button
+                                name="login"
+                                onClick={(e) => this.handleClick(e)}
+                            >
+                                Login
+                            </button>
+                            <Link className="link-to-login-reg" to="/">
+                                Registration
+                            </Link>
+                            <Link className="link-to-login-reg" to="/reset">
+                                Forgot Password?
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -4,8 +4,24 @@ const compression = require("compression");
 const path = require("path");
 const cookieSession = require("cookie-session");
 const { hash, compare } = require("./bc");
-const { createUser } = require("./database");
+const {
+    createUser,
+    getPassword,
+    storeCode,
+    checkForEmail,
+    checkCode,
+} = require("./database");
+
+const { sendEmail } = require("./ses");
+// to, body, subject
+
 const csurf = require("csurf");
+
+const cryptoRandomString = require("crypto-random-string");
+
+const secretCode = cryptoRandomString({
+    length: 6,
+});
 
 // ===== MIDDLEWARE ==== //
 
@@ -30,12 +46,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use(
-    // express.urlencoded({
-    //     extended: false,
-    // })
-    express.json()
-);
+app.use(express.json());
 
 app.use(
     express.urlencoded({
@@ -51,6 +62,73 @@ app.get("/welcome", (req, res) => {
     } else {
         res.sendFile(path.join(__dirname, "..", "client", "index.html"));
     }
+});
+
+app.post("/password/start", (req, res) => {
+    console.log("checking email");
+    console.log("req.body:", req.body);
+    const { email } = req.body;
+    checkForEmail(email)
+        .then(({ rows }) => {
+            if (rows.length) {
+                storeCode(rows[0].email, secretCode).then(({ rows }) => {
+                    sendEmail(email, rows[0].code, "Your Wave Password")
+                        .then((data) => {
+                            res.json({ success: true });
+                        })
+                        .catch((err) =>
+                            console.log("error sending email: ", err)
+                        );
+                });
+            } else {
+                console.log("No rows");
+                res.json({ success: false });
+            }
+        })
+        .catch((err) => console.log(err));
+});
+
+app.post("/password/verify", (req, res) => {
+    console.log("comparing codes");
+    const { code, email } = req.body;
+    checkCode(code, email)
+        .then(({ rows }) => {
+            console.log(rows[0]);
+            if (rows.length) {
+                console.log("correct code");
+            } else {
+                console("incorrect code");
+                res.json({ success: false });
+            }
+        })
+        .catch((err) => console.log(err));
+});
+
+app.post("/login", (req, res) => {
+    console.log("posted to Login");
+    console.log(req.body);
+    const { email, password } = req.body;
+    getPassword(email)
+        .then(({ rows }) => {
+            if (rows.length) {
+                compare(password, rows[0].password).then((match) => {
+                    if (match) {
+                        req.session.userId = rows[0].id;
+                        console.log(
+                            "user ID after login: ",
+                            req.session.userId
+                        );
+                        res.redirect("/");
+                    } else {
+                        // render invalid info message
+                        res.json({ success: false });
+                    }
+                });
+            } else {
+                res.json({ success: false });
+            }
+        })
+        .catch((err) => console.log(err));
 });
 
 app.post("/register", (req, res) => {

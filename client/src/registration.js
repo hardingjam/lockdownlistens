@@ -1,5 +1,6 @@
 import { Component } from "react";
 import axios from "./axios";
+import { Link } from "react-router-dom";
 
 export default class Registration extends Component {
     constructor() {
@@ -14,7 +15,7 @@ export default class Registration extends Component {
     }
 
     handleClick(e) {
-        console.log("clicked: ", e.target.name);
+        console.log("click register");
         if (
             this.state.first &&
             this.state.last &&
@@ -42,6 +43,7 @@ export default class Registration extends Component {
             // () => console.log("this.state: ", this.state)
             // this is important if you want to see what state looks like immediately after state is updated
         );
+        console.log(this.state);
     }
 
     render() {
@@ -88,12 +90,9 @@ export default class Registration extends Component {
                             >
                                 Register
                             </button>
-                            <button
-                                name="login"
-                                onClick={(e) => this.handleClick(e)}
-                            >
+                            <Link className="link-to-login-reg" to="/login">
                                 Login
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>
