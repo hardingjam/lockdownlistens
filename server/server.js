@@ -11,6 +11,7 @@ const {
     checkForEmail,
     checkCode,
     updatePassword,
+    fetchUser,
 } = require("./database");
 
 const { sendEmail } = require("./ses");
@@ -128,7 +129,7 @@ app.post("/login", (req, res) => {
                             "user ID after successful login: ",
                             req.session.userId
                         );
-                        res.redirect("/");
+                        res.json({ success: true });
                     } else {
                         console.log("bad password");
                         res.json({ success: false });
@@ -144,20 +145,26 @@ app.post("/login", (req, res) => {
 
 app.post("/register", async (req, res) => {
     const { first, last, email, password } = req.body;
-    hash(password).then((hash) => {
-        createUser(first, last, email, hash)
-            .then(({ rows }) => {
-                req.session.userId = rows[0].id;
-                res.json({
-                    success: true,
-                });
-            })
-            .catch((err) => console.log("err in db send", err));
-    });
+    try {
+        let hashed = await hash(password);
+        let newUser = await createUser(first, last, email, hashed);
+        req.session.userId = newUser.id;
+        res.json({
+            success: true,
+        });
+    } catch (err) {
+        console.log("error in async registration: ", err);
+    }
 });
 
-app.get("/home", (req, res) => {
+app.get("/home", async (req, res) => {
     console.log("homepage loading");
+    try {
+        let data = await fetchUser(req.session.userId);
+        res.json(data);
+    } catch {
+        console.log("error loading homepage");
+    }
 });
 
 /* ===== NEVER DELETE OR COMMENT OUT THIS ROUTE ===== */

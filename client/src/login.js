@@ -29,6 +29,8 @@ export default class Login extends Component {
                 if (resp.data.success) {
                     console.log("successful Login");
                     this.setState({ errors: false });
+                    // location.replace is the SPA way to redirect.
+                    location.replace("/");
                 } else {
                     this.setState({ errors: true });
                 }
@@ -37,7 +39,6 @@ export default class Login extends Component {
     }
 
     handleKeyPress(e) {
-        console.log(e.charCode);
         if (e.charCode == 13) {
             this.handleClick();
         }

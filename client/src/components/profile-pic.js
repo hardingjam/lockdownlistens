@@ -1,11 +1,16 @@
 export default function ProfilePic(props) {
     // showUploader is passed down from app.js
-    console.log(props);
+    // likewise, the image!
+    console.log("props in profile pic: ", props);
     return (
-        <section id="profile-pic">
+        <section id="profile-pic-container">
             <img
-                src={props.profilePic}
-                alt={(props.firstName, props.lastName)}
+                id="profile-pic"
+                src={props.profilePicUrl}
+                onClick={() => {
+                    console.log("Clicked the pic");
+                    props.showUploader();
+                }}
             />
         </section>
     );

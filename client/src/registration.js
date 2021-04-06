@@ -14,7 +14,7 @@ export default class Registration extends Component {
         console.log("mounted the registration page");
     }
 
-    handleClick(e) {
+    handleClick() {
         console.log("click register");
         if (
             this.state.first &&
@@ -27,6 +27,7 @@ export default class Registration extends Component {
                 .post("/register", this.state)
                 .then(({ data }) => {
                     console.log("response to post register", data);
+                    location.replace("/");
                 })
                 .catch((err) => console.log("err in handleClick", err));
         } else {

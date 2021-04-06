@@ -14,23 +14,33 @@ export default class App extends Component {
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         // Fetch the data: get request for the user's info
         // Set the data to the state of the App.
-        axios
-            .get("/home")
-            .then((res) => {
-                console.log(res.data);
-            })
-            .catch((err) => console.log(err));
+        try {
+            const res = await axios.get("/home");
+            this.setState({
+                user: {
+                    firstName: res.data.first_name,
+                    lastName: res.data.last_name,
+                    profilePicUrl:
+                        res.data.profilePicUrl ||
+                        "https://social-network.s3.eu-central-1.amazonaws.com/default-profile-pic.jpg",
+                },
+            });
+        } catch {
+            console.log("error in mounting");
+        }
     }
 
     showUploader() {
+        console.log("showing uploader");
         this.setState({ uploading: true });
     }
 
     hideUploader() {
-        this.setState({ uploading: true });
+        console.log("hiding uploader");
+        this.setState({ uploading: false });
     }
 
     render() {
@@ -39,15 +49,19 @@ export default class App extends Component {
                 <Logo />
                 {/* things can load conditionally based of status of this.state */}
                 <ProfilePic
-                    //props go here
+                    // props go here
                     // special JSX destructure
-                    {...this.state.user}
-                    showUploader={this.showUploader}
+                    firstName={this.state.user.lastName}
+                    lastName={this.state.user.firstName}
+                    profilePicUrl={this.state.user.profilePicUrl}
+                    showUploader={() => {
+                        this.showUploader;
+                    }}
                 />
                 {this.state.uploading && (
                     <Uploader
-                        hideUploader={() => {
-                            this.hideUploader;
+                        hideUploader={(ProfilePic) => {
+                            this.hideUploader(ProfilePic);
                         }}
                     />
                 )}

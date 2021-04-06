@@ -6,9 +6,11 @@ const db = spicedPg(
 );
 
 module.exports.createUser = function (first, last, email, password) {
-    const query = `INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) returning id;`;
+    const query = `INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) returning *;`;
     const params = [first, last, email, password];
-    return db.query(query, params);
+    return db.query(query, params).then(({ rows }) => {
+        return rows[0];
+    });
 };
 
 module.exports.getPassword = function (email) {
@@ -45,4 +47,13 @@ module.exports.updatePassword = function (password, email) {
                     RETURNING first_name;`;
     const params = [password, email];
     return db.query(query, params);
+};
+
+module.exports.fetchUser = function (id) {
+    const query = `SELECT * FROM users
+                    WHERE id = $1;`;
+    const params = [id];
+    return db.query(query, params).then(({ rows }) => {
+        return rows[0];
+    });
 };

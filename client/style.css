@@ -167,4 +167,11 @@ button {
     top: 20px;
     border-radius: 50px 20px;
     text-align: center;
+    cursor: pointer;
+}
+
+#uploader {
+    width: 500px;
+    height: 500px;
+    border: 2px solid red;
 }
