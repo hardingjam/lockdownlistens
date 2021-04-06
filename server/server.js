@@ -57,8 +57,7 @@ app.use(
 
 app.get("/welcome", (req, res) => {
     if (req.session.userId) {
-        console.log(req.session.userId);
-        console.log("cookie exists");
+        console.log("cookie exists : ", req.session.userId);
         res.redirect("/");
     } else {
         res.sendFile(path.join(__dirname, "..", "client", "index.html"));
@@ -74,7 +73,7 @@ app.post("/password/start", (req, res) => {
             if (rows.length) {
                 storeCode(rows[0].email, secretCode).then(({ rows }) => {
                     sendEmail(email, rows[0].code, "Your Wave Password")
-                        .then((data) => {
+                        .then(() => {
                             res.json({ success: true });
                         })
                         .catch((err) =>
@@ -118,7 +117,6 @@ app.post("/password/verify", (req, res) => {
 
 app.post("/login", (req, res) => {
     console.log("posted to Login");
-    console.log(req.body);
     const { email, password } = req.body;
     getPassword(email)
         .then(({ rows }) => {
@@ -132,26 +130,24 @@ app.post("/login", (req, res) => {
                         );
                         res.redirect("/");
                     } else {
-                        // render invalid info message
+                        console.log("bad password");
                         res.json({ success: false });
                     }
                 });
             } else {
+                console.log("no email address");
                 res.json({ success: false });
             }
         })
         .catch((err) => console.log(err));
 });
 
-app.post("/register", (req, res) => {
-    console.log(req.body);
-
+app.post("/register", async (req, res) => {
     const { first, last, email, password } = req.body;
     hash(password).then((hash) => {
         createUser(first, last, email, hash)
             .then(({ rows }) => {
                 req.session.userId = rows[0].id;
-                console.log(req.session.userId);
                 res.json({
                     success: true,
                 });
@@ -160,13 +156,16 @@ app.post("/register", (req, res) => {
     });
 });
 
+app.get("/home", (req, res) => {
+    console.log("homepage loading");
+});
+
 /* ===== NEVER DELETE OR COMMENT OUT THIS ROUTE ===== */
 app.get("*", function (req, res) {
     if (!req.session.userId) {
         res.redirect("/welcome");
     } else {
         res.sendFile(path.join(__dirname, "..", "client", "index.html"));
-        // send index.html on every GET request.
     }
 });
 

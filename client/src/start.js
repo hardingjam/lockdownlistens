@@ -3,7 +3,7 @@
 
 import ReactDOM from "react-dom";
 import Welcome from "./welcome";
-
+import App from "./app";
 // if it was not an export default, i need {}
 
 let elem;
@@ -11,7 +11,7 @@ let elem;
 if (location.pathname === "/welcome") {
     elem = <Welcome />;
 } else {
-    elem = <h1 id="mini-logo">Wave</h1>;
+    elem = <App />;
 }
 
 ReactDOM.render(elem, document.querySelector("main"));

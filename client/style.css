@@ -37,8 +37,11 @@ body {
 }
 
 #mini-logo {
-    font-family: "Permanent Marker";
-    font-size: 2rem;
+    width: 200px;
+    height: auto;
+    position: absolute;
+    top: 10px;
+    left: 10px;
 }
 
 #welcome {
@@ -152,5 +155,16 @@ button {
 }
 
 .error {
+    text-align: center;
+}
+
+#profile-pic {
+    width: 150px;
+    height: 150px;
+    border: 2px solid white;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    border-radius: 50px 20px;
     text-align: center;
 }
