@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { Logo } from "./components/logo";
+import Profile from "./components/profile";
 import ProfilePic from "./components/profile-pic";
 import Uploader from "./components/uploader";
 import axios from "axios";
@@ -14,34 +15,33 @@ export default class App extends Component {
         };
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         // Fetch the data: get request for the user's info
         // Set the data to the state of the App.
-        try {
-            const res = await axios.get("/home");
-            console.log(res);
-            this.setState({
-                user: {
-                    firstName: res.data.first_name,
-                    lastName: res.data.last_name,
-                    profilePicUrl:
-                        res.data.pic_url ||
-                        "https://social-network.s3.eu-central-1.amazonaws.com/default-profile-pic.jpg",
-                    id: res.data.id,
-                },
-            });
-        } catch {
-            console.log("error in mounting");
-        }
+
+        axios
+            .get("/home")
+            .then((res) => {
+                this.setState({
+                    user: {
+                        firstName: res.data.first_name,
+                        lastName: res.data.last_name,
+                        profilePicUrl:
+                            res.data.pic_url ||
+                            "https://social-network.s3.eu-central-1.amazonaws.com/default-profile-pic.jpg",
+                        id: res.data.id,
+                        bio: res.data.bio,
+                    },
+                });
+            })
+            .catch((err) => console.log("error in mounting"));
     }
 
     showUploader() {
-        console.log("showing uploader");
         this.setState({ uploading: true });
     }
 
     hideUploader() {
-        console.log("hiding uploader");
         this.setState({ uploading: false });
     }
 
@@ -50,8 +50,8 @@ export default class App extends Component {
             return {
                 user: {
                     ...prevState.user,
-                    pic,
-                    // how to pass the JSON into this as an update?
+                    // after the comma, the previous values are there
+                    profilePicUrl: pic,
                 },
             };
         });
@@ -61,20 +61,29 @@ export default class App extends Component {
         return (
             <div id="app-component">
                 <Logo />
-                {/* things can load conditionally based of status of this.state */}
+
                 <ProfilePic
                     // props go here
                     // special JSX destructure
-                    firstName={this.state.user.lastName}
-                    lastName={this.state.user.firstName}
+                    // could i send the whole user object?
                     profilePicUrl={this.state.user.profilePicUrl}
                     userId={this.state.user.id}
+                    className={"small"}
                     showUploader={() => {
                         this.showUploader();
                     }}
                 />
+
+                <Profile
+                    user={this.state.user}
+                    showUploader={() => {
+                        this.showUploader();
+                    }}
+                />
+
                 {this.state.uploading && (
                     <Uploader
+                        className={"small-uploader"}
                         userId={this.state.user.id}
                         setProfilePic={(pic) => {
                             this.setProfilePic(pic);

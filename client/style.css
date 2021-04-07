@@ -158,9 +158,9 @@ button {
     text-align: center;
 }
 
-#profile-pic {
-    width: 150px;
-    height: 150px;
+.small {
+    width: 100px;
+    height: 100px;
     border: 2px solid white;
     position: absolute;
     right: 20px;
@@ -169,11 +169,17 @@ button {
     text-align: center;
     cursor: pointer;
     object-fit: cover;
+    z-index: 2;
 }
 
-#profile-pic-container {
-    width: 1px;
-    height: 1px;
+.large {
+    min-width: 300px;
+    min-height: 300px;
+    max-width: 50vw;
+    max-height: 50vw;
+    border: 2px solid white;
+    border-radius: 50px 20px;
+    object-fit: cover;
 }
 
 .pic-uploading {
@@ -182,12 +188,14 @@ button {
 }
 
 #app-component {
-    min-width: 100vh;
-    min-height: 100vh;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
 }
 
-#uploader {
-    height: 150px;
+.small-uploader {
+    height: 100px;
     background-color: rgba(255, 255, 255, 0.3);
     position: absolute;
     top: 20px;
@@ -196,7 +204,6 @@ button {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    z-index: -1;
     min-width: 480px;
 }
 
@@ -204,9 +211,6 @@ button {
     position: absolute;
     right: 0px;
     top: 0px;
-}
-
-#uploader > input {
 }
 
 #uploader > button {
@@ -219,6 +223,7 @@ button {
 #upload-form {
     width: 60%;
     margin-bottom: 10px;
+    margin-left: 10px;
 }
 
 #upload-button {
@@ -233,6 +238,22 @@ button {
     margin-left: 18px;
     padding-left: 20px;
     margin-top: 5px;
+    width: 50%;
+}
+
+#view-profile-button {
+    background-color: #f9c80e;
+    border: none;
+    font-size: 1rem;
+    color: black;
+    border-radius: 0px 0px 45px 0px;
+    height: 1.5rem;
+    align-self: center;
+    transition: 200ms;
+    margin-left: 5px;
+    padding-right: 20px;
+    margin-top: 5px;
+    width: 40%;
 }
 
 #upload-form > input {
@@ -246,4 +267,43 @@ button {
     left: 1%;
     cursor: pointer;
     position: absolute;
+}
+
+#profile-container {
+    display: flex;
+    width: 80vw;
+    height: 80vh;
+    /* max-height: 80vh; */
+    background-color: rgba(255, 255, 255, 0.2);
+    margin-top: 20%;
+    margin-bottom: 10%;
+    padding: 1rem;
+    border-radius: 10px;
+    justify-content: space-around;
+    padding: 10px;
+}
+
+.main-profile {
+    width: 200px;
+    height: 200px;
+}
+
+.about-me {
+    display: flex;
+    flex-direction: column;
+    align-self: left;
+}
+
+.button {
+    background-color: #f9c80e;
+    border: none;
+    font-size: 1rem;
+    color: black;
+    border-radius: 10px;
+    height: 1.5rem;
+    margin: 5px;
+    width: 50%;
+    align-self: center;
+    transition: 200ms;
+    margin-top: 10%;
 }

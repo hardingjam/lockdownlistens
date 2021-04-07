@@ -68,3 +68,14 @@ module.exports.updateProfPic = function (picUrl, userId) {
         return rows[0];
     });
 };
+
+module.exports.updateBio = function (id, bio) {
+    const query = `UPDATE users
+                    SET bio = $2
+                    WHERE id = $1
+                    RETURNING bio;`;
+    const params = [id, bio];
+    return db.query(query, params).then(({ rows }) => {
+        return rows[0];
+    });
+};

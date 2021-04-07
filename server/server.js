@@ -13,6 +13,7 @@ const {
     updatePassword,
     fetchUser,
     updateProfPic,
+    updateBio,
 } = require("./database");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
@@ -195,6 +196,15 @@ app.post("/upload", uploader.single("file"), upload, async (req, res) => {
             s3Url + req.file.filename,
             req.body.userId
         );
+        res.json(data);
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+app.post("/bio", async (req, res) => {
+    try {
+        const data = await updateBio(req.session.userId, req.body.draftBio);
         res.json(data);
     } catch (err) {
         console.log(err);
