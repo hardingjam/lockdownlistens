@@ -19,13 +19,15 @@ export default class App extends Component {
         // Set the data to the state of the App.
         try {
             const res = await axios.get("/home");
+            console.log(res);
             this.setState({
                 user: {
                     firstName: res.data.first_name,
                     lastName: res.data.last_name,
                     profilePicUrl:
-                        res.data.profilePicUrl ||
+                        res.data.pic_url ||
                         "https://social-network.s3.eu-central-1.amazonaws.com/default-profile-pic.jpg",
+                    id: res.data.id,
                 },
             });
         } catch {
@@ -43,6 +45,18 @@ export default class App extends Component {
         this.setState({ uploading: false });
     }
 
+    setProfilePic(pic) {
+        this.setState((prevState) => {
+            return {
+                user: {
+                    ...prevState.user,
+                    pic,
+                    // how to pass the JSON into this as an update?
+                },
+            };
+        });
+    }
+
     render() {
         return (
             <div id="app-component">
@@ -54,14 +68,19 @@ export default class App extends Component {
                     firstName={this.state.user.lastName}
                     lastName={this.state.user.firstName}
                     profilePicUrl={this.state.user.profilePicUrl}
+                    userId={this.state.user.id}
                     showUploader={() => {
-                        this.showUploader;
+                        this.showUploader();
                     }}
                 />
                 {this.state.uploading && (
                     <Uploader
-                        hideUploader={(ProfilePic) => {
-                            this.hideUploader(ProfilePic);
+                        userId={this.state.user.id}
+                        setProfilePic={(pic) => {
+                            this.setProfilePic(pic);
+                        }}
+                        hideUploader={() => {
+                            this.hideUploader();
                         }}
                     />
                 )}

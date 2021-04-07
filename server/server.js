@@ -12,7 +12,12 @@ const {
     checkCode,
     updatePassword,
     fetchUser,
+    updateProfPic,
 } = require("./database");
+const multer = require("multer");
+const uidSafe = require("uid-safe");
+const { upload } = require("./s3");
+const { s3Url } = require("./config");
 
 const { sendEmail } = require("./ses");
 // to, body, subject
@@ -55,6 +60,24 @@ app.use(
         extended: false,
     })
 );
+
+const diskStorage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, __dirname + "/uploads");
+    },
+    filename: function (req, file, callback) {
+        uidSafe(24).then(function (uid) {
+            callback(null, uid + path.extname(file.originalname));
+        });
+    },
+});
+
+const uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152,
+    },
+});
 
 app.get("/welcome", (req, res) => {
     if (req.session.userId) {
@@ -158,12 +181,23 @@ app.post("/register", async (req, res) => {
 });
 
 app.get("/home", async (req, res) => {
-    console.log("homepage loading");
     try {
         let data = await fetchUser(req.session.userId);
         res.json(data);
     } catch {
         console.log("error loading homepage");
+    }
+});
+
+app.post("/upload", uploader.single("file"), upload, async (req, res) => {
+    try {
+        let data = await updateProfPic(
+            s3Url + req.file.filename,
+            req.body.userId
+        );
+        res.json(data);
+    } catch (err) {
+        console.log(err);
     }
 });
 

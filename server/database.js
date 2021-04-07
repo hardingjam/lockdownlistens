@@ -57,3 +57,14 @@ module.exports.fetchUser = function (id) {
         return rows[0];
     });
 };
+
+module.exports.updateProfPic = function (picUrl, userId) {
+    const query = `UPDATE users 
+                    SET pic_url = $1
+                    WHERE id = $2
+                    RETURNING pic_url;`;
+    const params = [picUrl, userId];
+    return db.query(query, params).then(({ rows }) => {
+        return rows[0];
+    });
+};

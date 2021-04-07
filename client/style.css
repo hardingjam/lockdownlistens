@@ -168,10 +168,82 @@ button {
     border-radius: 50px 20px;
     text-align: center;
     cursor: pointer;
+    object-fit: cover;
+}
+
+#profile-pic-container {
+    width: 1px;
+    height: 1px;
+}
+
+.pic-uploading {
+    width: 175px;
+    height: 175px;
+}
+
+#app-component {
+    min-width: 100vh;
+    min-height: 100vh;
 }
 
 #uploader {
-    width: 500px;
-    height: 500px;
-    border: 2px solid red;
+    height: 150px;
+    background-color: rgba(255, 255, 255, 0.3);
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    border-radius: 20px 20px 50px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    z-index: -1;
+    min-width: 480px;
+}
+
+#uploader > #profile-pic {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+
+#uploader > input {
+}
+
+#uploader > button {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background-color: green;
+}
+
+#upload-form {
+    width: 60%;
+    margin-bottom: 10px;
+}
+
+#upload-button {
+    background-color: #f9c80e;
+    border: none;
+    font-size: 1rem;
+    color: black;
+    border-radius: 0px 0px 0px 45px;
+    height: 1.5rem;
+    align-self: center;
+    transition: 200ms;
+    margin-left: 18px;
+    padding-left: 20px;
+    margin-top: 5px;
+}
+
+#upload-form > input {
+    height: auto;
+}
+
+.close-button {
+    width: 20px;
+    height: 20px;
+    top: 2%;
+    left: 1%;
+    cursor: pointer;
+    position: absolute;
 }
