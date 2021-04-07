@@ -307,3 +307,11 @@ button {
     transition: 200ms;
     margin-top: 10%;
 }
+
+.about-me > input {
+    text-align: left;
+}
+
+.bio-draft {
+    height: 5rem;
+}

@@ -37,8 +37,10 @@ export class BioEditor extends Component {
         }
 
         if (e.target.name == "editBio") {
+            console.log(this.state);
             this.setState({
                 editing: true,
+                bio: this.props.user.bio,
             });
         }
     }
@@ -85,15 +87,17 @@ export class BioEditor extends Component {
                 )}
 
                 {this.state.editing && (
-                    <>
-                        <input
-                            type="textarea"
+                    <div className="about-me">
+                        <textarea
+                            className="bio-draft"
                             name="bio"
                             onChange={(e) => {
                                 this.handleChange(e);
                             }}
                             value={this.state.bio}
+                            rows={5}
                         />
+
                         <button
                             className="button"
                             name="editBio"
@@ -103,7 +107,7 @@ export class BioEditor extends Component {
                         >
                             Update Bio
                         </button>
-                    </>
+                    </div>
                 )}
                 {/*
                  Lots of rendering logic here, depending on whether:
