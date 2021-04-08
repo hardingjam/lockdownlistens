@@ -2,7 +2,7 @@ import ProfilePic from "./profile-pic.js";
 import { BioEditor } from "./bio-editor";
 
 export default function Profile(props) {
-    console.log("profile props: ", props);
+    console.log("profile props to be passed to bio editor: ", props);
     return (
         <section id="profile-container">
             <ProfilePic
@@ -13,7 +13,7 @@ export default function Profile(props) {
                 <h1>
                     {props.user.firstName} {props.user.lastName}
                 </h1>
-                <BioEditor user={props.user} />
+                <BioEditor user={props.user} setBio={props.setBio} />
             </div>
         </section>
     );

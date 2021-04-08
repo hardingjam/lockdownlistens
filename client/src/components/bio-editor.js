@@ -8,39 +8,43 @@ export class BioEditor extends Component {
         this.state = {
             editing: false,
         };
-
-        this.handleClick = this.handleClick.bind(this);
     }
 
-    componentDidMount() {
-        console.log("editor props: ", this.props);
+    async componentDidMount() {
+        this.setState(
+            {
+                draftBio: this.props.user.bio,
+            },
+            () => console.log("this.state: ", this.state)
+        );
     }
 
     handleChange(e) {
-        if (e.target.name == "bio") {
-            console.log(e.target.value);
-            this.setState({
-                draftBio: e.target.value,
-            });
-        }
+        this.setState({
+            draftBio: e.target.value,
+        });
     }
 
-    handleClick(e) {
-        if (e.target.name == "submitBio") {
-            axios.post("/bio", this.state).then((res) => {
-                console.log("response from axios", res.data.bio);
-                this.setState({
-                    bio: res.data.bio,
-                    editing: false,
-                });
+    updateBio() {
+        console.log("submitting");
+        axios.post("/bio", this.state).then(({ data }) => {
+            console.log("response from axios", data.bio);
+            this.props.setBio(data.bio);
+            this.setState({
+                draftBio: data.bio,
             });
-        }
+            this.toggleEditMode();
+        });
+    }
 
-        if (e.target.name == "editBio") {
-            console.log(this.state);
+    toggleEditMode() {
+        if (!this.state.editing) {
             this.setState({
                 editing: true,
-                bio: this.props.user.bio,
+            });
+        } else {
+            this.setState({
+                editing: false,
             });
         }
     }
@@ -51,41 +55,7 @@ export class BioEditor extends Component {
     render() {
         return (
             <section id="bio-editor">
-                {!this.props.user.bio && (
-                    <div className="about-me">
-                        <h2>Tell us more about yourself...</h2>
-                        <input
-                            type="textarea"
-                            name="bio"
-                            onChange={(e) => {
-                                this.handleChange(e);
-                            }}
-                        />
-                        <button
-                            name="submitBio"
-                            onClick={(e) => {
-                                this.handleClick(e);
-                            }}
-                        >
-                            Submit Bio
-                        </button>
-                    </div>
-                )}
-                {this.props.user.bio && !this.state.editing && (
-                    <div className="about-me">
-                        <p>{this.props.user.bio}</p>
-                        <button
-                            className="button"
-                            name="editBio"
-                            onClick={(e) => {
-                                this.handleClick(e);
-                            }}
-                        >
-                            Edit Bio
-                        </button>
-                    </div>
-                )}
-
+                {/* if it's being edited */}
                 {this.state.editing && (
                     <div className="about-me">
                         <textarea
@@ -94,26 +64,58 @@ export class BioEditor extends Component {
                             onChange={(e) => {
                                 this.handleChange(e);
                             }}
-                            value={this.state.bio}
+                            value={this.state.draftBio || this.props.user.bio}
                             rows={5}
                         />
 
                         <button
                             className="button"
-                            name="editBio"
+                            name="updateBio"
                             onClick={(e) => {
-                                this.handleClick(e);
+                                this.updateBio(e);
                             }}
                         >
-                            Update Bio
+                            Save
                         </button>
                     </div>
                 )}
-                {/*
-                 Lots of rendering logic here, depending on whether:
-                 1. You are in edit mode or not
-                 2. If you are not in edit mode: whether a bio already exists
-                 */}
+
+                {!this.props.user.bio && (
+                    <div className="about-me">
+                        <h3>Tell us more about yourself...</h3>
+                        <textarea
+                            type="textarea"
+                            name="bio"
+                            onChange={(e) => {
+                                this.handleChange(e);
+                            }}
+                            rows={5}
+                        />
+                        <button
+                            name="submitBio"
+                            className="button"
+                            onClick={() => {
+                                this.updateBio();
+                            }}
+                        >
+                            Submit Bio
+                        </button>
+                    </div>
+                )}
+                {this.props.user.bio && !this.state.editing && (
+                    <div className="about-me">
+                        <p>{this.state.bio || this.props.user.bio}</p>
+                        <button
+                            className="button"
+                            name="editBio"
+                            onClick={(e) => {
+                                this.toggleEditMode();
+                            }}
+                        >
+                            Edit Bio
+                        </button>
+                    </div>
+                )}
             </section>
         );
     }
