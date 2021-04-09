@@ -211,6 +211,24 @@ app.post("/bio", async (req, res) => {
     }
 });
 
+app.get("/user/:id/view", async (req, res) => {
+    try {
+        console.log(req.params.id);
+        if (req.params.id == req.session.userId) {
+            res.json({ ownProfile: true });
+        }
+        const data = await fetchUser(req.params.id);
+        console.log(data);
+        res.json(data);
+        if (!data) {
+            console.log("no user exists");
+            res.json({ invalid: true });
+        }
+    } catch (err) {
+        console.log("no user exists");
+    }
+});
+
 /* ===== NEVER DELETE OR COMMENT OUT THIS ROUTE ===== */
 app.get("*", function (req, res) {
     if (!req.session.userId) {

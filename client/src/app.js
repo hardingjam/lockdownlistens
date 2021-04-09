@@ -49,27 +49,28 @@ export default class App extends Component {
     setProfilePic(pic) {
         this.setState((prevState) => {
             return {
-                user: {
-                    ...prevState,
-                    // after the comma, the previous values are there
-                    profilePicUrl: pic,
-                },
+                ...prevState,
+                // after the comma, the previous values are there
+                profilePicUrl: pic,
             };
         });
     }
 
     setBio(newBio) {
+        console.log(newBio);
         this.setState((prevState) => {
             return {
-                user: {
-                    ...prevState,
-                    bio: newBio,
-                },
+                ...prevState,
+                bio: newBio,
             };
         });
     }
 
     render() {
+        const { id } = this.state;
+        if (!id) {
+            return "Loading...";
+        }
         return (
             <div id="app-component">
                 {/* show a loading text until axios is complete! */}
@@ -77,8 +78,8 @@ export default class App extends Component {
                 <Logo />
 
                 <ProfilePic
-                    profilePicUrl={this.state.user.profilePicUrl}
-                    userId={this.state.user.id}
+                    profilePicUrl={this.state.profilePicUrl}
+                    userId={this.state.id}
                     className={"small"}
                     showUploader={() => {
                         this.showUploader();
@@ -87,15 +88,22 @@ export default class App extends Component {
                 <BrowserRouter>
                     <div>
                         <Route
+                            exact
                             path="/"
+                            // exact path prevents double matches and overlaying components
                             render={() => (
                                 <Profile
-                                    user={this.state.user}
-                                    setBio={() => {
-                                        this.setBio();
+                                    firstName={this.state.firstName}
+                                    lastName={this.state.lastName}
+                                    bio={this.state.bio}
+                                    profilePicUrl={this.state.profilePicUrl}
+                                    id={this.state.id}
+                                    setBio={(bio) => {
+                                        this.setBio(bio);
                                     }}
                                     showUploader={() => {
                                         this.showUploader();
+                                        // refer to the event target of wherever I trigger the uploader
                                     }}
                                     setProfilePic={() => {
                                         this.setProfilePic();
@@ -104,7 +112,7 @@ export default class App extends Component {
                             )}
                         />
                         <Route
-                            path="/user/:id"
+                            path="/user/:id/"
                             render={(props) => (
                                 <OtherProfile
                                     key={props.match.url}
@@ -122,7 +130,7 @@ export default class App extends Component {
                 {this.state.uploading && (
                     <Uploader
                         className={"small-uploader"}
-                        userId={this.state.user.id}
+                        userId={this.state.id}
                         setProfilePic={(pic) => {
                             this.setProfilePic(pic);
                         }}

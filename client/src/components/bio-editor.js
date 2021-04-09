@@ -10,31 +10,26 @@ export class BioEditor extends Component {
         };
     }
 
-    async componentDidMount() {
+    handleChange(e) {
         this.setState(
             {
-                draftBio: this.props.user.bio,
+                draftBio: e.target.value,
             },
-            () => console.log("this.state: ", this.state)
+            () => console.log(this.props.bio, this.state.draftBio)
         );
-    }
-
-    handleChange(e) {
-        this.setState({
-            draftBio: e.target.value,
-        });
     }
 
     updateBio() {
         console.log("submitting");
-        axios.post("/bio", this.state).then(({ data }) => {
-            console.log("response from axios", data.bio);
-            this.props.setBio(data.bio);
-            this.setState({
-                draftBio: data.bio,
+        if (this.state.draftBio) {
+            axios.post("/bio", this.state).then(({ data }) => {
+                console.log("response from axios", data.bio);
+                this.props.setBio(data.bio);
+                this.toggleEditMode();
             });
+        } else {
             this.toggleEditMode();
-        });
+        }
     }
 
     toggleEditMode() {
@@ -50,9 +45,10 @@ export class BioEditor extends Component {
     }
 
     // 1. Post the new bio the user typed (you should read it from this.state.draft)
-    // 2. Set the new bio in the state of App
+    // 2. Set the new bio in the state of App..
 
     render() {
+        // const { bio } = this.props;
         return (
             <section id="bio-editor">
                 {/* if it's being edited */}
@@ -64,15 +60,15 @@ export class BioEditor extends Component {
                             onChange={(e) => {
                                 this.handleChange(e);
                             }}
-                            value={this.state.draftBio || this.props.user.bio}
+                            defaultValue={this.props.bio}
                             rows={5}
                         />
 
                         <button
                             className="button"
                             name="updateBio"
-                            onClick={(e) => {
-                                this.updateBio(e);
+                            onClick={() => {
+                                this.updateBio();
                             }}
                         >
                             Save
@@ -80,7 +76,7 @@ export class BioEditor extends Component {
                     </div>
                 )}
 
-                {!this.props.user.bio && (
+                {!this.props.bio && !this.state.editing && (
                     <div className="about-me">
                         <h3>Tell us more about yourself...</h3>
                         <textarea
@@ -102,9 +98,9 @@ export class BioEditor extends Component {
                         </button>
                     </div>
                 )}
-                {this.props.user.bio && !this.state.editing && (
+                {this.props.bio && !this.state.editing && (
                     <div className="about-me">
-                        <p>{this.state.bio || this.props.user.bio}</p>
+                        <p>{this.props.bio}</p>
                         <button
                             className="button"
                             name="editBio"

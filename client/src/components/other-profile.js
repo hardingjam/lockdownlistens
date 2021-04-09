@@ -7,18 +7,35 @@ export default class OtherProfile extends Component {
         this.state = {};
     }
     async componentDidMount() {
-        const { data } = axios.get(`/user/${this.props.match.params}.json`);
-        if (data.invalid == true) {
-            this.props.history.push("/");
+        try {
+            const { data } = await axios.get(
+                `/user/${this.props.match.params.id}/view`
+            );
+            console.log(data);
+            if (data.invalid || data.ownProfile) {
+                this.props.history.push("/");
+            }
+            this.setState(data);
+        } catch (err) {
+            console.log(err);
         }
-        this.setState(data);
     }
+
     render() {
+        const { id } = this.state;
+        if (!id) {
+            return "Loading";
+        }
         return (
-            <div>
-                <h1>{this.state.firstName}</h1>
-                <p>{this.state.bio}</p>
-            </div>
+            <section id="profile-container">
+                <img className="large" src={this.state.pic_url} />
+                <div className="about-me">
+                    <h1>
+                        {this.state.first_name} {this.state.last_name}
+                    </h1>
+                    <p>{this.state.bio}</p>
+                </div>
+            </section>
         );
     }
 }
