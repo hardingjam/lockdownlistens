@@ -79,3 +79,21 @@ module.exports.updateBio = function (id, bio) {
         return rows[0];
     });
 };
+
+module.exports.fetchNewUsers = function () {
+    const query = `SELECT first_name, last_name, bio, pic_url, id 
+                    FROM users ORDER BY id DESC LIMIT 3;`;
+    return db.query(query).then(({ rows }) => {
+        return rows;
+    });
+};
+
+module.exports.findMatchingUsers = function (search) {
+    const query = `SELECT first_name, last_name, bio, pic_url, id
+                    FROM users 
+                    WHERE CONCAT(first_name, last_name) ILIKE $1;`;
+    const params = [search + "%"];
+    return db.query(query, params).then(({ rows }) => {
+        return rows;
+    });
+};

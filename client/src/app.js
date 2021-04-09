@@ -3,10 +3,12 @@ import { Logo } from "./components/logo";
 import Profile from "./components/profile";
 import ProfilePic from "./components/profile-pic";
 import Uploader from "./components/uploader";
+
 import { BrowserRouter, Route } from "react-router-dom";
 // import the "otherprofile" component here.
 import axios from "axios";
 import OtherProfile from "./components/other-profile";
+import FindPeople from "./components/findPeople";
 
 export default class App extends Component {
     constructor(props) {
@@ -111,6 +113,7 @@ export default class App extends Component {
                                 />
                             )}
                         />
+
                         <Route
                             path="/user/:id/"
                             render={(props) => (
@@ -124,6 +127,8 @@ export default class App extends Component {
                         />
                         {/* react router is automatically passing a prop called
                         "match", with info about the URL */}
+
+                        <Route path="/find/" component={FindPeople} />
                     </div>
                 </BrowserRouter>
 

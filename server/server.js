@@ -14,6 +14,8 @@ const {
     fetchUser,
     updateProfPic,
     updateBio,
+    fetchNewUsers,
+    findMatchingUsers,
 } = require("./database");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
@@ -227,6 +229,17 @@ app.get("/user/:id/view", async (req, res) => {
     } catch (err) {
         console.log("no user exists");
     }
+});
+
+app.get("/find/people", async (req, res) => {
+    console.log("finding");
+    const data = await fetchNewUsers();
+    res.json(data);
+});
+
+app.get("/find/people/:query", async (req, res) => {
+    const data = await findMatchingUsers(req.params.query);
+    res.json(data);
 });
 
 /* ===== NEVER DELETE OR COMMENT OUT THIS ROUTE ===== */

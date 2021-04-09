@@ -8,8 +8,9 @@ body {
     min-height: 100vh;
     color: white;
     display: flex;
-    overflow: hidden;
+    overflow: scroll;
     font-family: "Poppins";
+    overflow-x: hidden;
 }
 
 textarea {
@@ -195,7 +196,6 @@ button {
 }
 
 #app-component {
-    height: 100vh;
     width: 100vw;
     display: flex;
     justify-content: center;
@@ -280,13 +280,12 @@ button {
     display: flex;
     width: 80vw;
     height: 80vh;
-
+    position: relative;
     background-color: rgba(255, 255, 255, 0.2);
     margin-top: 18vh;
     margin-bottom: 10%;
-    padding: 1rem;
+
     border-radius: 10px;
-    justify-content: space-around;
     padding: 10px;
 }
 
@@ -321,4 +320,51 @@ button {
 
 .bio-draft {
     height: 5rem;
+}
+
+#results-container {
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    position: relative;
+    background-color: none;
+    margin-top: 11vh;
+    margin-bottom: 10%;
+    padding: 1rem;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.result-card {
+    display: flex;
+    margin: 10px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.medium {
+    min-width: 150px;
+    min-height: 150px;
+    max-width: 100px;
+    max-height: 100px;
+    border: 2px solid white;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.find-people {
+    width: 200px;
+    padding: 5px;
+    text-align: left;
+    align-self: flex-end;
+}
+
+.flex-container {
+    display: flex;
+}
+
+.space-between {
+    justify-content: space-between;
 }

@@ -57,7 +57,7 @@ export default class Registration extends Component {
                         <h1 className="logo">Wave</h1>
                     </div> */}
                     {this.state.errors && (
-                        <div id="errors">Please complete all fields</div>
+                        <div className="error">Please complete all fields</div>
                     )}
                     {/* logical and operator */}
                     {/* conditional rendering of error messages */}
