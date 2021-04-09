@@ -30,7 +30,19 @@ export default function FindPeople() {
         <div id="results-container">
             <h2>Finding people is easy...</h2>
             <div className="flex-container space-between">
-                <h3>New members of the wave...</h3>
+                {!query && (
+                    <h4 className="yellow-text">New members of the wave...</h4>
+                )}
+                {query && people.length !== 0 && (
+                    <h4 className="yellow-text">
+                        We found these members matching your search...
+                    </h4>
+                )}
+                {query && !people.length && (
+                    <h4 className="yellow-text">
+                        Sorry, that person is not riding the wave
+                    </h4>
+                )}
                 <input
                     onChange={handleChange}
                     className="find-people"

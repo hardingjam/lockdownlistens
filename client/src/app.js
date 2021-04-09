@@ -3,6 +3,7 @@ import { Logo } from "./components/logo";
 import Profile from "./components/profile";
 import ProfilePic from "./components/profile-pic";
 import Uploader from "./components/uploader";
+import NavBar from "./components/navbar";
 
 import { BrowserRouter, Route } from "react-router-dom";
 // import the "otherprofile" component here.
@@ -78,7 +79,6 @@ export default class App extends Component {
                 {/* show a loading text until axios is complete! */}
 
                 <Logo />
-
                 <ProfilePic
                     profilePicUrl={this.state.profilePicUrl}
                     userId={this.state.id}
@@ -88,7 +88,7 @@ export default class App extends Component {
                     }}
                 />
                 <BrowserRouter>
-                    <div>
+                    <div id="main-component">
                         <Route
                             exact
                             path="/"
@@ -129,6 +129,7 @@ export default class App extends Component {
                         "match", with info about the URL */}
 
                         <Route path="/find/" component={FindPeople} />
+                        <NavBar />
                     </div>
                 </BrowserRouter>
 

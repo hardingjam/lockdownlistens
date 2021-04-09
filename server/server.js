@@ -242,6 +242,12 @@ app.get("/find/people/:query", async (req, res) => {
     res.json(data);
 });
 
+app.get("/logout", (req, res) => {
+    console.log("logging out");
+    req.session.userId = null;
+    res.redirect("/");
+});
+
 /* ===== NEVER DELETE OR COMMENT OUT THIS ROUTE ===== */
 app.get("*", function (req, res) {
     if (!req.session.userId) {

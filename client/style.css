@@ -182,7 +182,7 @@ button {
 .large {
     min-width: 300px;
     min-height: 300px;
-    max-width: 50vw;
+    max-width: 40vw;
     max-height: 50vw;
     border: 2px solid white;
     border-radius: 20px;
@@ -367,4 +367,41 @@ button {
 
 .space-between {
     justify-content: space-between;
+}
+
+.yellow-text {
+    color: rgb(249, 200, 14);
+}
+
+h4 {
+    font-weight: 200;
+}
+
+#main-component {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    flex-grow: 3;
+    margin-left: 20px;
+}
+
+#navbar-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 18vh;
+    justify-self: flex-end;
+    text-align: right;
+    position: absolute;
+    right: 10px;
+}
+
+.navbar > p > a {
+    text-decoration: none;
+
+    color: rgb(255, 108, 17);
+    font-size: 1.3rem;
+}
+
+.navbar > p {
+    margin-top: 10px;
 }
