@@ -97,3 +97,34 @@ module.exports.findMatchingUsers = function (search) {
         return rows;
     });
 };
+
+module.exports.checkFriendStatus = function (targetUser, currentUser) {
+    const query = `SELECT * FROM friendships
+                    WHERE (recipient_id = $1 AND sender_id = $2) 
+                    OR (recipient_id = $2 AND sender_id = $1);`;
+    const params = [targetUser, currentUser];
+    return db.query(query, params).then(({ rows }) => {
+        return rows;
+    });
+};
+
+module.exports.makeFriendRequest = function (targetUser, currentUser) {
+    const query = `INSERT INTO friendships (recipient_id, sender_id)
+                    VALUES ($1, $2)
+                    RETURNING sender_id;`;
+    const params = [targetUser, currentUser];
+    return db.query(query, params).then(({ rows }) => {
+        return rows;
+    });
+};
+
+module.exports.acceptRequest = function (currentUser) {
+    const query = `UPDATE friendships
+                    SET accepted = true
+                    WHERE recipient_id = $1
+                    RETURNING accepted;`;
+    const params = [currentUser];
+    return db.query(query, params).then(({ rows }) => {
+        return rows;
+    });
+};

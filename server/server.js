@@ -16,6 +16,9 @@ const {
     updateBio,
     fetchNewUsers,
     findMatchingUsers,
+    checkFriendStatus,
+    makeFriendRequest,
+    acceptRequest,
 } = require("./database");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
@@ -215,12 +218,11 @@ app.post("/bio", async (req, res) => {
 
 app.get("/user/:id/view", async (req, res) => {
     try {
-        console.log(req.params.id);
         if (req.params.id == req.session.userId) {
             res.json({ ownProfile: true });
         }
         const data = await fetchUser(req.params.id);
-        console.log(data);
+
         res.json(data);
         if (!data) {
             console.log("no user exists");
@@ -240,6 +242,44 @@ app.get("/find/people", async (req, res) => {
 app.get("/find/people/:query", async (req, res) => {
     const data = await findMatchingUsers(req.params.query);
     res.json(data);
+});
+
+app.get("/friendship/:friendId", async (req, res) => {
+    const targetUser = req.params.friendId;
+    const currentUser = req.session.userId;
+
+    const data = await checkFriendStatus(targetUser, currentUser);
+    if (!data.length) {
+        res.json(data);
+    }
+    res.json([req.session.userId, data]);
+});
+
+app.post("/friendship/:friendId/", async (req, res) => {
+    console.log("making friend request", req.params);
+    const targetUser = req.params.friendId;
+    const currentUser = req.session.userId;
+
+    if (req.body.buttonText == "Send Friend Request") {
+        console.log("sending friend request");
+        try {
+            const data = await makeFriendRequest(targetUser, currentUser);
+            console.log("successful DB call: ", data);
+            res.json(data);
+        } catch (err) {
+            console.log("error in makeFriendRequest: ", err);
+        }
+    }
+
+    if (req.body.buttonText == "Accept Friend Request") {
+        try {
+            const data = await acceptRequest(currentUser);
+            console.log(data);
+            res.json(data);
+        } catch (err) {
+            console.log("error in acceptRequest: ", err);
+        }
+    }
 });
 
 app.get("/logout", (req, res) => {

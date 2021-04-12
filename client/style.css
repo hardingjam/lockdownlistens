@@ -183,7 +183,7 @@ button {
     min-width: 300px;
     min-height: 300px;
     max-width: 40vw;
-    max-height: 50vw;
+    max-height: 500px;
     border: 2px solid white;
     border-radius: 20px;
     object-fit: cover;
@@ -300,6 +300,11 @@ button {
     align-self: left;
 }
 
+.pic-and-button {
+    display: flex;
+    flex-direction: column;
+}
+
 .button {
     background-color: #f9c80e;
     border: none;
@@ -404,4 +409,9 @@ h4 {
 
 .navbar > p {
     margin-top: 10px;
+}
+
+.about-me > h2 > a {
+    text-decoration: none;
+    color: white;
 }

@@ -38,7 +38,7 @@ export default class App extends Component {
                     bio: res.data.bio,
                 });
             })
-            .catch((err) => console.log("error in mounting"));
+            .catch((err) => console.log("error in mounting", err));
     }
 
     showUploader() {

@@ -1,5 +1,6 @@
 import { Component } from "react";
 import axios from "../axios";
+import { FriendshipButton } from "../hooks/friendshipButton";
 
 export default class OtherProfile extends Component {
     constructor(props) {
@@ -28,7 +29,10 @@ export default class OtherProfile extends Component {
         }
         return (
             <section id="profile-container">
-                <img className="large" src={this.state.pic_url} />
+                <div className="pic-and-button">
+                    <img className="large" src={this.state.pic_url} />
+                    <FriendshipButton friendId={this.state.id} />
+                </div>
                 <div className="about-me">
                     <h1>
                         {this.state.first_name} {this.state.last_name}

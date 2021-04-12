@@ -1,7 +1,7 @@
 import axios from "../axios";
 
 import { useState, useEffect } from "react";
-
+import { Link } from "react-router-dom";
 export default function FindPeople() {
     const [people, setPeople] = useState([]);
     const [query, setQuery] = useState("");
@@ -52,10 +52,14 @@ export default function FindPeople() {
             {people.map((person, i) => {
                 return (
                     <div className="result-card" key={i}>
-                        <img className="medium" src={person.pic_url} />
+                        <Link to={{ pathname: `/user/${person.id}` }}>
+                            <img className="medium" src={person.pic_url} />
+                        </Link>
                         <div className="about-me">
                             <h2>
-                                {person.first_name} {person.last_name}
+                                <Link to={{ pathname: `/user/${person.id}` }}>
+                                    {person.first_name} {person.last_name}{" "}
+                                </Link>
                             </h2>
                             <p>{person.bio}</p>
                         </div>
