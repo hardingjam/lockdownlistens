@@ -19,6 +19,7 @@ const {
     checkFriendStatus,
     makeFriendRequest,
     acceptRequest,
+    endFriendship,
 } = require("./database");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
@@ -251,33 +252,38 @@ app.get("/friendship/:friendId", async (req, res) => {
     const data = await checkFriendStatus(targetUser, currentUser);
     if (!data.length) {
         res.json(data);
+    } else {
+        res.json([req.session.userId, data]);
     }
-    res.json([req.session.userId, data]);
 });
 
 app.post("/friendship/:friendId/", async (req, res) => {
-    console.log("making friend request", req.params);
     const targetUser = req.params.friendId;
     const currentUser = req.session.userId;
 
     if (req.body.buttonText == "Send Friend Request") {
-        console.log("sending friend request");
         try {
-            const data = await makeFriendRequest(targetUser, currentUser);
-            console.log("successful DB call: ", data);
-            res.json(data);
+            await makeFriendRequest(targetUser, currentUser);
+            res.json({ madeRequest: true });
         } catch (err) {
             console.log("error in makeFriendRequest: ", err);
         }
-    }
-
-    if (req.body.buttonText == "Accept Friend Request") {
+    } else if (req.body.buttonText == "Accept Friend Request") {
         try {
-            const data = await acceptRequest(currentUser);
-            console.log(data);
-            res.json(data);
+            await acceptRequest(currentUser);
+            res.json({ acceptedRequest: true });
         } catch (err) {
             console.log("error in acceptRequest: ", err);
+        }
+    } else if (
+        req.body.buttonText == "End Friendship" ||
+        req.body.buttonText == "Cancel Friend Request"
+    ) {
+        try {
+            await endFriendship(targetUser, currentUser);
+            res.json({ endedFriendship: true });
+        } catch (err) {
+            console.log("error in endFriendship:", err);
         }
     }
 });

@@ -128,3 +128,13 @@ module.exports.acceptRequest = function (currentUser) {
         return rows;
     });
 };
+
+module.exports.endFriendship = function (currentUser, targetUser) {
+    const query = `DELETE FROM friendships
+                    WHERE (recipient_id = $1 AND sender_id = $2) 
+                    OR (recipient_id = $2 AND sender_id = $1);`;
+    const params = [currentUser, targetUser];
+    return db.query(query, params).then(({ rows }) => {
+        return rows;
+    });
+};

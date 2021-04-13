@@ -23,7 +23,6 @@ export class BioEditor extends Component {
         console.log("submitting");
         if (this.state.draftBio) {
             axios.post("/bio", this.state).then(({ data }) => {
-                console.log("response from axios", data.bio);
                 this.props.setBio(data.bio);
                 this.toggleEditMode();
             });

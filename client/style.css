@@ -298,6 +298,13 @@ button {
     display: flex;
     flex-direction: column;
     align-self: left;
+    flex-grow: 2;
+    font-family: "Roboto";
+}
+
+.about-me > h1,
+h2 {
+    font-family: "Poppins";
 }
 
 .pic-and-button {
@@ -397,7 +404,7 @@ h4 {
     justify-self: flex-end;
     text-align: right;
     position: absolute;
-    right: 10px;
+    right: 20px;
 }
 
 .navbar > p > a {
@@ -414,4 +421,8 @@ h4 {
 .about-me > h2 > a {
     text-decoration: none;
     color: white;
+}
+
+.widebutton {
+    width: 70%;
 }
