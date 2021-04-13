@@ -3,10 +3,10 @@ export default function NavBar() {
         <section id="navbar-container">
             <div className="navbar">
                 <p>
-                    <a href="/">My Profile</a>
+                    <a href="/">Profile</a>
                 </p>
                 <p>
-                    <a href="/find">Find People</a>
+                    <a href="/find">People</a>
                 </p>
                 <p>
                     <a href="/logout">Log Out</a>
