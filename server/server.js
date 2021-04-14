@@ -20,6 +20,7 @@ const {
     makeFriendRequest,
     acceptRequest,
     endFriendship,
+    getBegFriends,
 } = require("./database");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
@@ -286,6 +287,12 @@ app.post("/friendship/:friendId/", async (req, res) => {
             console.log("error in endFriendship:", err);
         }
     }
+});
+
+app.get("/beg-friends", async (req, res) => {
+    const data = await getBegFriends(req.session.userId);
+    console.log(data);
+    res.json(data);
 });
 
 app.get("/logout", (req, res) => {

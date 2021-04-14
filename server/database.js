@@ -50,7 +50,8 @@ module.exports.updatePassword = function (password, email) {
 };
 
 module.exports.fetchUser = function (id) {
-    const query = `SELECT * FROM users
+    const query = `SELECT first_name, last_name, pic_url, bio, id
+                    FROM users
                     WHERE id = $1;`;
     const params = [id];
     return db.query(query, params).then(({ rows }) => {
@@ -134,6 +135,19 @@ module.exports.endFriendship = function (currentUser, targetUser) {
                     WHERE (recipient_id = $1 AND sender_id = $2) 
                     OR (recipient_id = $2 AND sender_id = $1);`;
     const params = [currentUser, targetUser];
+    return db.query(query, params).then(({ rows }) => {
+        return rows;
+    });
+};
+
+module.exports.getBegFriends = function (id) {
+    const query = `SELECT users.id, first_name, last_name, pic_url, bio, accepted
+                    FROM friendships
+                    JOIN users
+                    ON (accepted = false AND recipient_id = $1 AND sender_id = users.id)
+                    OR (accepted = true AND recipient_id = $1 AND sender_id = users.id)
+                    OR (accepted = true AND sender_id = $1 AND recipient_id = users.id)`;
+    const params = [id];
     return db.query(query, params).then(({ rows }) => {
         return rows;
     });

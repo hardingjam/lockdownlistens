@@ -10,7 +10,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import axios from "axios";
 import OtherProfile from "./components/other-profile";
 import FindPeople from "./components/findPeople";
-
+import Friends from "./components/friends";
 export default class App extends Component {
     constructor(props) {
         super(props);
@@ -127,8 +127,9 @@ export default class App extends Component {
                         />
                         {/* react router is automatically passing a prop called
                         "match", with info about the URL */}
-
+                        <Route path="/friends/" component={Friends} />
                         <Route path="/find/" component={FindPeople} />
+
                         <NavBar />
                     </div>
                 </BrowserRouter>

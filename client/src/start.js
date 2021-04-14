@@ -1,18 +1,27 @@
-/* ===== ACTIVATES REACT ===== */
-// this file may go by other names.
-
 import ReactDOM from "react-dom";
 import Welcome from "./welcome";
 import App from "./app";
-// if it was not an export default, i need {}
 
+import { createStore, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
+import reduxPromise from "redux-promise";
+import { composeWithDevTools } from "redux-devtools-extension";
+import reducer from "./reducer";
 let elem;
 
-if (location.pathname === "/welcome") {
+const store = createStore(
+    reducer,
+    composeWithDevTools(applyMiddleware(reduxPromise))
+);
+
+if (location.pathname == "/welcome") {
     elem = <Welcome />;
 } else {
-    elem = <App />;
+    elem = (
+        <Provider store={store}>
+            <App />
+        </Provider>
+    );
 }
 
 ReactDOM.render(elem, document.querySelector("main"));
-// this one component rendered here, can in turn render as many as it wants to!

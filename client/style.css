@@ -334,7 +334,9 @@ h2 {
     height: 5rem;
 }
 
-#results-container {
+#results-container,
+#friends-container,
+#requests-container {
     display: flex;
     flex-direction: column;
     width: 80vw;
@@ -375,6 +377,11 @@ h2 {
 
 .flex-container {
     display: flex;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
 }
 
 .space-between {

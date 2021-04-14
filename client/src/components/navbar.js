@@ -1,12 +1,16 @@
+import { Link } from "react-router-dom";
 export default function NavBar() {
     return (
         <section id="navbar-container">
             <div className="navbar">
                 <p>
-                    <a href="/">Profile</a>
+                    <Link to="/">Profile</Link>
                 </p>
                 <p>
-                    <a href="/find">People</a>
+                    <Link to="/find">People</Link>
+                </p>
+                <p>
+                    <Link to="/friends">Friends</Link>
                 </p>
                 <p>
                     <a href="/logout">Log Out</a>
