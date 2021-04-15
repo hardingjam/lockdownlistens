@@ -21,6 +21,7 @@ const {
     acceptRequest,
     endFriendship,
     getBegFriends,
+    acceptFriend,
 } = require("./database");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
@@ -291,9 +292,22 @@ app.post("/friendship/:friendId/", async (req, res) => {
 
 app.get("/beg-friends", async (req, res) => {
     const data = await getBegFriends(req.session.userId);
+    res.json(data);
+});
+
+app.post("/accept-friend/:id", async (req, res) => {
+    const data = await acceptFriend(req.params.id, req.session.userId);
     console.log(data);
     res.json(data);
 });
+
+app.post("/unfriend/:id", async (req, res) => {
+    const data = await endFriendship(req.session.userId, req.params.id);
+    console.log(data);
+    res.json(data);
+});
+
+/* ===== NEVER DELETE OR COMMENT OUT THIS ROUTE ===== */
 
 app.get("/logout", (req, res) => {
     console.log("logging out");
@@ -301,7 +315,6 @@ app.get("/logout", (req, res) => {
     res.redirect("/");
 });
 
-/* ===== NEVER DELETE OR COMMENT OUT THIS ROUTE ===== */
 app.get("*", function (req, res) {
     if (!req.session.userId) {
         res.redirect("/welcome");

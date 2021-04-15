@@ -1,0 +1,7 @@
+UPDATE friendships
+                    SET accepted = false
+                    WHERE sender_id = 204
+                    RETURNING sender_id WHERE recipient_id = 1;
+
+INSERT INTO friendships (recipient_id, sender_id)
+                    VALUES (1, 3);

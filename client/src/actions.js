@@ -17,11 +17,22 @@ export async function getBegFriends() {
 
 // acceptFriend
 
-// export async function acceptFriend() {
-//     const { data } = await axios.post();
-//     return {
-//         type: "ACCEPT_FRIEND",
-//     };
-// }
+export async function acceptFriend(id) {
+    const { data } = await axios.post("/accept-friend/" + id);
+    console.log(data);
+    return {
+        type: "ACCEPT_FRIEND",
+        data: data.sender_id,
+    };
+}
 
 // unfriend
+
+export async function unfriend(id) {
+    const { data } = await axios.post("/unfriend/" + id);
+    console.log(data);
+    return {
+        type: "UNFRIEND",
+        data: data.sender_id,
+    };
+}

@@ -31,9 +31,7 @@ export default class App extends Component {
                 this.setState({
                     firstName: res.data.first_name,
                     lastName: res.data.last_name,
-                    profilePicUrl:
-                        res.data.pic_url ||
-                        "https://social-network.s3.eu-central-1.amazonaws.com/default-profile-pic.jpg",
+                    profilePicUrl: res.data.pic_url,
                     id: res.data.id,
                     bio: res.data.bio,
                 });
@@ -72,7 +70,7 @@ export default class App extends Component {
     render() {
         const { id } = this.state;
         if (!id) {
-            return "Loading...";
+            return <span className="loading">Loading...</span>;
         }
         return (
             <div id="app-component">

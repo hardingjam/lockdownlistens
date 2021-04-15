@@ -348,6 +348,14 @@ h2 {
     border-radius: 10px;
     padding: 10px;
 }
+#requests-container {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#friends-container {
+    margin-bottom: 0;
+}
 
 .result-card {
     display: flex;
@@ -400,7 +408,7 @@ h4 {
     display: flex;
     flex-direction: row;
     width: 100vw;
-    flex-grow: 3;
+    flex-grow: 2;
     margin-left: 20px;
 }
 
@@ -410,8 +418,8 @@ h4 {
     margin-top: 18vh;
     justify-self: flex-end;
     text-align: right;
-    position: absolute;
-    right: 20px;
+    margin-left: auto;
+    margin-right: 25px;
 }
 
 .navbar > p > a {
@@ -432,4 +440,27 @@ h4 {
 
 .widebutton {
     width: 70%;
+}
+
+.wave {
+    align-self: flex-end;
+    margin-top: auto;
+    max-width: 200px;
+    min-width: 150px;
+}
+
+.unfriend {
+    border: 2px solid white;
+    background-color: #ff4365;
+    color: white;
+}
+
+.loading {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.heading-right {
+    margin-left: auto;
+    padding-right: 20px;
 }

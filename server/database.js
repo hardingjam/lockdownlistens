@@ -133,10 +133,12 @@ module.exports.acceptRequest = function (currentUser) {
 module.exports.endFriendship = function (currentUser, targetUser) {
     const query = `DELETE FROM friendships
                     WHERE (recipient_id = $1 AND sender_id = $2) 
-                    OR (recipient_id = $2 AND sender_id = $1);`;
+                    OR (recipient_id = $2 AND sender_id = $1)
+                    RETURNING sender_id;`;
     const params = [currentUser, targetUser];
     return db.query(query, params).then(({ rows }) => {
-        return rows;
+        return rows[0];
+        // DID THIS BREAK THE CANCEL REQUEST FUNCTION?
     });
 };
 
@@ -150,5 +152,17 @@ module.exports.getBegFriends = function (id) {
     const params = [id];
     return db.query(query, params).then(({ rows }) => {
         return rows;
+    });
+};
+
+module.exports.acceptFriend = function (senderId, recipientId) {
+    const query = `UPDATE friendships
+                    SET accepted = true
+                    WHERE sender_id = $1
+                    AND recipient_id = $2
+                    RETURNING sender_id;`;
+    const params = [senderId, recipientId];
+    return db.query(query, params).then(({ rows }) => {
+        return rows[0];
     });
 };

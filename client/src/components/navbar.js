@@ -13,7 +13,7 @@ export default function NavBar() {
                     <Link to="/friends">Friends</Link>
                 </p>
                 <p>
-                    <a href="/logout">Log Out</a>
+                    <a href="/logout">Logout</a>
                 </p>
             </div>
         </section>

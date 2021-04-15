@@ -25,7 +25,7 @@ export default class OtherProfile extends Component {
     render() {
         const { id } = this.state;
         if (!id) {
-            return "Loading";
+            return <span className="loading">Loading...</span>;
         }
         return (
             <section id="profile-container">

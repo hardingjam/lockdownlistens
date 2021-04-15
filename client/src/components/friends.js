@@ -1,49 +1,111 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getBegFriends } from "../actions";
+import { getBegFriends, acceptFriend, unfriend } from "../actions";
 import { Link } from "react-router-dom";
-import DefaultProfilePic from "./default-pic";
+import ProfilePic from "./profile-pic";
 export default function Friends() {
     const dispatch = useDispatch();
 
     const begFriends = useSelector(
         (state) =>
-            state.friends &&
-            state.friends.filter((friend) => friend.accepted == false)
+            state.friends && state.friends.filter((friend) => !friend.accepted)
     );
-    // const realFriends = useSelector((state) => state.friends);
+
+    const realFriends = useSelector(
+        (state) =>
+            state.friends &&
+            state.friends.filter((friend) => friend.accepted == true)
+    );
+
     useEffect(() => {
         dispatch(getBegFriends());
     }, []);
 
-    // if (!friends) {
-    //     // this will return until we recieve data
-    //     return "Loading...";
-    // }
+    if (!begFriends && !realFriends) {
+        // this will return until we recieve data
+        return <span className="loading">Loading...</span>;
+    }
 
     return (
         <div className="flex-column">
-            <div id="friends-container">
-                <h2>Your Friends</h2>
-            </div>
-            {begFriends && (
+            {realFriends && realFriends.length ? (
+                <div id="friends-container">
+                    <h2 className="heading-right">
+                        Your Friends ({realFriends.length})
+                    </h2>
+                    {realFriends.map((friend) => (
+                        <div className="result-card" key={friend.id}>
+                            <Link to={{ pathname: `/user/${friend.id}` }}>
+                                <ProfilePic
+                                    profilePicUrl={friend.pic_url}
+                                    className="medium"
+                                />
+                            </Link>
+                            <div className="about-me">
+                                <h2>
+                                    <Link
+                                        to={{ pathname: `/user/${friend.id}` }}
+                                    >
+                                        {friend.first_name} {friend.last_name}{" "}
+                                    </Link>
+                                </h2>
+                                <p>{friend.bio}</p>
+                                <button
+                                    className="button wave unfriend"
+                                    onClick={() =>
+                                        dispatch(unfriend(friend.id))
+                                    }
+                                >
+                                    Unfriend {friend.first_name}
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div id="friends-container">
+                    <h4 className="yellow-text">You have no friends 😔</h4>
+                </div>
+            )}
+            {begFriends && begFriends.length ? (
                 <div id="requests-container">
-                    <h2>Your Waves</h2>
+                    <h2 className="heading-right">
+                        Your Waves ({begFriends.length})
+                    </h2>
                     {begFriends.map((beggar) => (
                         <div className="result-card" key={beggar.id}>
                             <Link to={{ pathname: `/user/${beggar.id}` }}>
-                                {beggar.pic_url ? (
-                                    <DefaultProfilePic className="medium" />
-                                ) : (
-                                    <img
-                                        className="medium"
-                                        src={beggar.pic_url}
-                                    />
-                                )}
+                                <ProfilePic
+                                    profilePicUrl={beggar.pic_url}
+                                    className="medium"
+                                />
                             </Link>
-                            <h1>REQUEST GOES HERE</h1>
+                            <div className="about-me">
+                                <h2>
+                                    <Link
+                                        to={{ pathname: `/user/${beggar.id}` }}
+                                    >
+                                        {beggar.first_name} {beggar.last_name}{" "}
+                                    </Link>
+                                </h2>
+                                <p>{beggar.bio}</p>
+                                <button
+                                    className="button wave"
+                                    onClick={() =>
+                                        dispatch(acceptFriend(beggar.id))
+                                    }
+                                >
+                                    Wave with {beggar.first_name}
+                                </button>
+                            </div>
                         </div>
                     ))}
+                </div>
+            ) : (
+                <div id="requests-container">
+                    <h4 className="yellow-text">
+                        You have no pending waves 🌊
+                    </h4>
                 </div>
             )}
         </div>
