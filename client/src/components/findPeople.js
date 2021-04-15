@@ -1,8 +1,8 @@
 import axios from "../axios";
-
+import ProfilePic from "./profile-pic";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-export default function FindPeople() {
+export default function FindPeople(props) {
     const [people, setPeople] = useState([]);
     const [query, setQuery] = useState("");
 
@@ -53,7 +53,10 @@ export default function FindPeople() {
                 return (
                     <div className="result-card" key={i}>
                         <Link to={{ pathname: `/user/${person.id}` }}>
-                            <img className="medium" src={person.pic_url} />
+                            <ProfilePic
+                                className="medium"
+                                profilePicUrl={person.pic_url}
+                            />
                         </Link>
                         <div className="about-me">
                             <h2>

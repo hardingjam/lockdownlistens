@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getBegFriends, acceptFriend, unfriend } from "../actions";
 import { Link } from "react-router-dom";
 import ProfilePic from "./profile-pic";
-export default function Friends() {
+export default function Friends(props) {
     const dispatch = useDispatch();
 
     const begFriends = useSelector(
@@ -19,6 +19,7 @@ export default function Friends() {
 
     useEffect(() => {
         dispatch(getBegFriends());
+        console.log("props", props);
     }, []);
 
     if (!begFriends && !realFriends) {
@@ -67,6 +68,7 @@ export default function Friends() {
                     <h4 className="yellow-text">You have no friends 😔</h4>
                 </div>
             )}
+
             {begFriends && begFriends.length ? (
                 <div id="requests-container">
                     <h2 className="heading-right">
@@ -83,7 +85,9 @@ export default function Friends() {
                             <div className="about-me">
                                 <h2>
                                     <Link
-                                        to={{ pathname: `/user/${beggar.id}` }}
+                                        to={{
+                                            pathname: `/user/${beggar.id}`,
+                                        }}
                                     >
                                         {beggar.first_name} {beggar.last_name}{" "}
                                     </Link>

@@ -14,8 +14,6 @@ export default class Uploader extends Component {
     async componentDidMount() {}
 
     handleChange(e) {
-        // console.log("New file selected", e);
-
         this.setState({
             file: e.target.files[0],
         });
@@ -61,16 +59,13 @@ export default class Uploader extends Component {
                         className="close-button"
                         src="https://social-network.s3.eu-central-1.amazonaws.com/public/close.png"
                     />
-
                     <div id="upload-form">
-                        <input
-                            accept="image/*"
-                            name="file"
-                            type="file"
-                            id="inputfile"
-                            onChange={(e) => this.handleChange(e)}
-                        ></input>
-
+                        <label className="choose-file" htmlFor="inputfile">
+                            <img
+                                className="file-icon"
+                                src="https://social-network.s3.eu-central-1.amazonaws.com/photo.png"
+                            />
+                        </label>
                         <button
                             name="upload"
                             id="upload-button"
@@ -78,8 +73,15 @@ export default class Uploader extends Component {
                                 this.handleClick(e);
                             }}
                         >
-                            Update Photo
+                            Update
                         </button>
+                        <input
+                            accept="image/*"
+                            name="file"
+                            type="file"
+                            id="inputfile"
+                            onChange={(e) => this.handleChange(e)}
+                        ></input>
                     </div>
                 </div>
             </section>

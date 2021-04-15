@@ -1,7 +1,9 @@
 import ProfilePic from "./profile-pic.js";
 import { BioEditor } from "./bio-editor";
+import MiniFriends from "./friends-mini";
 
 export default function Profile(props) {
+    console.log("profileprops", props);
     return (
         <section id="profile-container">
             <ProfilePic
@@ -19,6 +21,7 @@ export default function Profile(props) {
                     id={props.id}
                     setBio={props.setBio}
                 />
+                <MiniFriends />
             </div>
         </section>
     );

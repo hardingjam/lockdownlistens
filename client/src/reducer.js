@@ -33,6 +33,7 @@ export default function (state = {}, action) {
             ),
         };
     }
+
     // final return of state
     return state;
 }

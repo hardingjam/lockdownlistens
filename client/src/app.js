@@ -92,23 +92,25 @@ export default class App extends Component {
                             path="/"
                             // exact path prevents double matches and overlaying components
                             render={() => (
-                                <Profile
-                                    firstName={this.state.firstName}
-                                    lastName={this.state.lastName}
-                                    bio={this.state.bio}
-                                    profilePicUrl={this.state.profilePicUrl}
-                                    id={this.state.id}
-                                    setBio={(bio) => {
-                                        this.setBio(bio);
-                                    }}
-                                    showUploader={() => {
-                                        this.showUploader();
-                                        // refer to the event target of wherever I trigger the uploader
-                                    }}
-                                    setProfilePic={() => {
-                                        this.setProfilePic();
-                                    }}
-                                />
+                                <>
+                                    <Profile
+                                        firstName={this.state.firstName}
+                                        lastName={this.state.lastName}
+                                        bio={this.state.bio}
+                                        profilePicUrl={this.state.profilePicUrl}
+                                        id={this.state.id}
+                                        setBio={(bio) => {
+                                            this.setBio(bio);
+                                        }}
+                                        showUploader={() => {
+                                            this.showUploader();
+                                            // refer to the event target of wherever I trigger the uploader
+                                        }}
+                                        setProfilePic={() => {
+                                            this.setProfilePic();
+                                        }}
+                                    />
+                                </>
                             )}
                         />
 
