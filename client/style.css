@@ -354,7 +354,7 @@ h2 {
     padding: 10px;
 }
 #requests-container {
-    margin-top: 0;
+    margin-top: 11vh;
     margin-bottom: 0;
 }
 
@@ -551,6 +551,18 @@ h4 {
     max-width: 30%;
 }
 
-#popout-chat-window {
-    background-color: red;
+.tab-list {
+    margin-top: 13vh;
+    position: absolute;
+    pointer-events: all;
+    cursor: pointer;
+    z-index: 4;
+}
+
+.tab-list > li {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: white;
+    border-radius: 5px 5px 0 0;
+    margin-right: 5px;
+    border-bottom: none;
 }
