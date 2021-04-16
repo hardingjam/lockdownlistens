@@ -36,3 +36,10 @@ export async function unfriend(id) {
         data: data.sender_id,
     };
 }
+
+export async function firstMessages(data) {
+    return {
+        type: "FIRST_MESSAGES",
+        data,
+    };
+}

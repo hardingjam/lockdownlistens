@@ -166,3 +166,13 @@ module.exports.acceptFriend = function (senderId, recipientId) {
         return rows[0];
     });
 };
+
+module.exports.getPublicChat = function () {
+    const query = `SELECT messages.id, messages.sender_id, messages.message, first_name, last_name, pic_url 
+                    FROM users
+                    JOIN messages ON (messages.sender_id = users.id)
+                    ORDER BY messages.created_at DESC LIMIT 10;`;
+    return db.query(query).then(({ rows }) => {
+        return rows;
+    });
+};

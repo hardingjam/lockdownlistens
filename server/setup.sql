@@ -24,3 +24,18 @@ CREATE TABLE friendships(
   recipient_id INT REFERENCES users(id) NOT NULL, 
   accepted BOOLEAN DEFAULT false);
 
+CREATE TABLE messages(
+    id SERIAL PRIMARY KEY,
+    sender_id INT REFERENCES users(id) NOT NULL,
+    recipient_id INT REFERENCES users(id),
+    message VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+SELECT messages.sender_id, messages.message, first_name, last_name, pic_url 
+FROM users
+JOIN messages ON (messages.sender_id = users.id)
+ORDER BY messages.created_at ASC LIMIT 10;
+
+INSERT INTO messages (sender_id, message)
+VALUES ($1, $2);

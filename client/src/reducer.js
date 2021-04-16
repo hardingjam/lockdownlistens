@@ -34,6 +34,14 @@ export default function (state = {}, action) {
         };
     }
 
+    if (action.type == "FIRST_MESSAGES") {
+        console.log(action.data);
+        state = {
+            ...state,
+            publicMessages: action.data,
+        };
+    }
+
     // final return of state
     return state;
 }

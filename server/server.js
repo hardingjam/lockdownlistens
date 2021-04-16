@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const compression = require("compression");
+// shrinking files
 const path = require("path");
 const cookieSession = require("cookie-session");
 const { hash, compare } = require("./bc");
@@ -22,10 +23,14 @@ const {
     endFriendship,
     getBegFriends,
     acceptFriend,
+    getPublicChat,
 } = require("./database");
 const multer = require("multer");
+// handles uploading
 const uidSafe = require("uid-safe");
+// ???
 const { upload } = require("./s3");
+// my AWS S3 config
 const { s3Url } = require("./config");
 
 const { sendEmail } = require("./ses");
@@ -34,9 +39,24 @@ const { sendEmail } = require("./ses");
 const csurf = require("csurf");
 
 const cryptoRandomString = require("crypto-random-string");
+// create PW recovery codes
 
 const secretCode = cryptoRandomString({
     length: 6,
+});
+
+// creating the initial handshake between socket and our server (cannot use Express for this)
+const server = require("http").Server(app);
+const io = require("socket.io")(server, {
+    allowRequest: (req, callback) =>
+        // allowRequest is socket.io's way of filtering out traffic from unauthorized sites.
+        callback(
+            null,
+            req.headers.referer.startsWith(
+                // is this right?
+                "http://localhost:3000" || "https://localhost:3000"
+            )
+        ),
 });
 
 // ===== MIDDLEWARE ==== //
@@ -48,12 +68,16 @@ app.use(compression());
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
 // we are looking in ../client/public
 
-app.use(
-    cookieSession({
-        secret: "I love you",
-        maxAge: 1000 * 60 * 60 * 24 * 14,
-    })
-);
+const cookieSessionMiddleware = cookieSession({
+    secret: `I'm always angry.`,
+    maxAge: 1000 * 60 * 60 * 24 * 90,
+});
+// cookiesession is split into two steps, instead of one app.use call. This is bc we are using it twice.
+// Here, we are giving socket access to the cookieSession.
+app.use(cookieSessionMiddleware);
+io.use(function (socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
 
 app.use(csurf());
 
@@ -323,9 +347,28 @@ app.get("*", function (req, res) {
     }
 });
 
-app.listen(process.env.PORT || 3001, function () {
+server.listen(process.env.PORT || 3001, function () {
     console.log("I'm listening.");
 });
 
-// inside of "./server", we put all our server side code.
-// SQL, DB, POST/GET ROUTES ETC.
+io.on("connection", async (socket) => {
+    console.log(`socket id ${socket.id} is now connected!`);
+
+    // we only do sockets when a user is logged in
+    if (!socket.request.session.userId) {
+        return socket.disconnect(true);
+    }
+    const socketUserId = socket.request.session.userId;
+
+    // this is a good place to go and retrieve the last 10 chat messages (on connection)
+
+    const data = await getPublicChat();
+    console.log(data);
+    io.sockets.emit("firstMessages", data);
+
+    socket.on("Sent new message", (newMessage) => {
+        console.log("message recieved by server from chat.js", newMessage);
+        console.log("Sent by: ", socketUserId);
+        io.sockets.emit("addChatMessage", newMessage);
+    });
+});

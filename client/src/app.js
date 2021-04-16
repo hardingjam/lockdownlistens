@@ -11,6 +11,7 @@ import axios from "axios";
 import OtherProfile from "./components/other-profile";
 import FindPeople from "./components/findPeople";
 import Friends from "./components/friends";
+import Chat from "./hooks/chat";
 export default class App extends Component {
     constructor(props) {
         super(props);
@@ -129,6 +130,7 @@ export default class App extends Component {
                         "match", with info about the URL */}
                         <Route path="/friends/" component={Friends} />
                         <Route path="/find/" component={FindPeople} />
+                        <Route path="/chat" component={Chat} />
 
                         <NavBar />
                     </div>
