@@ -17,7 +17,6 @@ export default class App extends Component {
         super(props);
 
         this.state = {
-            // if i try to pass this directly to my components?
             uploading: false,
         };
     }
@@ -72,11 +71,10 @@ export default class App extends Component {
         const { id } = this.state;
         if (!id) {
             return <span className="loading">Loading...</span>;
+            //  show a loading text until axios is complete! */
         }
         return (
             <div id="app-component">
-                {/* show a loading text until axios is complete! */}
-
                 <Logo />
                 <ProfilePic
                     profilePicUrl={this.state.profilePicUrl}

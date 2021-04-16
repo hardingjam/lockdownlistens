@@ -171,8 +171,22 @@ module.exports.getPublicChat = function () {
     const query = `SELECT messages.id, messages.sender_id, messages.message, first_name, last_name, pic_url 
                     FROM users
                     JOIN messages ON (messages.sender_id = users.id)
-                    ORDER BY messages.created_at DESC LIMIT 10;`;
+                    ORDER BY messages.id DESC LIMIT 10;`;
     return db.query(query).then(({ rows }) => {
         return rows;
+    });
+};
+
+module.exports.newChatMessage = function (senderId, message) {
+    const query = `WITH inserted AS (
+                    INSERT INTO messages (sender_id, message) 
+                    VALUES ($1, $2) 
+                    RETURNING id, sender_id, message)
+                    SELECT inserted.*, users.first_name, users.last_name, users.pic_url
+                    FROM inserted
+                    INNER JOIN users ON inserted.sender_id = users.id;`;
+    const params = [senderId, message];
+    return db.query(query, params).then(({ rows }) => {
+        return rows[0];
     });
 };

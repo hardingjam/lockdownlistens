@@ -52,7 +52,7 @@ export class BioEditor extends Component {
             <section id="bio-editor">
                 {/* if it's being edited */}
                 {this.state.editing && (
-                    <div className="about-me">
+                    <>
                         <textarea
                             className="bio-draft"
                             name="bio"
@@ -72,11 +72,11 @@ export class BioEditor extends Component {
                         >
                             Save
                         </button>
-                    </div>
+                    </>
                 )}
 
                 {!this.props.bio && !this.state.editing && (
-                    <div className="about-me">
+                    <div>
                         <h3>Tell us more about yourself...</h3>
                         <textarea
                             type="textarea"
@@ -98,12 +98,12 @@ export class BioEditor extends Component {
                     </div>
                 )}
                 {this.props.bio && !this.state.editing && (
-                    <div className="about-me">
+                    <div>
                         <p>{this.props.bio}</p>
                         <button
                             className="button"
                             name="editBio"
-                            onClick={(e) => {
+                            onClick={() => {
                                 this.toggleEditMode();
                             }}
                         >

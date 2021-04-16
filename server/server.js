@@ -24,6 +24,7 @@ const {
     getBegFriends,
     acceptFriend,
     getPublicChat,
+    newChatMessage,
 } = require("./database");
 const multer = require("multer");
 // handles uploading
@@ -363,12 +364,10 @@ io.on("connection", async (socket) => {
     // this is a good place to go and retrieve the last 10 chat messages (on connection)
 
     const data = await getPublicChat();
-    console.log(data);
     io.sockets.emit("firstMessages", data);
 
-    socket.on("Sent new message", (newMessage) => {
-        console.log("message recieved by server from chat.js", newMessage);
-        console.log("Sent by: ", socketUserId);
-        io.sockets.emit("addChatMessage", newMessage);
+    socket.on("Sent new message", async (newMessage) => {
+        const data = await newChatMessage(socketUserId, newMessage);
+        io.sockets.emit("addChatMessage", data);
     });
 });

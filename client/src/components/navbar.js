@@ -13,6 +13,9 @@ export default function NavBar() {
                     <Link to="/friends">Friends</Link>
                 </p>
                 <p>
+                    <Link to="/chat">Chat</Link>
+                </p>
+                <p>
                     <a href="/logout">Logout</a>
                 </p>
             </div>

@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getBegFriends, acceptFriend, unfriend } from "../actions";
 import { Link } from "react-router-dom";
 import ProfilePic from "./profile-pic";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
 export default function Friends(props) {
     const dispatch = useDispatch();
 
@@ -28,6 +30,11 @@ export default function Friends(props) {
     }
 
     return (
+        // <Tabs>
+        //     <TabList>
+        //         <Tab>Friends</Tab>
+        //         <Tab>Waves</Tab>
+        //     </TabList>
         <div className="flex-column">
             {realFriends && realFriends.length ? (
                 <div id="friends-container">
@@ -45,7 +52,9 @@ export default function Friends(props) {
                             <div className="about-me">
                                 <h2>
                                     <Link
-                                        to={{ pathname: `/user/${friend.id}` }}
+                                        to={{
+                                            pathname: `/user/${friend.id}`,
+                                        }}
                                     >
                                         {friend.first_name} {friend.last_name}{" "}
                                     </Link>
@@ -113,5 +122,6 @@ export default function Friends(props) {
                 </div>
             )}
         </div>
+        // </Tabs>
     );
 }

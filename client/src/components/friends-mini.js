@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getBegFriends, acceptFriend, unfriend } from "../actions";
+import { getBegFriends, unfriend } from "../actions";
 import { Link } from "react-router-dom";
 import ProfilePic from "./profile-pic";
 export default function MiniFriends(props) {
@@ -53,7 +53,7 @@ export default function MiniFriends(props) {
                     ))}
                 </div>
             ) : (
-                <div id="friends-container">
+                <div>
                     <h4 className="yellow-text">You have no friends 😔</h4>
                 </div>
             )}

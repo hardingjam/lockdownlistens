@@ -32,10 +32,4 @@ CREATE TABLE messages(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-SELECT messages.sender_id, messages.message, first_name, last_name, pic_url 
-FROM users
-JOIN messages ON (messages.sender_id = users.id)
-ORDER BY messages.created_at ASC LIMIT 10;
 
-INSERT INTO messages (sender_id, message)
-VALUES ($1, $2);

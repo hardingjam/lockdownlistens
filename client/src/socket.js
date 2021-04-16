@@ -12,10 +12,8 @@ export const init = (store) => {
         );
         // the first payload arrived and is added to Redux.
         // THIS IS LISTENING TO EVENTS THAT HAPPEN ON THE SERVER
-        // socket.on("chatMessage", (msg) => store.dispatch(chatMessage(msg)));
-
-        // socket.on("addChatMessage", (msg) => {
-        //     console.log("New message posted, redux will render it!");
-        // });
+        socket.on("addChatMessage", (msg) => {
+            store.dispatch(newMessage(msg));
+        });
     }
 };

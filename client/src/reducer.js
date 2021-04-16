@@ -1,4 +1,11 @@
-export default function (state = {}, action) {
+export default function (
+    state = {
+        publicMessages: [],
+        // this can solve the delay in awaiting returned new state
+        // you can build an empty framework of a potential state structure
+    },
+    action
+) {
     if (action.type == "GET_ALL_FRIENDS") {
         state = {
             ...state,
@@ -35,13 +42,20 @@ export default function (state = {}, action) {
     }
 
     if (action.type == "FIRST_MESSAGES") {
-        console.log(action.data);
         state = {
             ...state,
             publicMessages: action.data,
         };
     }
 
+    if (action.type == "NEW_CHAT_MESSAGE") {
+        console.log("action.data:", action.data);
+
+        state = {
+            ...state,
+            publicMessages: [action.data, ...state.publicMessages],
+        };
+    }
     // final return of state
     return state;
 }

@@ -505,15 +505,52 @@ h4 {
 
 .chat-messages-container {
     overflow-y: scroll;
-    height: 300px;
-    width: 300px;
+    height: 400px;
+    width: 75vw;
     border: 2px solid white;
     margin: 10px;
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 10px;
-    padding: 10px;
+    padding: 20px;
 }
 
 #chat-container {
     margin-top: 15vh;
+}
+
+.chat-message {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.chat-message > img {
+    margin-right: 10px;
+}
+
+.chat-message > p {
+    align-self: center;
+}
+
+.chat-message > h4 {
+    margin-right: auto;
+    align-self: center;
+}
+
+.smaller {
+    width: 50px;
+    height: 50px;
+    border: 1px solid white;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    object-fit: cover;
+}
+
+#bio-editor > div > button {
+    max-width: 30%;
+}
+
+#popout-chat-window {
+    background-color: red;
 }

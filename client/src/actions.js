@@ -30,7 +30,7 @@ export async function acceptFriend(id) {
 
 export async function unfriend(id) {
     const { data } = await axios.post("/unfriend/" + id);
-    console.log(data);
+
     return {
         type: "UNFRIEND",
         data: data.sender_id,
@@ -40,6 +40,14 @@ export async function unfriend(id) {
 export async function firstMessages(data) {
     return {
         type: "FIRST_MESSAGES",
+        data,
+    };
+}
+
+export async function newMessage(data) {
+    console.log("data to acitons.js:", data);
+    return {
+        type: "NEW_CHAT_MESSAGE",
         data,
     };
 }
