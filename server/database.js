@@ -190,3 +190,12 @@ module.exports.newChatMessage = function (senderId, message) {
         return rows[0];
     });
 };
+
+module.exports.getUsersByIds = function (arrayOfIds) {
+    const query =
+        "SELECT id, first_name, last_name, pic_url FROM users WHERE id = ANY($1)";
+    const params = [arrayOfIds];
+    return db.query(query, params).then(({ rows }) => {
+        return rows;
+    });
+};

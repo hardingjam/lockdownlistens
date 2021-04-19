@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getBegFriends, unfriend } from "../actions";
 import { Link } from "react-router-dom";
 import ProfilePic from "./profile-pic";
+
 export default function MiniFriends(props) {
     const dispatch = useDispatch();
 

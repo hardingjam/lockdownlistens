@@ -1,17 +1,19 @@
 import ProfilePic from "./profile-pic.js";
 import { BioEditor } from "./bio-editor";
 import MiniFriends from "./friends-mini";
-
+import ProfileBoard from "../hooks/profileBoard";
 export default function Profile(props) {
     console.log("profileprops", props);
     return (
         <section id="profile-container">
-            <ProfilePic
-                profilePicUrl={props.profilePicUrl}
-                className={"large"}
-                showUploader={props.showUploader}
-            />
-
+            <div id="profile-left-container">
+                <ProfilePic
+                    profilePicUrl={props.profilePicUrl}
+                    className={"large"}
+                    showUploader={props.showUploader}
+                />
+                <ProfileBoard firstName={props.firstName} />
+            </div>
             <div className="about-me">
                 <h1>
                     {props.firstName} {props.lastName}
@@ -21,6 +23,7 @@ export default function Profile(props) {
                     id={props.id}
                     setBio={props.setBio}
                 />
+
                 <MiniFriends />
             </div>
         </section>

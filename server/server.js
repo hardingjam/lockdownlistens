@@ -25,6 +25,7 @@ const {
     acceptFriend,
     getPublicChat,
     newChatMessage,
+    getUsersByIds,
 } = require("./database");
 const multer = require("multer");
 // handles uploading
@@ -335,7 +336,6 @@ app.post("/unfriend/:id", async (req, res) => {
 /* ===== NEVER DELETE OR COMMENT OUT THIS ROUTE ===== */
 
 app.get("/logout", (req, res) => {
-    console.log("logging out");
     req.session.userId = null;
     res.redirect("/");
 });
@@ -352,16 +352,26 @@ server.listen(process.env.PORT || 3001, function () {
     console.log("I'm listening.");
 });
 
-io.on("connection", async (socket) => {
-    console.log(`socket id ${socket.id} is now connected!`);
+/* SOCKETS */
 
+let onlineUsers = {};
+io.on("connection", async (socket) => {
     // we only do sockets when a user is logged in
     if (!socket.request.session.userId) {
         return socket.disconnect(true);
     }
-    const socketUserId = socket.request.session.userId;
 
-    // this is a good place to go and retrieve the last 10 chat messages (on connection)
+    const socketUserId = socket.request.session.userId;
+    onlineUsers[socket.id] = socketUserId;
+
+    const uniqueIds = Object.values(onlineUsers).filter(function (id, i, self) {
+        return self.indexOf(id) == i;
+    });
+
+    console.log("unique Ids:", uniqueIds);
+    const users = await getUsersByIds(uniqueIds);
+
+    io.sockets.emit("userJoined", users);
 
     const data = await getPublicChat();
     io.sockets.emit("firstMessages", data);
@@ -369,5 +379,11 @@ io.on("connection", async (socket) => {
     socket.on("Sent new message", async (newMessage) => {
         const data = await newChatMessage(socketUserId, newMessage);
         io.sockets.emit("addChatMessage", data);
+    });
+
+    socket.on("disconnect", () => {
+        console.log("a user logged out", onlineUsers[socket.id]);
+        io.sockets.emit("userLeft", onlineUsers[socket.id]);
+        delete onlineUsers[socket.id];
     });
 });

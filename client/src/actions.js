@@ -1,8 +1,4 @@
-// 3 functions to create three action objects
-
 import axios from "./axios";
-
-// getBegFriends
 
 export async function getBegFriends() {
     const { data } = await axios.get("/beg-friends/");
@@ -12,10 +8,6 @@ export async function getBegFriends() {
         data,
     };
 }
-// return axios get request
-// return object with type "GET_BEG_FRIENDS" and the payload: array (This is the action)
-
-// acceptFriend
 
 export async function acceptFriend(id) {
     const { data } = await axios.post("/accept-friend/" + id);
@@ -26,11 +18,8 @@ export async function acceptFriend(id) {
     };
 }
 
-// unfriend
-
 export async function unfriend(id) {
     const { data } = await axios.post("/unfriend/" + id);
-
     return {
         type: "UNFRIEND",
         data: data.sender_id,
@@ -45,9 +34,23 @@ export async function firstMessages(data) {
 }
 
 export async function newMessage(data) {
-    console.log("data to acitons.js:", data);
     return {
         type: "NEW_CHAT_MESSAGE",
+        data,
+    };
+}
+
+export async function userJoined(data) {
+    return {
+        type: "USER_JOINED",
+        data,
+    };
+}
+
+export async function userLeft(data) {
+    console.log("userleaving", data);
+    return {
+        type: "USER_LEFT",
         data,
     };
 }

@@ -13,7 +13,7 @@ export default class OtherProfile extends Component {
             const { data } = await axios.get(
                 `/user/${this.props.match.params.id}/view`
             );
-            console.log(data);
+            console.log("return from axios:", data);
             if (data.invalid || data.ownProfile) {
                 this.props.history.push("/");
             }
@@ -31,7 +31,10 @@ export default class OtherProfile extends Component {
         return (
             <section id="profile-container">
                 <div className="pic-and-button">
-                    <ProfilePic className="large" src={this.state.pic_url} />
+                    <ProfilePic
+                        className="large"
+                        profilePicUrl={this.state.pic_url}
+                    />
                     <FriendshipButton friendId={this.state.id} />
                 </div>
                 <div className="about-me">

@@ -1,23 +1,20 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { socket } from "../socket";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import ProfilePic from "../components/profile-pic";
 // import Popout from "react-popout";
 
-export default function Chat(props) {
+export default function Chat() {
     const elemRef = useRef();
     const publicMessages = useSelector((state) => state.publicMessages || []);
-    // const [popped, setPopped] = useState(false);
+    const onlinePeople = useSelector((state) => state.onlineUsers || []);
 
     useEffect(() => {
-        console.log("useEffect");
-        console.log(props);
         elemRef.current.scrollTop =
             elemRef.current.scrollHeight - elemRef.current.clientHeight;
-    }, [publicMessages]);
-
-    // const popOut = () => {
-    //     setPopped(true);
-    // };
+    }, [publicMessages, onlinePeople]);
 
     const keyCheck = (e) => {
         if (e.key === "Enter") {
@@ -29,33 +26,80 @@ export default function Chat(props) {
 
     return (
         <>
-            <div id="chat-container" className="flex-column">
-                <h1>Wave Talk</h1>
-                <div className="chat-messages-container" ref={elemRef}>
-                    {publicMessages
-                        .slice()
-                        .reverse()
-                        .map((msg) => (
-                            <div
-                                className="chat-message flex-container"
-                                key={msg.id}
-                            >
-                                <img src={msg.pic_url} className="smaller" />
-                                <h4 className="yellow-text">
-                                    {msg.first_name}
-                                </h4>
-                                <p>{msg.message}</p>
-                            </div>
-                        ))}
-                </div>
-                <textarea
-                    placeholder="Add your message here"
-                    onKeyDown={keyCheck}
-                />
-                {/* <button className="button" onClick={popOut}>
-                    Pop out
-                </button> */}
-            </div>
+            <Tabs>
+                <TabList className="tab-list">
+                    <Tab>WaveRoom</Tab>
+                    <Tab>Online Now</Tab>
+                </TabList>
+                <TabPanel>
+                    <div id="chat-container" className="flex-column">
+                        <div className="chat-messages-container" ref={elemRef}>
+                            {publicMessages
+                                .slice()
+                                .reverse()
+                                .map((msg) => (
+                                    <div
+                                        className="chat-message flex-container"
+                                        key={msg.id}
+                                    >
+                                        <Link
+                                            to={{
+                                                pathname: `user/${msg.sender_id}`,
+                                            }}
+                                        >
+                                            <img
+                                                src={msg.pic_url}
+                                                className="smaller"
+                                            />
+                                        </Link>
+                                        <h4 className="yellow-text">
+                                            {msg.first_name}
+                                        </h4>
+                                        <p>{msg.message}</p>
+                                    </div>
+                                ))}
+                        </div>
+                        <textarea
+                            placeholder="Add your message here"
+                            onKeyDown={keyCheck}
+                        />
+                    </div>
+                </TabPanel>
+                <TabPanel>
+                    <div id="chat-container" className="flex-column">
+                        <div className="chat-messages-container" ref={elemRef}>
+                            <h4>{onlinePeople.length} rider(s) on the wave</h4>
+
+                            {onlinePeople.map((person) => (
+                                <div className="result-card" key={person.id}>
+                                    <Link
+                                        to={{
+                                            pathname: `/user/${person.id}`,
+                                        }}
+                                    >
+                                        <ProfilePic
+                                            profilePicUrl={person.pic_url}
+                                            className="smaller"
+                                        />
+                                    </Link>
+                                    <div className="online-user">
+                                        <h3>
+                                            <Link
+                                                to={{
+                                                    pathname: `/user/${person.id}`,
+                                                }}
+                                            >
+                                                {person.first_name}{" "}
+                                                {person.last_name}{" "}
+                                            </Link>
+                                        </h3>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </TabPanel>
+            </Tabs>
         </>
     );
 }

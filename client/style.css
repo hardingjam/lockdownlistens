@@ -180,7 +180,7 @@ button {
 }
 
 .large {
-    min-width: 300px;
+    min-width: 35vw;
     min-height: 300px;
     max-width: 40vw;
     max-height: 500px;
@@ -347,14 +347,14 @@ h2 {
     width: 80vw;
     position: relative;
     background-color: none;
-    margin-top: 11vh;
+    margin-top: 10.75vh;
     margin-bottom: 10%;
     padding: 1rem;
     border-radius: 10px;
     padding: 10px;
 }
 #requests-container {
-    margin-top: 11vh;
+    margin-top: 10.75vh;
     margin-bottom: 0;
 }
 
@@ -505,9 +505,8 @@ h4 {
 
 .chat-messages-container {
     overflow-y: scroll;
-    height: 400px;
+    height: 60vh;
     width: 75vw;
-    border: 2px solid white;
     margin: 10px;
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 10px;
@@ -515,7 +514,7 @@ h4 {
 }
 
 #chat-container {
-    margin-top: 15vh;
+    margin-top: 16vh;
 }
 
 .chat-message {
@@ -530,11 +529,13 @@ h4 {
 
 .chat-message > p {
     align-self: center;
+    font-family: "Roboto";
 }
 
 .chat-message > h4 {
     margin-right: auto;
     align-self: center;
+    margin-left: 10px;
 }
 
 .smaller {
@@ -552,9 +553,9 @@ h4 {
 }
 
 .tab-list {
-    margin-top: 13vh;
+    margin-top: 12.8vh;
     position: absolute;
-    pointer-events: all;
+
     cursor: pointer;
     z-index: 4;
 }
@@ -565,4 +566,47 @@ h4 {
     border-radius: 5px 5px 0 0;
     margin-right: 5px;
     border-bottom: none;
+}
+
+.tab-list > li {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: white;
+    border-radius: 5px 5px 0 0;
+    margin-right: 5px;
+    border-bottom: none;
+}
+
+#no-connections {
+    margin-top: 11vh;
+    font-weight: 200;
+}
+
+#no-connections > h2 > a {
+    text-decoration: none;
+    color: rgb(249, 200, 14);
+}
+
+.online-user {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: left;
+    font-family: "Roboto";
+}
+
+.online-user > h3 > a {
+    text-decoration: none;
+    color: rgb(249, 200, 14);
+    font-weight: 300;
+    margin-left: 10px;
+}
+
+.no-waves {
+    margin-top: 6vh;
+}
+
+#profile-left-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }

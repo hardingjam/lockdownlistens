@@ -3,4 +3,12 @@ UPDATE friendships
                     WHERE sender_id = 204
                     RETURNING sender_id WHERE recipient_id = 1;
 
-INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 3);
+INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 90);
+INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 99);
+INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 44);
+INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 66);
+INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 55);
+INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 89);
+INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 21);
+INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 15);
+INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 5);
