@@ -368,7 +368,6 @@ io.on("connection", async (socket) => {
         return self.indexOf(id) == i;
     });
 
-    console.log("unique Ids:", uniqueIds);
     const users = await getUsersByIds(uniqueIds);
 
     io.sockets.emit("userJoined", users);
@@ -382,7 +381,6 @@ io.on("connection", async (socket) => {
     });
 
     socket.on("disconnect", () => {
-        console.log("a user logged out", onlineUsers[socket.id]);
         io.sockets.emit("userLeft", onlineUsers[socket.id]);
         delete onlineUsers[socket.id];
     });

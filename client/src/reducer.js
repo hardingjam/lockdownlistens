@@ -1,5 +1,6 @@
 export default function (
     state = {
+        loggedInUser: {},
         publicMessages: [],
         // this can solve the delay in awaiting returned new state
         // you can build an empty framework of a potential state structure
@@ -55,7 +56,6 @@ export default function (
     }
 
     if (action.type == "USER_JOINED") {
-        console.log("action.data", action.data);
         state = {
             ...state,
             onlineUsers: action.data,
@@ -63,22 +63,18 @@ export default function (
     }
 
     if (action.type == "USER_LEFT") {
-        console.log("action.data", action.data);
-        console.log("onlineUsers: ", state.onlineUsers);
-        const loggedOutUser = state.onlineUsers.find(
-            (user) => user.id == action.data
-        );
-        console.log("loggedOutUser: ", loggedOutUser);
-        console.log("index: ", state.onlineUsers.indexOf(loggedOutUser));
-
         state = {
             ...state,
-
             onlineUsers: state.onlineUsers.filter(
                 (user) => user.id !== action.data
             ),
         };
     }
+
+    if (action.type == "BOARD_POSTS") {
+        console.log("BOARD POSTS TRIGGERED");
+    }
+
     // final return of state
     return state;
 }

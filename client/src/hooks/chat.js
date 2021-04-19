@@ -10,7 +10,11 @@ export default function Chat() {
     const elemRef = useRef();
     const publicMessages = useSelector((state) => state.publicMessages || []);
     const onlinePeople = useSelector((state) => state.onlineUsers || []);
-
+    const focusBottom = () => {
+        console.log("focusbottom");
+        elemRef.current.scrollTop =
+            elemRef.current.scrollHeight - elemRef.current.clientHeight;
+    };
     useEffect(() => {
         elemRef.current.scrollTop =
             elemRef.current.scrollHeight - elemRef.current.clientHeight;
@@ -26,7 +30,7 @@ export default function Chat() {
 
     return (
         <>
-            <Tabs>
+            <Tabs onSelect={(e) => focusBottom(e)}>
                 <TabList className="tab-list">
                     <Tab>WaveRoom</Tab>
                     <Tab>Online Now</Tab>

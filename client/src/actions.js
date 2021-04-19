@@ -2,7 +2,7 @@ import axios from "./axios";
 
 export async function getBegFriends() {
     const { data } = await axios.get("/beg-friends/");
-    console.log(data);
+
     return {
         type: "GET_ALL_FRIENDS",
         data,
@@ -11,7 +11,7 @@ export async function getBegFriends() {
 
 export async function acceptFriend(id) {
     const { data } = await axios.post("/accept-friend/" + id);
-    console.log(data);
+
     return {
         type: "ACCEPT_FRIEND",
         data: data.sender_id,
@@ -48,9 +48,18 @@ export async function userJoined(data) {
 }
 
 export async function userLeft(data) {
-    console.log("userleaving", data);
     return {
         type: "USER_LEFT",
+        data,
+    };
+}
+
+export async function gotBoardPosts() {
+    console.log("getting board posts");
+    const data = await axios.get("/board");
+    console.log("board data:, ", data);
+    return {
+        type: "BOARD_POSTS",
         data,
     };
 }

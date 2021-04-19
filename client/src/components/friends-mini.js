@@ -15,7 +15,6 @@ export default function MiniFriends(props) {
 
     useEffect(() => {
         dispatch(getBegFriends());
-        console.log("props", props);
     }, []);
 
     return (

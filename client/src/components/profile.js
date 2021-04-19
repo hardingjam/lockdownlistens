@@ -3,7 +3,6 @@ import { BioEditor } from "./bio-editor";
 import MiniFriends from "./friends-mini";
 import ProfileBoard from "../hooks/profileBoard";
 export default function Profile(props) {
-    console.log("profileprops", props);
     return (
         <section id="profile-container">
             <div id="profile-left-container">
