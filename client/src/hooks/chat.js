@@ -11,13 +11,12 @@ export default function Chat() {
     const publicMessages = useSelector((state) => state.publicMessages || []);
     const onlinePeople = useSelector((state) => state.onlineUsers || []);
     const focusBottom = () => {
-        console.log("focusbottom");
         elemRef.current.scrollTop =
             elemRef.current.scrollHeight - elemRef.current.clientHeight;
     };
     useEffect(() => {
-        elemRef.current.scrollTop =
-            elemRef.current.scrollHeight - elemRef.current.clientHeight;
+        focusBottom();
+        // this doesn't work until the second click on the Tabs...
     }, [publicMessages, onlinePeople]);
 
     const keyCheck = (e) => {
@@ -33,7 +32,7 @@ export default function Chat() {
             <Tabs onSelect={(e) => focusBottom(e)}>
                 <TabList className="tab-list">
                     <Tab>WaveRoom</Tab>
-                    <Tab>Online Now</Tab>
+                    <Tab>Online</Tab>
                 </TabList>
                 <TabPanel>
                     <div id="chat-container" className="flex-column">

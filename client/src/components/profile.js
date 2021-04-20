@@ -11,7 +11,7 @@ export default function Profile(props) {
                     className={"large"}
                     showUploader={props.showUploader}
                 />
-                <ProfileBoard firstName={props.firstName} />
+                <ProfileBoard firstName={props.firstName} id={props.id} />
             </div>
             <div className="about-me">
                 <h1>

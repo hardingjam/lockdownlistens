@@ -5,6 +5,7 @@ export default function (
         // this can solve the delay in awaiting returned new state
         // you can build an empty framework of a potential state structure
         onlineUsers: [],
+        boardPosts: [],
     },
     action
 ) {
@@ -73,6 +74,10 @@ export default function (
 
     if (action.type == "BOARD_POSTS") {
         console.log("BOARD POSTS TRIGGERED");
+        state = {
+            ...state,
+            boardPosts: action.data.data,
+        };
     }
 
     // final return of state

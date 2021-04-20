@@ -54,9 +54,9 @@ export async function userLeft(data) {
     };
 }
 
-export async function gotBoardPosts() {
+export async function getBoardPosts(user) {
     console.log("getting board posts");
-    const data = await axios.get("/board");
+    const data = await axios.get(`/board/${user}`);
     console.log("board data:, ", data);
     return {
         type: "BOARD_POSTS",

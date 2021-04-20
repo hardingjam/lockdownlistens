@@ -192,9 +192,21 @@ module.exports.newChatMessage = function (senderId, message) {
 };
 
 module.exports.getUsersByIds = function (arrayOfIds) {
-    const query =
-        "SELECT id, first_name, last_name, pic_url FROM users WHERE id = ANY($1)";
+    const query = `SELECT id, first_name, last_name, pic_url FROM users WHERE id = ANY($1)`;
     const params = [arrayOfIds];
+    return db.query(query, params).then(({ rows }) => {
+        return rows;
+    });
+};
+
+module.exports.getBoard = function (userId) {
+    const query = `SELECT users.first_name, users.last_name, users.pic_url,
+                    board_posts.post, board_posts.created_at, board_posts.sender_id
+                    FROM board_posts
+                    JOIN users ON (users.id = board_posts.sender_id)
+                    WHERE board_posts.recipient_id = $1
+                    ORDER BY board_posts.id DESC LIMIT 10;`;
+    const params = [userId];
     return db.query(query, params).then(({ rows }) => {
         return rows;
     });

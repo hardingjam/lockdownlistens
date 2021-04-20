@@ -5,6 +5,7 @@ const compression = require("compression");
 const path = require("path");
 const cookieSession = require("cookie-session");
 const { hash, compare } = require("./bc");
+const { scrape } = require("./scrape");
 const {
     createUser,
     getPassword,
@@ -26,6 +27,7 @@ const {
     getPublicChat,
     newChatMessage,
     getUsersByIds,
+    getBoard,
 } = require("./database");
 const multer = require("multer");
 // handles uploading
@@ -106,6 +108,11 @@ const diskStorage = multer.diskStorage({
         });
     },
 });
+
+const detectUrls = function (str) {
+    var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+    return str.match(urlRegex);
+};
 
 const uploader = multer({
     storage: diskStorage,
@@ -330,6 +337,13 @@ app.post("/accept-friend/:id", async (req, res) => {
 app.post("/unfriend/:id", async (req, res) => {
     const data = await endFriendship(req.session.userId, req.params.id);
     console.log(data);
+    res.json(data);
+});
+
+app.get("/board/:id", async (req, res) => {
+    const data = await getBoard(req.params.id);
+    console.log(data);
+    scrape(data);
     res.json(data);
 });
 

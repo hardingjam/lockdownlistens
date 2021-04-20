@@ -32,4 +32,12 @@ CREATE TABLE messages(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE board_posts(
+    id SERIAL PRIMARY KEY,
+    sender_id INT REFERENCES users(id) NOT NULL,
+    recipient_id INT REFERENCES users(id),
+    post VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
+INSERT INTO board_posts (sender_id, recipient_id, post) VALUES (4, 1, 'https://ichef.bbci.co.uk/news/976/cpsprodpb/11E09/production/_118052237_redonda3.jpg') RETURNING *;

@@ -2,6 +2,7 @@ import { Component } from "react";
 import axios from "../axios";
 import { FriendshipButton } from "../hooks/friendshipButton";
 import ProfilePic from "./profile-pic";
+import ProfileBoard from "../hooks/profileBoard";
 
 export default class OtherProfile extends Component {
     constructor(props) {
@@ -42,6 +43,8 @@ export default class OtherProfile extends Component {
                         {this.state.first_name} {this.state.last_name}
                     </h1>
                     <p>{this.state.bio}</p>
+
+                    <ProfileBoard firstName={this.state.first_name} />
                 </div>
             </section>
         );
