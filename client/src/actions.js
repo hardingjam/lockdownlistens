@@ -63,3 +63,12 @@ export async function getBoardPosts(user) {
         data,
     };
 }
+
+export async function addPost(post, id) {
+    console.log("post: ", post);
+    const data = await axios.post(`/board/${id}`, { post });
+    return {
+        type: "NEW_POST",
+        data,
+    };
+}

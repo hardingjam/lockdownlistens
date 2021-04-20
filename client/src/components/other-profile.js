@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component, ReactDOM } from "react";
 import axios from "../axios";
 import { FriendshipButton } from "../hooks/friendshipButton";
 import ProfilePic from "./profile-pic";
@@ -38,13 +38,16 @@ export default class OtherProfile extends Component {
                     />
                     <FriendshipButton friendId={this.state.id} />
                 </div>
-                <div className="about-me">
+                <div className="about-me flex-column">
                     <h1>
                         {this.state.first_name} {this.state.last_name}
                     </h1>
-                    <p>{this.state.bio}</p>
-
-                    <ProfileBoard firstName={this.state.first_name} />
+                    <p className="other-bio">{this.state.bio}</p>
+                    <ProfileBoard
+                        profileUserId={this.state.id}
+                        firstName={this.state.first_name}
+                        className="other-profile"
+                    />
                 </div>
             </section>
         );

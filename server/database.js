@@ -201,7 +201,7 @@ module.exports.getUsersByIds = function (arrayOfIds) {
 
 module.exports.getBoard = function (userId) {
     const query = `SELECT users.first_name, users.last_name, users.pic_url,
-                    board_posts.post, board_posts.created_at, board_posts.sender_id
+                    board_posts.post, board_posts.id, board_posts.created_at, board_posts.sender_id
                     FROM board_posts
                     JOIN users ON (users.id = board_posts.sender_id)
                     WHERE board_posts.recipient_id = $1
@@ -209,5 +209,19 @@ module.exports.getBoard = function (userId) {
     const params = [userId];
     return db.query(query, params).then(({ rows }) => {
         return rows;
+    });
+};
+
+module.exports.addPost = function (post, userId, recipientId) {
+    const query = `WITH inserted AS (
+                    INSERT INTO board_posts (post, sender_id, recipient_id)
+                    VALUES ($1, $2, $3) 
+                    RETURNING *)
+                    SELECT inserted.*, users.first_name, users.last_name, users.pic_url
+                    FROM inserted
+                    INNER JOIN users ON inserted.sender_id = users.id;`;
+    const params = [post, userId, recipientId];
+    return db.query(query, params).then(({ rows }) => {
+        return rows[0];
     });
 };

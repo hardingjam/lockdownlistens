@@ -308,6 +308,22 @@ button {
     font-family: "Roboto";
 }
 
+.other-bio {
+    margin-bottom: 20px;
+}
+.poster-info {
+    margin-top: 10px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.poster-info > h4 {
+    margin-top: 10px;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 5px;
+}
+
 .about-me > h1,
 h2 {
     font-family: "Poppins";
@@ -610,4 +626,9 @@ h4 {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+}
+
+.my-profile {
+    justify-content: flex-end;
+    flex-direction: row-reverse;
 }

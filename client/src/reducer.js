@@ -80,6 +80,14 @@ export default function (
         };
     }
 
+    if (action.type == "NEW_POST") {
+        console.log("New post going in!");
+        state = {
+            ...state,
+            boardPosts: [action.data.data, ...state.boardPosts],
+        };
+    }
+
     // final return of state
     return state;
 }

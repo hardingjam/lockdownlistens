@@ -28,6 +28,7 @@ const {
     newChatMessage,
     getUsersByIds,
     getBoard,
+    addPost,
 } = require("./database");
 const multer = require("multer");
 // handles uploading
@@ -342,8 +343,19 @@ app.post("/unfriend/:id", async (req, res) => {
 
 app.get("/board/:id", async (req, res) => {
     const data = await getBoard(req.params.id);
+    const resp = await scrape(data);
+    res.json(resp);
+});
+
+app.post("/board/:id", async (req, res) => {
+    console.log(req.params.id);
+    console.log(req.body);
+    const data = await addPost(
+        req.body.post,
+        req.session.userId,
+        req.params.id
+    );
     console.log(data);
-    scrape(data);
     res.json(data);
 });
 

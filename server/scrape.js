@@ -8,25 +8,47 @@ const detectUrls = function (str) {
     return str.match(urlRegex);
 };
 
-module.exports.scrape = function (data) {
-    let url = detectUrls(data[1].post);
-    console.log(url[0]);
-    return requestPromise(url[0])
-        .then((res) => {
-            if (res.statusCode == 200) {
-                const $ = cheerio.load(res.body);
-                const img = $('meta[property="og:image"]').attr("content");
-                const title = $('meta[property="og:title"]').attr("content");
-                console.log({ img, title });
-                return { ...data, preview: { img, title } };
-            }
-        })
-        .catch((err) => console.log(err));
+module.exports.scrape = async function (data) {
+    let promisesArr = [];
+    data.forEach((item) => {
+        if (detectUrls(item.post)) {
+            promisesArr.push(requestPromise(detectUrls(item.post)[0]));
+        } else {
+            promisesArr.push(Promise.resolve({}));
+        }
+    });
+    console.log(promisesArr);
+    return (
+        Promise.all(promisesArr)
+            // by returning the promise, it becomes avaiable to wherever the function is called
+            .then((res) => {
+                // here i have a set of items in the same order as I put the promises in
+                res.forEach((item, i) => {
+                    if (item.statusCode == 200) {
+                        const $ = cheerio.load(item.body);
+                        const img = $('meta[property="og:image"]').attr(
+                            "content"
+                        );
+                        const title = $('meta[property="og:title"]').attr(
+                            "content"
+                        );
+
+                        data[i].preview = { img, title };
+                        // assign each data object a new preview object
+                    }
+                });
+                return data;
+                // the promise returned by scrape is going to return this.
+                // if there are chained thens, the last chained callback will be returned.
+                // to keep the data when you're calling from somewhere else, return things all the way through.
+            })
+            .catch((err) => console.log(err))
+    );
 };
 
 // scrape returns a promise and finally returns once each promise is resolved
 
-// use promise.all which expects an array of promises
-// an array of request calls. map over them
-//promise.all urls map
-// get the results and map them, do the cheerio on each
+// return your promises all the time, as a general rule.
+// the parralel requests are triggering,
+// returning Promise.all means that the place where your function is called, is WAITING for the results of that call.
+// return return return
