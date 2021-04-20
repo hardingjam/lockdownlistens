@@ -3,6 +3,22 @@
     margin: 0;
 }
 
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration: none;
+}
+
 body {
     background: linear-gradient(#0d0221, #541388, #791e94);
     min-height: 100vh;
@@ -18,6 +34,8 @@ textarea {
     font-family: "Poppins";
     border: none;
     border-radius: 10px;
+    max-width: 30vw;
+    align-self: center;
 }
 
 .container {
@@ -186,7 +204,7 @@ button {
     max-width: 40vw;
     max-height: 500px;
     border: 2px solid white;
-    border-radius: 20px;
+    border-radius: 10px;
     object-fit: cover;
     margin-right: 10px;
 }
@@ -318,10 +336,16 @@ button {
 }
 
 .poster-info > h4 {
-    margin-top: 10px;
     align-items: center;
     justify-content: flex-end;
     margin-right: 5px;
+    margin-left: 5px;
+    color: white;
+}
+
+.poster-info > a {
+    text-decoration: none;
+    color: white;
 }
 
 .about-me > h1,
@@ -630,5 +654,49 @@ h4 {
 
 .my-profile {
     justify-content: flex-end;
+    flex-direction: row-reverse;
+}
+.wall-post {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+}
+
+.link-preview {
+    display: flex;
+}
+
+.link-preview-text {
+    text-decoration: none;
+    font-weight: 400;
+    color: white;
+    align-self: center;
+}
+
+.link-preview {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-content: center;
+}
+
+#profile-pic-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.post-draft {
+    margin-top: 10px;
+}
+
+#board-container {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+}
+
+.other-profile {
     flex-direction: row-reverse;
 }

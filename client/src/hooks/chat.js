@@ -32,7 +32,7 @@ export default function Chat() {
             <Tabs onSelect={(e) => focusBottom(e)}>
                 <TabList className="tab-list">
                     <Tab>WaveRoom</Tab>
-                    <Tab>Online</Tab>
+                    <Tab>Online ({onlinePeople.length})</Tab>
                 </TabList>
                 <TabPanel>
                     <div id="chat-container" className="flex-column">

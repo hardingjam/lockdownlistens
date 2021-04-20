@@ -118,6 +118,7 @@ export default class App extends Component {
                             render={(props) => (
                                 <OtherProfile
                                     key={props.match.url}
+                                    userId={this.state.id}
                                     // this forces React to create the component anew if the key changes
                                     match={props.match}
                                     history={props.history}

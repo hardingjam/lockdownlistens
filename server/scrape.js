@@ -32,8 +32,11 @@ module.exports.scrape = async function (data) {
                         const title = $('meta[property="og:title"]').attr(
                             "content"
                         );
+                        const url = $('meta[property="og:url"]').attr(
+                            "content"
+                        );
 
-                        data[i].preview = { img, title };
+                        data[i].preview = { img, title, url };
                         // assign each data object a new preview object
                     }
                 });

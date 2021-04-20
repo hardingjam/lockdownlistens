@@ -6,6 +6,7 @@ export default function (
         // you can build an empty framework of a potential state structure
         onlineUsers: [],
         boardPosts: [],
+        friends: [],
     },
     action
 ) {

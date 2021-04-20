@@ -1,4 +1,4 @@
-import { Component, ReactDOM } from "react";
+import { Component } from "react";
 import axios from "../axios";
 import { FriendshipButton } from "../hooks/friendshipButton";
 import ProfilePic from "./profile-pic";
@@ -9,6 +9,7 @@ export default class OtherProfile extends Component {
         super(props);
         this.state = {};
     }
+
     async componentDidMount() {
         try {
             const { data } = await axios.get(
@@ -20,7 +21,7 @@ export default class OtherProfile extends Component {
             }
             this.setState(data);
         } catch (err) {
-            console.log(err);
+            console.log("error in axios.get: ", err);
         }
     }
 
@@ -43,8 +44,10 @@ export default class OtherProfile extends Component {
                         {this.state.first_name} {this.state.last_name}
                     </h1>
                     <p className="other-bio">{this.state.bio}</p>
+
                     <ProfileBoard
                         profileUserId={this.state.id}
+                        userId={this.props.userId}
                         firstName={this.state.first_name}
                         className="other-profile"
                     />

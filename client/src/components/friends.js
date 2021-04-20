@@ -22,7 +22,7 @@ export default function Friends(props) {
     useEffect(() => {
         dispatch(getBegFriends());
         console.log("props", props);
-    }, []);
+    }, [realFriends]);
 
     if (!begFriends && !realFriends) {
         // this will return until we recieve data
@@ -44,48 +44,54 @@ export default function Friends(props) {
                                     <h2 className="heading-right">
                                         Your Friends ({realFriends.length})
                                     </h2>
-                                    {realFriends.map((friend) => (
-                                        <div
-                                            className="result-card"
-                                            key={friend.id}
-                                        >
-                                            <Link
-                                                to={{
-                                                    pathname: `/user/${friend.id}`,
-                                                }}
+                                    {realFriends
+                                        .slice()
+                                        .reverse()
+                                        .map((friend) => (
+                                            <div
+                                                className="result-card"
+                                                key={friend.id}
                                             >
-                                                <ProfilePic
-                                                    profilePicUrl={
-                                                        friend.pic_url
-                                                    }
-                                                    className="medium"
-                                                />
-                                            </Link>
-                                            <div className="about-me">
-                                                <h2>
-                                                    <Link
-                                                        to={{
-                                                            pathname: `/user/${friend.id}`,
-                                                        }}
-                                                    >
-                                                        {friend.first_name}{" "}
-                                                        {friend.last_name}{" "}
-                                                    </Link>
-                                                </h2>
-                                                <p>{friend.bio}</p>
-                                                <button
-                                                    className="button wave unfriend"
-                                                    onClick={() =>
-                                                        dispatch(
-                                                            unfriend(friend.id)
-                                                        )
-                                                    }
+                                                <Link
+                                                    to={{
+                                                        pathname: `/user/${friend.id}`,
+                                                    }}
                                                 >
-                                                    Unfriend {friend.first_name}
-                                                </button>
+                                                    <ProfilePic
+                                                        profilePicUrl={
+                                                            friend.pic_url
+                                                        }
+                                                        className="medium"
+                                                    />
+                                                </Link>
+                                                <div className="about-me">
+                                                    <h2>
+                                                        <Link
+                                                            to={{
+                                                                pathname: `/user/${friend.id}`,
+                                                            }}
+                                                        >
+                                                            {friend.first_name}{" "}
+                                                            {friend.last_name}{" "}
+                                                        </Link>
+                                                    </h2>
+                                                    <p>{friend.bio}</p>
+                                                    <button
+                                                        className="button wave unfriend"
+                                                        onClick={() =>
+                                                            dispatch(
+                                                                unfriend(
+                                                                    friend.id
+                                                                )
+                                                            )
+                                                        }
+                                                    >
+                                                        Unfriend{" "}
+                                                        {friend.first_name}
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))}
                                 </div>
                             ) : (
                                 <div id="friends-container">

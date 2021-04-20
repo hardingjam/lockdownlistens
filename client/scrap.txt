@@ -12,3 +12,5 @@ INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 89);
 INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 21);
 INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 15);
 INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 5);
+
+DELETE FROM board_posts WHERE sender_id = 1 AND recipient_id = 1
