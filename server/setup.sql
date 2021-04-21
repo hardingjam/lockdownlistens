@@ -16,28 +16,38 @@ CREATE TABLE codes(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS friendships;
-
-CREATE TABLE friendships( 
-  id SERIAL PRIMARY KEY, 
-  sender_id INT REFERENCES users(id) NOT NULL, 
-  recipient_id INT REFERENCES users(id) NOT NULL, 
-  accepted BOOLEAN DEFAULT false);
-
-CREATE TABLE messages(
+CREATE TABLE posts(
     id SERIAL PRIMARY KEY,
-    sender_id INT REFERENCES users(id) NOT NULL,
-    recipient_id INT REFERENCES users(id),
-    message VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    posted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    sender_id INT REFERENCES users(id),
+    message VARCHAR(255),
+    link VARCHAR(255) NOT NULL,
+    tags TEXT []
 );
 
-CREATE TABLE board_posts(
-    id SERIAL PRIMARY KEY,
-    sender_id INT REFERENCES users(id) NOT NULL,
-    recipient_id INT REFERENCES users(id),
-    post VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS codes;
+DROP TABLE IF EXISTS posts;
 
-INSERT INTO board_posts (sender_id, recipient_id, post) VALUES (4, 1, 'https://ichef.bbci.co.uk/news/976/cpsprodpb/11E09/production/_118052237_redonda3.jpg') RETURNING *;
+
+
+        "date": "26/03/2020",
+        "time": "08:22",
+        "user": "Alex Rennie",
+        "message": "#vintagecheddar",
+        "links": [
+            "https://soundcloud.com/dj-andy-spencer/classic-positiva-records-mix-vol-1"
+        ],
+        "hashtags": ["#vintagecheddar"]
+    },
+
+-- CREATE TABLE messages(
+--     id SERIAL PRIMARY KEY,
+--     sender_id INT REFERENCES users(id) NOT NULL,
+--     recipient_id INT REFERENCES users(id),
+--     message VARCHAR(255) NOT NULL,
+--     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- );
+
+
+

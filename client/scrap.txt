@@ -1,16 +1,17 @@
-UPDATE friendships
-                    SET accepted = false
-                    WHERE sender_id = 204
-                    RETURNING sender_id WHERE recipient_id = 1;
+INSERT INTO submissions (message, posted_at, link, tags) 
+VALUES ('Test submission', TO_TIMESTAMP('23/05/2020 14:51', 'DD/MM/YYYY HH24:MI'), 
+'https://soundcloud.com/', '{"#masprofundo", "#massensual", "#eclectic"}')
 
-INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 90);
-INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 99);
-INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 44);
-INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 66);
-INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 55);
-INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 89);
-INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 21);
-INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 15);
-INSERT INTO friendships (recipient_id, sender_id) VALUES (1, 5);
 
-DELETE FROM board_posts WHERE sender_id = 1 AND recipient_id = 1
+
+    {
+        date: "23/05/2020",
+        time: "14:51",
+        user: "JJ",
+        message:
+            "Kindness of Bearer with David Marston and Corazon de Melon - March 2018 [NYC] by Balamii on #SoundCloud  #masprofundo #massensual #eclectic",
+        links: [
+            "https://soundcloud.com/balamii/kindness-of-bearing-with-david-marston-and-corazon-de-melon-march-2018-nyc",
+        ],
+        hashtags: ["#masprofundo", "#massensual", "#eclectic"],
+    },

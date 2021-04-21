@@ -5,3 +5,6 @@ client/public/bundle.js
 client/public/bundle.js.LICENSE.txt
 bundle.css
 hooks-demo.js
+chathistory.json
+message-objects.js
+scrap.txt
