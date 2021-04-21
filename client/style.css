@@ -302,7 +302,7 @@ button {
 
 #profile-container {
     display: flex;
-    width: 80vw;
+    width: 85vw;
 
     position: relative;
     background-color: rgba(255, 255, 255, 0.2);
@@ -330,7 +330,6 @@ button {
     margin-bottom: 20px;
 }
 .poster-info {
-    margin-top: 10px;
     align-items: center;
     justify-content: flex-end;
 }
@@ -385,7 +384,7 @@ h2 {
 #requests-container {
     display: flex;
     flex-direction: column;
-    width: 80vw;
+    min-width: 85vw;
     position: relative;
     background-color: none;
     margin-top: 10.75vh;
@@ -699,4 +698,13 @@ h4 {
 
 .other-profile {
     flex-direction: row-reverse;
+}
+
+.timestamp {
+    display: flex;
+    justify-content: flex-end;
+    color: rgb(249, 200, 14);
+    font-weight: 200;
+    font-family: "Roboto";
+    margin-top: 5px;
 }

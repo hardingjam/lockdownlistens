@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-// import { format } from "date-fns/formatRelative";
+import { formatRelative } from "date-fns";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { getBoardPosts, addPost } from "../actions";
@@ -12,6 +12,7 @@ export default function profileBoard(props) {
 
     useEffect(() => {
         dispatch(getBoardPosts(props.profileUserId));
+        console.log(formatRelative(new Date(), new Date()));
     }, [friends]);
 
     function handleChange(e) {
@@ -80,6 +81,14 @@ export default function profileBoard(props) {
                         ) : (
                             <div>{post.post}</div>
                         )}
+                        <div className="timestamp">
+                            <p>
+                                {formatRelative(
+                                    Date.parse(post.created_at),
+                                    new Date()
+                                )}
+                            </p>
+                        </div>
                     </div>
                 ))}
             </div>

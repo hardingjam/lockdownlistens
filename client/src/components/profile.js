@@ -2,6 +2,7 @@ import ProfilePic from "./profile-pic.js";
 import { BioEditor } from "./bio-editor";
 import MiniFriends from "./friends-mini";
 import ProfileBoard from "../hooks/profileBoard";
+
 export default function Profile(props) {
     return (
         <section id="profile-container">

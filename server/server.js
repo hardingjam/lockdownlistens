@@ -331,13 +331,13 @@ app.get("/beg-friends", async (req, res) => {
 
 app.post("/accept-friend/:id", async (req, res) => {
     const data = await acceptFriend(req.params.id, req.session.userId);
-    console.log(data);
+
     res.json(data);
 });
 
 app.post("/unfriend/:id", async (req, res) => {
     const data = await endFriendship(req.session.userId, req.params.id);
-    console.log(data);
+
     res.json(data);
 });
 
@@ -348,14 +348,12 @@ app.get("/board/:id", async (req, res) => {
 });
 
 app.post("/board/:id", async (req, res) => {
-    console.log(req.params.id);
-    console.log(req.body);
     const data = await addPost(
         req.body.post,
         req.session.userId,
         req.params.id
     );
-    console.log(data);
+
     res.json(data);
 });
 

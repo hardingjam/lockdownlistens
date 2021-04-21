@@ -4,6 +4,7 @@ import Profile from "./components/profile";
 import ProfilePic from "./components/profile-pic";
 import Uploader from "./components/uploader";
 import NavBar from "./components/navbar";
+import Loader from "react-loader-spinner";
 
 import { BrowserRouter, Route } from "react-router-dom";
 // import the "otherprofile" component here.
@@ -70,8 +71,13 @@ export default class App extends Component {
     render() {
         const { id } = this.state;
         if (!id) {
-            return <span className="loading">Loading...</span>;
-            //  show a loading text until axios is complete! */
+            <Loader
+                type="Puff"
+                color="#00BFFF"
+                height={100}
+                width={100}
+                timeout={3000} //3 secs
+            />;
         }
         return (
             <div id="app-component">
