@@ -1,10 +1,18 @@
 import axios from "./axios";
 
-export async function acceptFriend(id) {
-    const { data } = await axios.post("/accept-friend/" + id);
+export async function setTimezone(data) {
+    return {
+        type: "SET_TIMEZONE",
+        data,
+    };
+}
+
+export async function getResults(tz) {
+    console.log(tz);
+    const { data } = axios.get(`/listen-now/${tz}`);
 
     return {
-        type: "ACCEPT_FRIEND",
-        data: data.sender_id,
+        type: "GET_RESULTS",
+        data,
     };
 }

@@ -6,7 +6,6 @@ const path = require("path");
 const cookieSession = require("cookie-session");
 const { hash, compare } = require("./bc");
 const { scrape } = require("./scrape");
-
 const uidSafe = require("uid-safe");
 // ???
 
@@ -70,6 +69,11 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
+app.get("/listen-now/:tz", (req, res) => {
+    console.log("get listen-now");
+    console.log(req.params);
+});
+
 /* ===== NEVER DELETE OR COMMENT OUT THIS ROUTE ===== */
 
 app.get("/logout", (req, res) => {
@@ -78,11 +82,7 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("*", function (req, res) {
-    if (!req.session.userId) {
-        res.redirect("/");
-    } else {
-        res.sendFile(path.join(__dirname, "..", "client", "index.html"));
-    }
+    res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
 server.listen(process.env.PORT || 3001, function () {

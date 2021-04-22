@@ -1,10 +1,9 @@
-import { Component } from "react";
-import { Logo } from "./components/logo";
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { BrowserRouter, Route } from "react-router-dom";
+import SetLocation from "./hooks/setLocation";
+import Listen from "./components/listen";
+
 // import the "otherprofile" component here.
-import axios from "axios";
 
 export default function App() {
     useEffect(() => {
@@ -14,6 +13,15 @@ export default function App() {
     return (
         <div id="app-component">
             <h1>Hello World!</h1>
+            <BrowserRouter>
+                <Route
+                    exact
+                    path="/"
+                    // exact path prevents double matches and overlaying components
+                    component={SetLocation}
+                />
+                <Route path="/listen-now/" component={Listen}></Route>
+            </BrowserRouter>
         </div>
     );
 }
