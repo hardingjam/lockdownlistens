@@ -3,21 +3,11 @@ const util = require("util");
 const request = require("request");
 const requestPromise = util.promisify(request);
 
-const detectUrls = function (str) {
-    var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
-    return str.match(urlRegex);
-};
-
 module.exports.scrape = async function (data) {
     let promisesArr = [];
     data.forEach((item) => {
-        if (detectUrls(item.post)) {
-            promisesArr.push(requestPromise(detectUrls(item.post)[0]));
-        } else {
-            promisesArr.push(Promise.resolve({}));
-        }
+        promisesArr.push(requestPromise(item.link));
     });
-    console.log(promisesArr);
     return (
         Promise.all(promisesArr)
             // by returning the promise, it becomes avaiable to wherever the function is called
@@ -35,8 +25,11 @@ module.exports.scrape = async function (data) {
                         const url = $('meta[property="og:url"]').attr(
                             "content"
                         );
+                        const description = $(
+                            'meta[property="og:description"]'
+                        ).attr("content");
 
-                        data[i].preview = { img, title, url };
+                        data[i].preview = { img, title, url, description };
                         // assign each data object a new preview object
                     }
                 });

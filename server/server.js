@@ -81,7 +81,8 @@ app.get("/listen-now/:time", async (req, res) => {
     const timestamp = new Date(req.params.time || req.session.time);
     const dayOfWeek = timestamp.getDay();
     const data = await getResultsByDayOfWeek(dayOfWeek);
-    res.json(data);
+    const resp = await scrape(data);
+    res.json(resp);
 });
 
 /* ===== NEVER DELETE OR COMMENT OUT THIS ROUTE ===== */

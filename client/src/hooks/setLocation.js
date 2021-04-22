@@ -25,7 +25,7 @@ export default function SetLocation() {
     }
 
     // handle the click here
-    function handleClick(e) {
+    function handleClick() {
         const timeNow = new Date();
         const timeForResults = convertTZ(
             timeNow.toISOString(),

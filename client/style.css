@@ -1,0 +1,9 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+#app-component {
+    min-width: 100vw;
+    min-height: 100vh;
+}
