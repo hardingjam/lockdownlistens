@@ -9,6 +9,7 @@ export default function ListenNow() {
     return (
         <div id="listen-container">
             <h1>Listen component</h1>
+
             {results && (
                 <>
                     <Results />

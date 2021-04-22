@@ -8,7 +8,7 @@ const db = spicedPg(
 module.exports.initialPopulate = function (timestamp, message, link, tags) {
     console.log("tags going in", tags);
     const query = `INSERT INTO posts (posted_at, message, link, tags)
-                    VALUES (TO_TIMESTAMP($1, 'DD/MM/YYYY HH24:MI'), $2, $3, $4);`;
+                    VALUES (TO_TIMESTAMP($1, 'DD/MM/YYYY HH24:MI'), $2, $3, $4) LIMIT 20;`;
     const params = [timestamp, message, link, tags];
     return db.query(query, params).then(({ rows }) => {
         return rows;

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import SetLocation from "./hooks/setLocation";
 import Listen from "./components/listen";
-
+import ReactPlayer from "react-player";
 // import the "otherprofile" component here.
 
 export default function App() {
@@ -12,7 +12,6 @@ export default function App() {
 
     return (
         <div id="app-component">
-            <h1>Hello World!</h1>
             <BrowserRouter>
                 <Route
                     exact
@@ -22,6 +21,7 @@ export default function App() {
                 />
                 <Route path="/listen-now/" component={Listen}></Route>
             </BrowserRouter>
+            <ReactPlayer />
         </div>
     );
 }

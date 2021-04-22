@@ -37,7 +37,7 @@ app.use(compression());
 // should be used in every server we ever create.
 // this is a middleware that reduces the size of the responses we send, automatically
 
-app.use(express.static(path.join(__dirname, "..", "client", "public")));
+app.use(express.static(path.join(__dirname, "..", "client")));
 // we are looking in ../client/public
 
 const cookieSessionMiddleware = cookieSession({

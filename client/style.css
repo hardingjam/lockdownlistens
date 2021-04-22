@@ -1,9 +1,56 @@
 * {
     box-sizing: border-box;
     margin: 0;
+    background-color: ivory;
+    font-family: Helvetica, sans-serif;
 }
 
 #app-component {
     min-width: 100vw;
     min-height: 100vh;
+}
+
+.results-container {
+    display: flex;
+    overflow-x: auto;
+}
+
+.result-preview {
+    width: 500px;
+    height: 500px;
+}
+
+.first-result {
+    display: flex;
+    min-width: 500px;
+    height: 500px;
+    font-size: 3rem;
+    text-align: right;
+}
+
+.first-result > h2 {
+    margin-top: auto;
+}
+
+.result-info {
+    width: 500px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    transition: 200ms;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 2;
+}
+
+.noclick {
+    pointer-events: none;
+}
+
+#result-container {
+    position: relative;
+}
+
+.image-container {
+    position: absolute;
 }

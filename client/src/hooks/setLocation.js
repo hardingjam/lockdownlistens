@@ -15,13 +15,9 @@ export default function SetLocation() {
             ).toLocaleString("en-US", { timeZone: tzString })
         );
     }
-    useEffect(() => {
-        console.log("On the timezone picker!");
-    }, []);
 
     function handleChange(e) {
         setTz(e);
-        console.log(e);
     }
 
     // handle the click here
@@ -38,6 +34,8 @@ export default function SetLocation() {
 
     return (
         <div id="timezone-container">
+            <h1>Welcome to LockdownListens</h1>
+            <h2>Please select your timezone</h2>
             <SelectTimezoneMaterialUi
                 label="Location"
                 helperText="Please select a timezone from the list"
