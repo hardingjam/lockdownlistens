@@ -12,8 +12,12 @@ export default function (
         };
     }
 
-    if (action.type == "SET_RESULTS") {
-        console.log("reducer setting state");
+    if (action.type == "GET_RESULTS_BY_DAY") {
+        state = {
+            ...state,
+            results: action.payload.data,
+            timezone: action.payload.timezone,
+        };
     }
 
     // final return of state

@@ -1,46 +1,39 @@
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { getResults } from "../actions";
-import axios from "../axios";
+import { useSelector } from "react-redux";
 
 // import Assert from "assert";
 
 export default function Results() {
-    const dispatch = useDispatch();
-    const results = useSelector((state) => state.results || []);
+    const results = useSelector((state) => state.results);
     const timezone = useSelector((state) => state.timezone);
+    const week = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+    ];
 
-    function convertTZ(date, tzString) {
-        return new Date(
-            (typeof date === "string"
-                ? new Date(date)
-                : date
-            ).toLocaleString("en-US", { timeZone: tzString })
-        );
-    }
-
-    useEffect(() => {
-        console.log("results module mounted");
-        return () => {
-            // cleaning up the results here
-        };
-    }, []);
+    const day = new Date().getDay();
 
     useEffect(() => {
-        const timeNow = new Date();
-        const localTime = convertTZ(
-            timeNow.toISOString(),
-            `${timezone}`
-        ).toISOString();
-        dispatch(getResults(localTime));
-        return () => {
-            // cleaning up the results here
-        };
+        console.log(results.length);
     }, []);
 
     return (
-        <div id="listen-results-container">
-            <h2>Results container!</h2>
+        <div className="results-container">
+            <h2>
+                It's {week[day - 1]} in{" "}
+                {timezone.slice(timezone.indexOf("/") + 1)}, here's what you
+                should listen to
+            </h2>
+            {results.map((result) => (
+                <div className="result" key={result.id}>
+                    <p>{result.message}</p>
+                </div>
+            ))}
         </div>
     );
 }

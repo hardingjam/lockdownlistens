@@ -7,6 +7,7 @@ const cookieSession = require("cookie-session");
 const { hash, compare } = require("./bc");
 const { scrape } = require("./scrape");
 const uidSafe = require("uid-safe");
+const { getResultsByDayOfWeek } = require("./database");
 // ???
 
 // to, body, subject
@@ -65,13 +66,22 @@ app.use(
     })
 );
 
+/* ====== ROUTES ====== */
+
 app.get("/", (req, res) => {
+    if (req.session.time) {
+        res.redirect("/listen-now");
+    }
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
-app.get("/listen-now/:tz", (req, res) => {
+app.get("/listen-now/:time", async (req, res) => {
     console.log("get listen-now");
-    console.log(req.params);
+    // req.session.time = req.params.time;
+    const timestamp = new Date(req.params.time || req.session.time);
+    const dayOfWeek = timestamp.getDay();
+    const data = await getResultsByDayOfWeek(dayOfWeek);
+    res.json(data);
 });
 
 /* ===== NEVER DELETE OR COMMENT OUT THIS ROUTE ===== */
