@@ -7,8 +7,24 @@ const cookieSession = require("cookie-session");
 const { hash, compare } = require("./bc");
 const { scrape } = require("./scrape");
 const uidSafe = require("uid-safe");
-const { getResultsByDayOfWeek } = require("./database");
+const { getResultsByDayOfWeek, getResultsByTimeOfDay } = require("./database");
 // ???
+const week = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+];
+
+var timesOfDay = [
+    [0, 4, "Night"],
+    [5, 11, "Morning"],
+    [12, 16, "Afternoon"],
+    [17, 21, "Evening"][(22, 24, "Night")],
+];
 
 // to, body, subject
 const csurf = require("csurf");
@@ -75,13 +91,36 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
-app.get("/listen-now/:time", async (req, res) => {
-    console.log("get listen-now");
-    // req.session.time = req.params.time;
-    const timestamp = new Date(req.params.time || req.session.time);
-    const dayOfWeek = timestamp.getDay();
-    const data = await getResultsByDayOfWeek(dayOfWeek);
-    const resp = await scrape(data);
+app.get("/listen-now/", async (req, res) => {
+    const time = req.query.timeNow.replace(",", "");
+    const dayOfWeek = new Date().getDay();
+    const curHr = new Date(time).getHours();
+    let partOfDay;
+    if (curHr < 4 && curHr > 21) {
+        partOfDay = "night";
+    } else if (curHr > 4 && curHr < 12) {
+        partOfDay = "morning";
+    } else if (curHr > 12 && curHr < 17) {
+        partOfDay = "afternoon";
+    } else {
+        partOfDay = "evening";
+    }
+    let fuzzFactor = 1;
+    let data = await getResultsByTimeOfDay(dayOfWeek, time, fuzzFactor);
+    while (data.length < 20) {
+        fuzzFactor++;
+        console.log("looking again");
+        data = await getResultsByTimeOfDay(dayOfWeek, time, fuzzFactor);
+    }
+    console.log(data.length);
+    let resp = {};
+    resp.results = await scrape(data);
+    const weekDay = week[dayOfWeek - 1];
+    resp = {
+        ...resp,
+        partOfDay,
+        weekDay,
+    };
     res.json(resp);
 });
 

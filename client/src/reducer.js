@@ -12,14 +12,26 @@ export default function (
         };
     }
 
-    if (action.type == "GET_RESULTS_BY_DAY") {
+    if (action.type == "GET_RESULTS") {
+        console.log("action.payload", action.data);
         state = {
             ...state,
-            results: action.payload.data,
-            timezone: action.payload.timezone,
+            results: action.data.results,
+            weekDay: action.data.weekDay,
+            partOfDay: action.data.partOfDay,
+            timezone: action.timezone,
+        };
+    }
+    if (action.type == "SET_PLAYER_URL") {
+        state = {
+            ...state,
+            playerUrl: action.url,
         };
     }
 
+    if (action.type == "CLEAR_RESULTS") {
+        state = {};
+    }
     // final return of state
     return state;
 }

@@ -1,26 +1,26 @@
-import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { formatRelative, parseISO } from "date-fns";
+import { setPlayerUrl, clearResults } from "../actions";
 
 // import Assert from "assert";
 
 export default function Results() {
     const results = useSelector((state) => state.results);
     const timezone = useSelector((state) => state.timezone);
-    const week = [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday",
-    ];
+    const weekDay = useSelector((state) => state.weekDay);
+    const partOfDay = useSelector((state) => state.partOfDay);
+
+    const dispatch = useDispatch();
 
     const [hover, setHover] = useState(null);
 
-    const day = new Date().getDay();
+    useEffect(() => {
+        console.log("mounting");
+        return () => {
+            console.log("cleaning");
+        };
+    }, []);
 
     function handleMouseEnter(id) {
         setHover(id);
@@ -30,13 +30,24 @@ export default function Results() {
         setHover(null);
     }
 
+    function handleClick(url) {
+        console.log(url);
+        dispatch(setPlayerUrl(url));
+    }
+
+    if (!results || !results.length) {
+        return "loading";
+    }
+
     return (
         <div className="results-container">
             <div className="first-result">
                 <h2>
-                    It's {week[day - 1]} in{" "}
-                    {timezone.slice(timezone.indexOf("/") + 1)}, here's what you
-                    should listen to
+                    It's {weekDay} {partOfDay} in{" "}
+                    {timezone
+                        .slice(timezone.indexOf("/") + 1)
+                        .replace("_", " ")}
+                    , here's what you should listen to.
                 </h2>
             </div>
             {results
@@ -46,7 +57,7 @@ export default function Results() {
                         <div
                             className="result-preview"
                             id={result.id}
-                            onMouseEnter={(e) => handleMouseEnter(result.id)}
+                            onMouseEnter={() => handleMouseEnter(result.id)}
                             onMouseLeave={handleMouseLeave}
                         >
                             <div className="image-container">
@@ -57,14 +68,25 @@ export default function Results() {
                             </div>
                             {hover == result.id && (
                                 <div className="result-info">
-                                    <h2>{result.preview.title}</h2>
-                                    <h2>{result.preview.title}</h2>
-                                    <h4>
+                                    <h2
+                                        onClick={() => {
+                                            handleClick(result.link);
+                                        }}
+                                    >
+                                        {result.preview.title}
+                                    </h2>
+                                    <h2>
                                         {formatRelative(
                                             parseISO(result.posted_at),
                                             new Date()
                                         )}
-                                    </h4>
+                                    </h2>
+                                    {result.tags.length > 0 &&
+                                        result.tags.map((tag, i) => (
+                                            <h4 className="tags" key={i}>
+                                                {tag}
+                                            </h4>
+                                        ))}
                                 </div>
                             )}
                         </div>

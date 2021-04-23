@@ -29,6 +29,8 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS codes;
 DROP TABLE IF EXISTS posts;
 
+EXTRACT('hour' from TO_TIMESTAMP('4/23/2021 5:16:09 PM', 'MM/DD/YYYY HH12:MI:SS PM'))
+
 
 
         "date": "26/03/2020",
@@ -50,4 +52,9 @@ DROP TABLE IF EXISTS posts;
 -- );
 
 
-
+SELECT COUNT(*) FROM posts
+WHERE EXTRACT(ISODOW FROM posted_at) IN (5)
+AND (extract('hour' from posted_at) >=
+(EXTRACT('hour' from TO_TIMESTAMP('4/23/2021 5:53:00 PM', 'MM/DD/YYYY HH12:MI:SS PM')) - 2)
+AND extract('hour' from posted_at) <= 
+(EXTRACT('hour' from TO_TIMESTAMP('4/23/2021 5:53:00 PM', 'MM/DD/YYYY HH12:MI:SS PM')) + 2));

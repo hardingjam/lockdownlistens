@@ -1,18 +1,24 @@
 * {
     box-sizing: border-box;
     margin: 0;
-    background-color: ivory;
     font-family: Helvetica, sans-serif;
+}
+
+body {
+    background-color: ivory;
 }
 
 #app-component {
     min-width: 100vw;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .results-container {
     display: flex;
     overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .result-preview {
@@ -26,6 +32,7 @@
     height: 500px;
     font-size: 3rem;
     text-align: right;
+    padding-right: 10px;
 }
 
 .first-result > h2 {
@@ -39,8 +46,14 @@
     flex-direction: column;
     transition: 200ms;
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.3);
     z-index: 2;
+}
+
+.result-info > h2,
+h4 {
+    cursor: pointer;
+    color: ivory;
 }
 
 .noclick {
@@ -53,4 +66,25 @@
 
 .image-container {
     position: absolute;
+}
+
+.tags {
+    text-align: end;
+}
+
+.jukebox {
+    position: absolute;
+    bottom: 0;
+}
+
+#navbar-container {
+    display: flex;
+    width: 100vw;
+    height: 5vh;
+    text-decoration: none;
+    justify-content: flex-end;
+}
+#navbar-container > h1 > a {
+    color: black;
+    text-decoration: none;
 }

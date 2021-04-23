@@ -8,10 +8,26 @@ export async function setTimezone(data) {
     };
 }
 
-export async function getResults(timenow, timezone) {
-    const { data } = await axios.get(`/listen-now/${timenow}`);
+export async function getResults(timeNow, timezone) {
+    console.log(timeNow, timezone);
+    const { data } = await axios.get(`/listen-now/`, { params: { timeNow } });
+
     return {
-        type: "GET_RESULTS_BY_DAY",
-        payload: { data, timezone },
+        type: "GET_RESULTS",
+        data,
+        timezone,
+    };
+}
+
+export async function setPlayerUrl(url) {
+    return {
+        type: "SET_PLAYER_URL",
+        url,
+    };
+}
+
+export async function clearBoard() {
+    return {
+        type: "CLEAR_BOARD",
     };
 }

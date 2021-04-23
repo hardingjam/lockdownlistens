@@ -15,3 +15,18 @@ VALUES ('Test submission', TO_TIMESTAMP('23/05/2020 14:51', 'DD/MM/YYYY HH24:MI'
         ],
         hashtags: ["#masprofundo", "#massensual", "#eclectic"],
     },
+
+    extract(hour from timestamp '2001-02-16 20:38:40')
+
+    WITH search_time AS (TO_TIMESTAMP($1, 'DD/MM/YYYY HH24:MI')
+    SELECT * FROM posts
+    WHERE EXTRACT(ISODOW FROM posted_at) IN ($2)
+    AND (extract('hour' from posted_at) >= (extract('hour' from search_time) - 3)) 
+    OR extract('hour' from posted_at) < (extract('hour' from search_time) + 3));
+
+    WITH search_time AS TO_TIMESTAMP(5:16:09 PM, 'DD/MM/YYYY HH12:MI:SS PM')
+    SELECT * FROM posts
+    WHERE EXTRACT(ISODOW FROM posted_at) IN ($1)
+    AND (extract('hour' from posted_at) >= (extract('hour' from search_time) - 3))
+    OR extract('hour' from posted_at) < (extract('hour' from search_time) + 3));`;
+    

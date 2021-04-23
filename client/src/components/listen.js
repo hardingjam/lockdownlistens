@@ -1,6 +1,5 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import axios from "../axios";
+import { useSelector } from "react-redux";
+
 import Results from "../hooks/listen-results";
 export default function ListenNow() {
     // const dispatch = useDispatch();
@@ -8,8 +7,6 @@ export default function ListenNow() {
 
     return (
         <div id="listen-container">
-            <h1>Listen component</h1>
-
             {results && (
                 <>
                     <Results />

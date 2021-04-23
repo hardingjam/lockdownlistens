@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SelectTimezoneMaterialUi from "select-timezone-material-ui";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -7,14 +7,6 @@ import { getResults } from "../actions";
 export default function SetLocation() {
     const dispatch = useDispatch();
     const [tz, setTz] = useState();
-    function convertTZ(date, tzString) {
-        return new Date(
-            (typeof date === "string"
-                ? new Date(date)
-                : date
-            ).toLocaleString("en-US", { timeZone: tzString })
-        );
-    }
 
     function handleChange(e) {
         setTz(e);
@@ -22,14 +14,13 @@ export default function SetLocation() {
 
     // handle the click here
     function handleClick() {
-        const timeNow = new Date();
-        const timeForResults = convertTZ(
-            timeNow.toISOString(),
-            `${tz}`
-        ).toISOString();
-
-        dispatch(getResults(timeForResults, tz));
-        // dispatch(setTimezone(tz));
+        if (tz) {
+            const localTime = new Date().toLocaleString("en-US", {
+                timeZone: tz,
+            });
+            console.log("local time:", localTime);
+            dispatch(getResults(localTime, tz));
+        }
     }
 
     return (

@@ -23,3 +23,21 @@ module.exports.getResultsByDayOfWeek = function (dayOfWeek) {
         return rows;
     });
 };
+
+module.exports.getResultsByTimeOfDay = function (
+    dayOfWeek,
+    timeOfDay,
+    fuzzFactor
+) {
+    console.log("search params:", timeOfDay, dayOfWeek, fuzzFactor);
+    const query = `SELECT * FROM posts
+                    WHERE EXTRACT(ISODOW FROM posted_at) IN ($1)
+                    AND (extract('hour' from posted_at) >=
+                    (EXTRACT('hour' from TO_TIMESTAMP($2, 'MM/DD/YYYY HH12:MI:SS PM')) - $3)
+                    AND extract('hour' from posted_at) <= 
+                    (EXTRACT('hour' from TO_TIMESTAMP($2, 'MM/DD/YYYY HH12:MI:SS PM')) + $3));`;
+    const params = [dayOfWeek, timeOfDay, fuzzFactor];
+    return db.query(query, params).then(({ rows }) => {
+        return rows;
+    });
+};
