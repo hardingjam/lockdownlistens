@@ -85,13 +85,11 @@ app.use(
 /* ====== ROUTES ====== */
 
 app.get("/", (req, res) => {
-    if (req.session.time) {
-        res.redirect("/listen-now");
-    }
+    console.log(req.session.userId);
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
-app.get("/listen-now/", async (req, res) => {
+app.get("/api/listen-now/", async (req, res) => {
     const time = req.query.timeNow.replace(",", "");
     const dayOfWeek = new Date().getDay();
     const curHr = new Date(time).getHours();
@@ -107,7 +105,7 @@ app.get("/listen-now/", async (req, res) => {
     }
     let fuzzFactor = 1;
     let data = await getResultsByTimeOfDay(dayOfWeek, time, fuzzFactor);
-    while (data.length < 20) {
+    while (data.length < 15) {
         fuzzFactor++;
         console.log("looking again");
         data = await getResultsByTimeOfDay(dayOfWeek, time, fuzzFactor);

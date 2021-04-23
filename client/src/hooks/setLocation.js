@@ -7,7 +7,7 @@ import { getResults } from "../actions";
 export default function SetLocation() {
     const dispatch = useDispatch();
     const [tz, setTz] = useState();
-
+    const [error, setError] = useState("");
     function handleChange(e) {
         setTz(e);
     }
@@ -25,24 +25,28 @@ export default function SetLocation() {
 
     return (
         <div id="timezone-container">
-            <h1>Welcome to LockdownListens</h1>
+            <h1>Welcome to Lockdown Listens</h1>
             <h2>Please select your timezone</h2>
-            <SelectTimezoneMaterialUi
-                label="Location"
-                helperText="Please select a timezone from the list"
-                onChange={(e) => {
-                    handleChange(e);
-                }}
-            />
-            <Link to="/listen-now/">
-                <button
-                    onClick={(e) => {
-                        handleClick(e);
+            <div className="timezone-selector">
+                <SelectTimezoneMaterialUi
+                    label="Location"
+                    helperText="Please select a timezone from the list"
+                    onChange={(e) => {
+                        handleChange(e);
                     }}
-                >
-                    Listen
-                </button>
-            </Link>
+                />
+                {tz && (
+                    <Link to="/listen-now/">
+                        <button
+                            onClick={(e) => {
+                                handleClick(e);
+                            }}
+                        >
+                            Listen
+                        </button>
+                    </Link>
+                )}
+            </div>
         </div>
     );
 }

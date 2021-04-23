@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { formatRelative, parseISO } from "date-fns";
-import { setPlayerUrl, clearResults } from "../actions";
+import { setPlayerUrl } from "../actions";
 
 // import Assert from "assert";
 
@@ -36,7 +36,7 @@ export default function Results() {
     }
 
     if (!results || !results.length) {
-        return "loading";
+        return "Loading...";
     }
 
     return (
