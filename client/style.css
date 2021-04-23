@@ -12,6 +12,14 @@ p {
     font-weight: 100;
 }
 
+button {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    background-color: white;
+    padding: 5px;
+    width: 80px;
+}
+
 #app-component {
     min-width: 100vw;
     min-height: 100vh;
@@ -139,6 +147,7 @@ h4 {
     padding-left: 5px;
     width: 50vw;
     border-radius: 2px;
+    margin-bottom: 10px;
 }
 
 .react-tagsinput--focused {
@@ -147,9 +156,8 @@ h4 {
 
 .react-tagsinput-tag {
     border-radius: 2px;
-    border: 1px solid grey;
+    border: 1px solid #ccc;
     display: inline-block;
-
     font-weight: 100;
     margin-right: 5px;
     padding-left: 5px;

@@ -33,3 +33,16 @@ export async function clearBoard() {
         type: "CLEAR_BOARD",
     };
 }
+
+export async function sendPost(link, message, tags) {
+    let data = {
+        link,
+        message,
+        tags,
+    };
+    data = await axios.post("/submit/", data);
+    return {
+        type: "SUBMIT_POST",
+        data,
+    };
+}

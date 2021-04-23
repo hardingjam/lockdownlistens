@@ -21,7 +21,7 @@ CREATE TABLE posts(
     posted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     sender_id INT REFERENCES users(id),
     message VARCHAR(255),
-    link VARCHAR(255) NOT NULL,
+    link VARCHAR(255) NOT NULL UNIQUE,
     tags TEXT []
 );
 

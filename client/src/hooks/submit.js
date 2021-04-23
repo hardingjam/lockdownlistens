@@ -1,18 +1,36 @@
 import { useEffect, useState } from "react";
-import { WithContext as ReactTags } from "react-tag-input";
-// import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import TagsInput from "react-tagsinput";
-import "react-tagsinput/react-tagsinput.css";
+import { sendPost } from "../actions";
 
 export default function Submit() {
     const [tags, setTags] = useState([]);
     const [errors, setErrors] = useState([]);
     const [link, setLink] = useState("");
     const [message, setMessage] = useState("");
+    const dispatch = useDispatch();
+    console.log(sendPost);
+    const possErrs = {
+        badUrl: "That doesn't appear to be a SoundCloud or MixCloud link 🕵",
+        noTags: "Please add at least one tag 🍸",
+        notUrl: "That's not even a URL 😒",
+    };
+
+    const detectUrls = function (str) {
+        var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+        return str.match(urlRegex);
+    };
 
     useEffect(() => {
+        if (!link) {
+            setErrors([]);
+        }
+        if (tags.length) {
+            setErrors([]);
+            console.log(errors);
+        }
         console.log("On the submit!");
-    }, []);
+    }, [link, tags]);
 
     function handleChange(e) {
         if (e.target.name == "link") {
@@ -23,12 +41,37 @@ export default function Submit() {
         }
     }
 
-    function handleTags() {
+    function handleTags(tags) {
         setTags(tags);
+        console.log("handling tags");
+    }
+
+    function handleError(err) {
+        if (!errors.includes(err)) {
+            setErrors([...errors, err]);
+        }
     }
 
     function handleClick() {
         console.log("clicked submit");
+        if (detectUrls(link)) {
+            if (link.indexOf("soundcloud") == -1) {
+                handleError(possErrs.badUrl);
+                if (link.indexOf("mixcloud") == -1) {
+                    handleError(possErrs.badUrl);
+                }
+            }
+        }
+        if (!detectUrls(link)) {
+            handleError(possErrs.notUrl);
+        }
+        if (!tags.length) {
+            console.log("no tags");
+            handleError(possErrs.noTags);
+        } else {
+            console.log("dispatching");
+            dispatch(sendPost(link, message, tags));
+        }
     }
 
     return (
@@ -65,6 +108,8 @@ export default function Submit() {
                         onChange={handleTags}
                     />
                     {link && <button onClick={handleClick}>Submit</button>}
+                    {errors.length > 0 &&
+                        errors.map((err, i) => <p key={errors[i]}>{err}</p>)}
                 </div>
             </section>
         </div>

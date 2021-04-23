@@ -7,7 +7,12 @@ const cookieSession = require("cookie-session");
 const { hash, compare } = require("./bc");
 const { scrape } = require("./scrape");
 const uidSafe = require("uid-safe");
-const { getResultsByDayOfWeek, getResultsByTimeOfDay } = require("./database");
+const {
+    getResultsByDayOfWeek,
+    getResultsByTimeOfDay,
+    submitPost,
+} = require("./database");
+
 // ???
 const week = [
     "Monday",
@@ -120,6 +125,10 @@ app.get("/api/listen-now/", async (req, res) => {
         weekDay,
     };
     res.json(resp);
+});
+
+app.post("/submit/", async (req, res) => {
+    console.log(req.body);
 });
 
 /* ===== NEVER DELETE OR COMMENT OUT THIS ROUTE ===== */

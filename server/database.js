@@ -41,3 +41,13 @@ module.exports.getResultsByTimeOfDay = function (
         return rows;
     });
 };
+
+module.exports.submitPost = function (link, message, tags) {
+    const query = `INSERT INTO posts (link, message, tags)
+                    VALUES ($1, $2, $3)
+                    RETURNING *`;
+    const params = [link, message, tags];
+    return db.query(query, params).then(({ rows }) => {
+        return rows[0];
+    });
+};
