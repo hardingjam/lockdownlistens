@@ -7,28 +7,17 @@ const cookieSession = require("cookie-session");
 const { hash, compare } = require("./bc");
 const { scrape } = require("./scrape");
 const uidSafe = require("uid-safe");
-const {
-    getResultsByDayOfWeek,
-    getResultsByTimeOfDay,
-    submitPost,
-} = require("./database");
+const { getResultsByTimeOfDay, submitPost } = require("./database");
 
 // ???
 const week = [
+    "Sunday",
     "Monday",
     "Tuesday",
     "Wednesday",
     "Thursday",
     "Friday",
     "Saturday",
-    "Sunday",
-];
-
-var timesOfDay = [
-    [0, 4, "Night"],
-    [5, 11, "Morning"],
-    [12, 16, "Afternoon"],
-    [17, 21, "Evening"][(22, 24, "Night")],
 ];
 
 // to, body, subject
@@ -90,20 +79,20 @@ app.use(
 /* ====== ROUTES ====== */
 
 app.get("/", (req, res) => {
-    console.log(req.session.userId);
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
 app.get("/api/listen-now/", async (req, res) => {
     const time = req.query.timeNow.replace(",", "");
-    const dayOfWeek = new Date().getDay();
+    const dayOfWeek = new Date(time).getUTCDay();
+    console.log(dayOfWeek);
     const curHr = new Date(time).getHours();
     let partOfDay;
     if (curHr < 4 && curHr > 21) {
         partOfDay = "night";
     } else if (curHr > 4 && curHr < 12) {
         partOfDay = "morning";
-    } else if (curHr > 12 && curHr < 17) {
+    } else if (curHr >= 12 && curHr < 17) {
         partOfDay = "afternoon";
     } else {
         partOfDay = "evening";
@@ -118,7 +107,7 @@ app.get("/api/listen-now/", async (req, res) => {
     console.log(data.length);
     let resp = {};
     resp.results = await scrape(data);
-    const weekDay = week[dayOfWeek - 1];
+    const weekDay = week[dayOfWeek];
     resp = {
         ...resp,
         partOfDay,
@@ -128,7 +117,10 @@ app.get("/api/listen-now/", async (req, res) => {
 });
 
 app.post("/submit/", async (req, res) => {
-    console.log(req.body);
+    const { link, message, tags } = req.body;
+    const data = await submitPost(link, message, tags);
+    const resp = await scrape(data);
+    res.json(resp);
 });
 
 /* ===== NEVER DELETE OR COMMENT OUT THIS ROUTE ===== */

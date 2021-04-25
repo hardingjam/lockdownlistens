@@ -40,9 +40,10 @@ export async function sendPost(link, message, tags) {
         message,
         tags,
     };
-    data = await axios.post("/submit/", data);
+    const payload = await axios.post("/submit/", data);
+
     return {
         type: "SUBMIT_POST",
-        data,
+        data: payload,
     };
 }

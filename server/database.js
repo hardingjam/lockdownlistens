@@ -8,7 +8,9 @@ const db = spicedPg(
 module.exports.initialPopulate = function (timestamp, message, link, tags) {
     console.log("tags going in", tags);
     const query = `INSERT INTO posts (posted_at, message, link, tags)
-                    VALUES (TO_TIMESTAMP($1, 'DD/MM/YYYY HH24:MI'), $2, $3, $4) LIMIT 20;`;
+                    VALUES (TO_TIMESTAMP($1, 'DD/MM/YYYY HH24:MI'), $2, $3, $4)
+                    ON CONFLICT ON CONSTRAINT posts_link_key
+                    DO UPDATE SET votes = posts.votes + 1 WHERE posts.link = $3;`;
     const params = [timestamp, message, link, tags];
     return db.query(query, params).then(({ rows }) => {
         return rows;
@@ -31,11 +33,12 @@ module.exports.getResultsByTimeOfDay = function (
 ) {
     console.log("search params:", timeOfDay, dayOfWeek, fuzzFactor);
     const query = `SELECT * FROM posts
-                    WHERE EXTRACT(ISODOW FROM posted_at) IN ($1)
+                    WHERE EXTRACT(DOW FROM posted_at) IN ($1)
                     AND (extract('hour' from posted_at) >=
                     (EXTRACT('hour' from TO_TIMESTAMP($2, 'MM/DD/YYYY HH12:MI:SS PM')) - $3)
                     AND extract('hour' from posted_at) <= 
-                    (EXTRACT('hour' from TO_TIMESTAMP($2, 'MM/DD/YYYY HH12:MI:SS PM')) + $3));`;
+                    (EXTRACT('hour' from TO_TIMESTAMP($2, 'MM/DD/YYYY HH12:MI:SS PM')) + $3))
+                    ORDER BY RANDOM();`;
     const params = [dayOfWeek, timeOfDay, fuzzFactor];
     return db.query(query, params).then(({ rows }) => {
         return rows;
@@ -45,9 +48,11 @@ module.exports.getResultsByTimeOfDay = function (
 module.exports.submitPost = function (link, message, tags) {
     const query = `INSERT INTO posts (link, message, tags)
                     VALUES ($1, $2, $3)
-                    RETURNING *`;
+                    ON CONFLICT ON CONSTRAINT posts_link_key
+                    DO UPDATE SET votes = posts.votes + 1 WHERE posts.link = $1
+                    RETURNING *;`;
     const params = [link, message, tags];
     return db.query(query, params).then(({ rows }) => {
-        return rows[0];
+        return rows;
     });
 };

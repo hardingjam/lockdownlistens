@@ -28,7 +28,25 @@ button {
 }
 
 #timezone-container {
-    width: 80vw;
+    width: 60vw;
+    align-self: center;
+    margin-top: 8vh;
+}
+
+#timezone-container > .headline {
+    margin-bottom: 10px;
+    font-weight: 200;
+}
+
+#timezone-container > h3 {
+    margin-bottom: 10px;
+    font-weight: 100;
+}
+
+button {
+    background-color: transparent;
+    border-radius: 2px;
+    margin-top: 15px;
 }
 
 .results-container {
@@ -45,7 +63,7 @@ button {
 .first-result {
     display: flex;
     height: 500px;
-    min-width: 200px;
+    width: 500px;
     font-size: 1.5rem;
     text-align: right;
     padding-right: 10px;
@@ -65,6 +83,17 @@ button {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 2;
+}
+
+.result-message {
+    justify-self: flex-end;
+    margin-top: auto;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-style: italic;
+    color: white;
+    font-weight: 500;
+    font-size: 1.2rem;
 }
 
 .result-info > h2,
@@ -96,16 +125,22 @@ h4 {
 
 #navbar-container {
     display: flex;
-    width: 350px;
+    width: 420px;
     height: 5vh;
     text-decoration: none;
     margin-left: auto;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
 #navbar-container > h1 > a {
     color: black;
     text-decoration: none;
+    font-weight: 200;
+}
+#navbar-container > h1 > a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
 }
 
 #submit-container {
@@ -137,14 +172,21 @@ h4 {
     width: 50vw;
     padding: 5px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 2px;
+}
+.input-field:focus {
+    outline: none;
 }
 
 .react-tagsinput {
-    background-color: #fff;
-    border: 1px solid #ccc;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 2px;
     overflow: hidden;
-    padding-left: 5px;
     width: 50vw;
     border-radius: 2px;
     margin-bottom: 10px;
@@ -159,9 +201,10 @@ h4 {
     border: 1px solid #ccc;
     display: inline-block;
     font-weight: 100;
+    font-size: 0.8rem;
     margin-right: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding: 2px 5px 2px 5px;
+    font-family: Helvetica;
 }
 
 .react-tagsinput-remove {

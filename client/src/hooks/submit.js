@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import TagsInput from "react-tagsinput";
 import { sendPost } from "../actions";
 
 export default function Submit() {
+    const weekDay = useSelector((state) => state.weekDay);
+    const partOfDay = useSelector((state) => state.partOfDay);
+
     const [tags, setTags] = useState([]);
     const [errors, setErrors] = useState([]);
     const [link, setLink] = useState("");
@@ -29,7 +32,6 @@ export default function Submit() {
             setErrors([]);
             console.log(errors);
         }
-        console.log("On the submit!");
     }, [link, tags]);
 
     function handleChange(e) {
@@ -71,20 +73,21 @@ export default function Submit() {
         } else {
             console.log("dispatching");
             dispatch(sendPost(link, message, tags));
+            location.replace("/");
         }
     }
 
     return (
         <div id="submit-container">
             <section id="submit-form">
-                <h2>What are you listening to right now?</h2>
-                <h4>
-                    LockDown Listens accepts Mixcloud and SoundCloud links.
-                    <p>
-                        Please tailor your submission to the time of day, and
-                        day of the week.
-                    </p>
-                </h4>
+                <h2>
+                    What are you listening to this {weekDay} {partOfDay}?
+                </h2>
+                <p>Lockdown Listens accepts Mixcloud and SoundCloud links.</p>
+                <p>
+                    Please tailor your submission to the time of day, and day of
+                    the week.
+                </p>
                 <h4></h4>
                 <div id="sumbit-form">
                     <input

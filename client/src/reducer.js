@@ -29,9 +29,15 @@ export default function (
         };
     }
 
-    if (action.type == "CLEAR_RESULTS") {
-        state = {};
+    if (action.type == "SUBMIT_POST") {
+        console.log(action.data.data);
+        state = {
+            ...state,
+            results: [action.data.data[0], ...state.results],
+        };
     }
+    // cleanup could do this?
     // final return of state
+
     return state;
 }

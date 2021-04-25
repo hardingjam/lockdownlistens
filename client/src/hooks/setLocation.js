@@ -25,8 +25,8 @@ export default function SetLocation() {
 
     return (
         <div id="timezone-container">
-            <h1>Welcome to Lockdown Listens</h1>
-            <h2>Please select your timezone</h2>
+            <h1 className="headline">Welcome to Lockdown Listens</h1>
+            <h3>Please select your timezone</h3>
             <div className="timezone-selector">
                 <SelectTimezoneMaterialUi
                     label="Location"
@@ -35,18 +35,19 @@ export default function SetLocation() {
                         handleChange(e);
                     }}
                 />
-                {tz && (
-                    <Link to="/listen-now/">
-                        <button
-                            onClick={(e) => {
-                                handleClick(e);
-                            }}
-                        >
-                            Listen
-                        </button>
-                    </Link>
-                )}
             </div>
+            {tz && (
+                <Link to="/listen-now/">
+                    <button
+                        className="button"
+                        onClick={(e) => {
+                            handleClick(e);
+                        }}
+                    >
+                        Listen
+                    </button>
+                </Link>
+            )}
         </div>
     );
 }

@@ -13,7 +13,7 @@ export default function Results() {
 
     const dispatch = useDispatch();
 
-    const [hover, setHover] = useState(null);
+    const [hover, setHover] = useState(false);
 
     useEffect(() => {
         console.log("mounting");
@@ -58,7 +58,7 @@ export default function Results() {
                             className="result-preview"
                             id={result.id}
                             onMouseEnter={() => handleMouseEnter(result.id)}
-                            onMouseLeave={handleMouseLeave}
+                            // onMouseLeave={handleMouseLeave}
                         >
                             <div className="image-container">
                                 <img
@@ -87,6 +87,11 @@ export default function Results() {
                                                 {tag}
                                             </h4>
                                         ))}
+                                    {result.message !== "" && (
+                                        <p className="result-message">
+                                            "{result.message}"
+                                        </p>
+                                    )}
                                 </div>
                             )}
                         </div>

@@ -3,13 +3,15 @@ const { initialPopulate } = require("./database");
 
 const messagesWithLinksInside = chatHistory.filter((message) => message.links);
 
-const messagesWithSoundCloudLinks = messagesWithLinksInside.filter(
-    (message) => message.links[0].indexOf("soundcloud") > 0
+const messagesWithGoodLinks = messagesWithLinksInside.filter(
+    (message) =>
+        message.links[0].indexOf("soundcloud") > 0 ||
+        message.links[0].indexOf("mixcloud") > 0
 );
 
-console.log(messagesWithSoundCloudLinks.length);
+console.log(messagesWithGoodLinks.length);
 
-messagesWithSoundCloudLinks.forEach((post) => {
+messagesWithGoodLinks.forEach((post) => {
     initialPopulate(
         `${post.date} ${post.time}`,
         post.message,

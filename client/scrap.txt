@@ -30,3 +30,6 @@ VALUES ('Test submission', TO_TIMESTAMP('23/05/2020 14:51', 'DD/MM/YYYY HH24:MI'
     AND (extract('hour' from posted_at) >= (extract('hour' from search_time) - 3))
     OR extract('hour' from posted_at) < (extract('hour' from search_time) + 3));`;
     
+
+posts_link_key
+
