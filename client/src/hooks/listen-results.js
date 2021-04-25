@@ -17,9 +17,6 @@ export default function Results() {
 
     useEffect(() => {
         console.log("mounting");
-        return () => {
-            console.log("cleaning");
-        };
     }, []);
 
     function handleMouseEnter(id) {
@@ -58,7 +55,7 @@ export default function Results() {
                             className="result-preview"
                             id={result.id}
                             onMouseEnter={() => handleMouseEnter(result.id)}
-                            // onMouseLeave={handleMouseLeave}
+                            onMouseLeave={handleMouseLeave}
                         >
                             <div className="image-container">
                                 <img

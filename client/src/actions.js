@@ -10,6 +10,8 @@ export async function setTimezone(data) {
 
 export async function getResults(timeNow, timezone) {
     console.log(timeNow, timezone);
+    axios.post("/timezone/");
+
     const { data } = await axios.get(`/api/listen-now/`, {
         params: { timeNow },
     });
@@ -45,5 +47,19 @@ export async function sendPost(link, message, tags) {
     return {
         type: "SUBMIT_POST",
         data: payload,
+    };
+}
+
+export async function createNewRoom(roomName) {
+    return {
+        type: "CREATE_ROOM",
+        data: roomName,
+    };
+}
+
+export async function joinRoom(roomName) {
+    return {
+        type: "JOIN_ROOM",
+        data: roomName,
     };
 }

@@ -27,7 +27,8 @@ button {
     flex-direction: column;
 }
 
-#timezone-container {
+#timezone-container,
+#room-container {
     width: 60vw;
     align-self: center;
     margin-top: 8vh;
@@ -72,6 +73,7 @@ button {
 
 .first-result > h2 {
     margin-top: auto;
+    font-weight: 200;
 }
 
 .result-info {
@@ -129,7 +131,12 @@ h4 {
     height: 5vh;
     text-decoration: none;
     margin-left: auto;
+    margin-top: 10px;
     justify-content: space-evenly;
+}
+
+h1 {
+    font-weight: 200;
 }
 
 #navbar-container > h1 > a {
@@ -177,6 +184,11 @@ h4 {
     border-bottom: 1px solid #ccc;
     border-radius: 2px;
 }
+
+.narrow {
+    width: 20vw;
+}
+
 .input-field:focus {
     outline: none;
 }
@@ -224,4 +236,9 @@ h4 {
     font-weight: 400;
     outline: none;
     padding: 5px;
+}
+
+.blue-link {
+    color: royalblue;
+    cursor: pointer;
 }

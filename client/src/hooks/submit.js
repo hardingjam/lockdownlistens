@@ -73,7 +73,7 @@ export default function Submit() {
         } else {
             console.log("dispatching");
             dispatch(sendPost(link, message, tags));
-            location.replace("/");
+            location.replace("/listen-now");
         }
     }
 

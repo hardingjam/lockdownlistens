@@ -7,6 +7,7 @@ const cookieSession = require("cookie-session");
 const { hash, compare } = require("./bc");
 const { scrape } = require("./scrape");
 const uidSafe = require("uid-safe");
+const { v4: uuidv4 } = require("uuid");
 const { getResultsByTimeOfDay, submitPost } = require("./database");
 
 // ???
@@ -52,7 +53,7 @@ app.use(express.static(path.join(__dirname, "..", "client")));
 
 const cookieSessionMiddleware = cookieSession({
     secret: `I'm always angry.`,
-    maxAge: 1000 * 60 * 60 * 24 * 90,
+    maxAge: 1000 * 60 * 60 * 24,
 });
 // cookiesession is split into two steps, instead of one app.use call. This is bc we are using it twice.
 // Here, we are giving socket access to the cookieSession.
@@ -82,10 +83,23 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
+app.post("/timezone/", (req, res) => {
+    req.session.userId = uuidv4();
+    console.log(req.session.userId);
+    res.json({ success: true });
+});
+
+app.get("/welcome", (req, res) => {
+    if (req.session.userId) {
+        res.redirect("/");
+    } else {
+        res.sendFile(path.join(__dirname, "..", "client", "index.html"));
+    }
+});
+
 app.get("/api/listen-now/", async (req, res) => {
     const time = req.query.timeNow.replace(",", "");
     const dayOfWeek = new Date(time).getUTCDay();
-    console.log(dayOfWeek);
     const curHr = new Date(time).getHours();
     let partOfDay;
     if (curHr < 4 && curHr > 21) {
@@ -101,10 +115,8 @@ app.get("/api/listen-now/", async (req, res) => {
     let data = await getResultsByTimeOfDay(dayOfWeek, time, fuzzFactor);
     while (data.length < 15) {
         fuzzFactor++;
-        console.log("looking again");
         data = await getResultsByTimeOfDay(dayOfWeek, time, fuzzFactor);
     }
-    console.log(data.length);
     let resp = {};
     resp.results = await scrape(data);
     const weekDay = week[dayOfWeek];
@@ -125,13 +137,12 @@ app.post("/submit/", async (req, res) => {
 
 /* ===== NEVER DELETE OR COMMENT OUT THIS ROUTE ===== */
 
-app.get("/logout", (req, res) => {
-    req.session.userId = null;
-    res.redirect("/");
-});
-
 app.get("*", function (req, res) {
-    res.sendFile(path.join(__dirname, "..", "client", "index.html"));
+    if (!req.session.userId) {
+        res.redirect("/welcome");
+    } else {
+        res.sendFile(path.join(__dirname, "..", "client", "index.html"));
+    }
 });
 
 server.listen(process.env.PORT || 3001, function () {
@@ -141,18 +152,28 @@ server.listen(process.env.PORT || 3001, function () {
 /* SOCKETS */
 
 let onlineUsers = {};
-io.on("connection", async (socket) => {
-    // we only do sockets when a user is logged in
-    if (!socket.request.session.userId) {
-        return socket.disconnect(true);
-    }
 
+io.on("connection", async (socket) => {
     const socketUserId = socket.request.session.userId;
+    console.log("socketUserId", socketUserId);
     onlineUsers[socket.id] = socketUserId;
 
-    const uniqueIds = Object.values(onlineUsers).filter(function (id, i, self) {
-        return self.indexOf(id) == i;
+    io.sockets.emit("userJoined", onlineUsers);
+
+    socket.on("joinRoom", (roomName) => {
+        console.log("joining room", roomName);
+        socket.join(roomName);
+        // do i need the callback here in order to see who's in the room?
     });
+
+    // socket.on("toggleReady", ({ user, room, isReady }) => {
+    //     const payload = {
+    //         user,
+    //         room,
+    //         isReady,
+    //     };
+    //     socket.to(room).emit("readyOrNot", payload);
+    // });
 
     socket.on("disconnect", () => {
         io.sockets.emit("userLeft", onlineUsers[socket.id]);

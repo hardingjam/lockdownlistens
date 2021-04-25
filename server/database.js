@@ -6,7 +6,6 @@ const db = spicedPg(
 );
 
 module.exports.initialPopulate = function (timestamp, message, link, tags) {
-    console.log("tags going in", tags);
     const query = `INSERT INTO posts (posted_at, message, link, tags)
                     VALUES (TO_TIMESTAMP($1, 'DD/MM/YYYY HH24:MI'), $2, $3, $4)
                     ON CONFLICT ON CONSTRAINT posts_link_key
@@ -31,7 +30,6 @@ module.exports.getResultsByTimeOfDay = function (
     timeOfDay,
     fuzzFactor
 ) {
-    console.log("search params:", timeOfDay, dayOfWeek, fuzzFactor);
     const query = `SELECT * FROM posts
                     WHERE EXTRACT(DOW FROM posted_at) IN ($1)
                     AND (extract('hour' from posted_at) >=

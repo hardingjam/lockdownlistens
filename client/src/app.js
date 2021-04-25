@@ -7,11 +7,10 @@ import ReactPlayer from "react-player";
 import Navbar from "./hooks/navbar";
 import Results from "./hooks/listen-results";
 import Submit from "./hooks/submit";
-// import the "otherprofile" component here.
+import Room from "./hooks/room";
 
 export default function App() {
-    const playerUrl = useSelector((state) => state.playerUrl);
-
+    const playerUrl = useSelector((state) => state.playerUrl || "");
     useEffect(() => {}, []);
 
     return (
@@ -25,8 +24,8 @@ export default function App() {
                     component={SetLocation}
                 />
                 <Route path="/listen-now/" component={Results} />
-                <Route path="/clock/" component={Clock} />
                 <Route path="/submit/" component={Submit} />
+                <Route path="/room/" component={Room} />
             </BrowserRouter>
             <ReactPlayer
                 className="jukebox"

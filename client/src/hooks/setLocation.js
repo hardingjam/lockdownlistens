@@ -7,7 +7,6 @@ import { getResults } from "../actions";
 export default function SetLocation() {
     const dispatch = useDispatch();
     const [tz, setTz] = useState();
-    const [error, setError] = useState("");
     function handleChange(e) {
         setTz(e);
     }
