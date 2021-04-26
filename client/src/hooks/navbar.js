@@ -4,10 +4,6 @@ import { Link } from "react-router-dom";
 export default function Navbar() {
     const timezone = useSelector((state) => state.timezone);
 
-    useEffect(() => {
-        console.log("On the navbar!");
-    });
-
     return (
         <div id="navbar-container">
             {timezone && (

@@ -34,8 +34,7 @@ export const init = (store) => {
             store.dispatch(toggleReady(userId));
         });
 
-        socket.on("select for all", (playerUrl) => {
-            console.log(playerUrl);
+        socket.on("update playerUrl", (playerUrl) => {
             store.dispatch(setPlayerUrl(playerUrl));
         });
 

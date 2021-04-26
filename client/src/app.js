@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import SetLocation from "./hooks/setLocation";
@@ -12,8 +12,12 @@ import { socket } from "./socket";
 export default function App() {
     const playerUrl = useSelector((state) => state.playerUrl || "");
     const [playing, setPlaying] = useState(false);
+    const [progress, setProgress] = useState("");
+    const playerRef = useRef(null);
 
-    useEffect(() => {}, []);
+    useEffect(() => {
+        console.log(progress.playedSeconds);
+    }, [progress]);
 
     socket.on("play for all", () => {
         setPlaying(true);
@@ -41,6 +45,7 @@ export default function App() {
                 <Route path="/room/" component={Room} />
             </BrowserRouter>
             <ReactPlayer
+                ref={playerRef}
                 className="jukebox"
                 wrapper="div"
                 width="100vw"
@@ -50,6 +55,8 @@ export default function App() {
                 playing={playing}
                 onPlay={(e) => handlePlay(e)}
                 onPause={(e) => handlePause(e)}
+                onProgress={setProgress}
+                progressInterval={3000}
             />
         </div>
     );

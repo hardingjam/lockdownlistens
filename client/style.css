@@ -22,9 +22,7 @@ button {
 }
 
 button:hover {
-    background-color: grey;
     transition: 200ms;
-    color: white;
     font-weight: 300;
 }
 
@@ -177,8 +175,17 @@ h3 {
 }
 
 #room-users {
-    
+    display: flex;
+    flex-direction: column;
 }
+#room-users > h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+#room-users > .error {
+    margin-bottom: 10px;
+}
+
 #room-form > h1 {
     margin-bottom: 10px;
 }
@@ -374,8 +381,17 @@ h3 {
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    margin-bottom: 15px;
+}
+#member > button {
+    margin-left: auto;
+    align-self: center;
+    margin-top: auto;
 }
 
 .error {
     color: red;
+}
+
+#room-members-container {
 }

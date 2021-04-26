@@ -167,7 +167,7 @@ io.on("connection", async (socket) => {
     socket.on("createRoom", (data) => {
         // this will be different depending on which user creates
 
-        const { roomName, userName } = data;
+        const { roomName, userName, playerUrl } = data;
         if (rooms[roomName]) {
             console.log("room already exisits");
             // emit a roomExists, or a noRoomExists depending on the outcome.
@@ -176,8 +176,14 @@ io.on("connection", async (socket) => {
         console.log("room created:", roomName, "userName", userName);
         rooms[roomName] = {
             roomName,
+            playerUrl,
             users: [
-                { id: socket.id, name: userName, ready: false, admin: true },
+                {
+                    id: socket.id,
+                    name: userName,
+                    ready: false,
+                    admin: true,
+                },
             ],
         };
         // include a display name here.
@@ -200,6 +206,8 @@ io.on("connection", async (socket) => {
             ],
         };
         socket.join(roomName);
+
+        io.to(socket.id).emit("update playerUrl", rooms[roomName].playerUrl);
         io.to(roomName).emit("new room member", rooms[roomName]);
     });
 
@@ -213,9 +221,9 @@ io.on("connection", async (socket) => {
         io.to(data.roomName).emit("select for all", data.playerUrl);
     });
 
-    socket.on("playForAll", (roomName) => {
-        console.log("playing in:", roomName);
-        io.to(roomName).emit("play for all");
+    socket.on("playForAll", (data) => {
+        console.log("playing in:", data);
+        io.to(data.roomName).emit("play for all");
     });
 
     // socket.on("allUsersReady")

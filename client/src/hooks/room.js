@@ -9,6 +9,7 @@ export default function Room() {
     const myRoom = useSelector((state) => state.room);
     const playerUrl = useSelector((state) => state.playerUrl);
     const activeUser = useSelector((state) => state.activeUser);
+
     const [roomName, setRoomName] = useState("");
     const [error, setError] = useState("");
     const [userName, setUserName] = useState("");
@@ -32,6 +33,8 @@ export default function Room() {
                 myRoom.users.filter((user) => user.ready).length
         ) {
             setAllReady(true);
+        } else {
+            setAllReady(false);
         }
         if (
             myRoom &&
@@ -56,7 +59,7 @@ export default function Room() {
                 setError("Please name your room");
             } else {
                 // useSelector room
-                socket.emit("createRoom", { roomName, userName });
+                socket.emit("createRoom", { roomName, userName, playerUrl });
             }
         }
         if (e.target.name == "join") {
@@ -79,8 +82,7 @@ export default function Room() {
 
         if (e.target.name == "playForAll") {
             const data = { roomName: myRoom.roomName, playerUrl };
-            socket.emit("selectForAll", data);
-            // socket.emit("playForAll", data);
+            socket.emit("playForAll", data);
         }
     }
 
@@ -148,19 +150,26 @@ export default function Room() {
             <div id="room-container">
                 <div id="room-users">
                     <h1>{myRoom.roomName}</h1>
-                    <p>
+
+                    <h3>
                         {myRoom.users.filter((member) => member.admin)[0].name}{" "}
                         is the host. When all guests are ready, the party can
                         begin.
-                    </p>
+                    </h3>
+                    {admin && !playerUrl && (
+                        <p className="error">
+                            As the admin, it's up to you to{" "}
+                            <Link to="/listen-now">pick the music</Link>
+                        </p>
+                    )}
                     <>
                         <div id="room-members-container">
                             {myRoom.users.map((member, i) => (
                                 <div id="member" key={i}>
-                                    <p>{member.name}</p>
                                     <span className="readyOrNot">
                                         {member.ready ? <>🟢</> : <>🔴</>}
                                     </span>
+                                    <p>{member.name}</p>
                                     {member.id == activeUser && (
                                         <button
                                             name="toggleReady"
