@@ -12,10 +12,34 @@ export default function Room() {
     const [roomName, setRoomName] = useState("");
     const [error, setError] = useState("");
     const [userName, setUserName] = useState("");
+    const [allReady, setAllReady] = useState(false);
+    const [admin, setAdmin] = useState(false);
+
+    // socket.on (either error) setError.
+
+    socket.on("room exists", () => {
+        setError("That name is taken, please choose another.");
+    });
+
+    socket.on("no such room", () => {
+        setError("No such room exists.");
+    });
 
     useEffect(() => {
-        console.log("On the room!");
-    }, []);
+        if (
+            myRoom &&
+            myRoom.users.length ==
+                myRoom.users.filter((user) => user.ready).length
+        ) {
+            setAllReady(true);
+        }
+        if (
+            myRoom &&
+            myRoom.users.filter((user) => user.id == activeUser)[0].admin
+        ) {
+            setAdmin(true);
+        }
+    }, [myRoom]);
 
     function handleChange(e) {
         if (e.target.name == "roomName") {
@@ -52,14 +76,29 @@ export default function Room() {
             console.log("toggling ready");
             socket.emit("toggleReady", data);
         }
+
+        if (e.target.name == "playForAll") {
+            const data = { roomName: myRoom.roomName, playerUrl };
+            socket.emit("selectForAll", data);
+            // socket.emit("playForAll", data);
+        }
     }
 
     if (!myRoom) {
         return (
             <div id="room-lobby-container">
-                <>
-                    <h1>This is your listening room</h1>
-                    <p>What's your name?</p>
+                <div id="room-form">
+                    <h1>Music sounds better with you</h1>
+                    <h3>
+                        In a listening room, friends can enjoy music together.
+                    </h3>
+                    <h3>
+                        The host chooses the mix, and all members' players are
+                        in sync.
+                    </h3>
+                    <p className="margin-top">
+                        To get started - give yourself a name
+                    </p>
                     <input
                         className="input-field narrow"
                         type="text"
@@ -68,7 +107,9 @@ export default function Room() {
                     ></input>
                     {userName && (
                         <>
-                            <p>What shall we call your room?</p>
+                            <p className="margin-top">
+                                What shall we call your room?
+                            </p>
                             <input
                                 className="input-field narrow"
                                 name="roomName"
@@ -78,12 +119,13 @@ export default function Room() {
                             />
 
                             <button
+                                className="create-room"
                                 name="create"
                                 onClick={(e) => handleClick(e)}
                             >
                                 Create Room
                             </button>
-                            {error && <p>{error}</p>}
+                            {error && <p className="error">{error}</p>}
                             <p>
                                 Alternatively, you can{" "}
                                 <a
@@ -96,7 +138,7 @@ export default function Room() {
                             </p>
                         </>
                     )}
-                </>
+                </div>
             </div>
         );
     }
@@ -104,17 +146,13 @@ export default function Room() {
     if (myRoom) {
         return (
             <div id="room-container">
-                <>
-                    <h1>This is your room</h1>
-                    <h2>
-                        {
-                            myRoom.users.filter(
-                                (member) => member.admin == true
-                            ).name
-                        }{" "}
-                        is the host. When their guests, we will play their
-                        selection.
-                    </h2>
+                <div id="room-users">
+                    <h1>{myRoom.roomName}</h1>
+                    <p>
+                        {myRoom.users.filter((member) => member.admin)[0].name}{" "}
+                        is the host. When all guests are ready, the party can
+                        begin.
+                    </p>
                     <>
                         <div id="room-members-container">
                             {myRoom.users.map((member, i) => (
@@ -134,8 +172,19 @@ export default function Room() {
                                 </div>
                             ))}
                         </div>
+                        {allReady && admin && (
+                            <>
+                                <p>All users are ready</p>
+                                <button
+                                    name="playForAll"
+                                    onClick={(e) => handleClick(e)}
+                                >
+                                    Start the music
+                                </button>
+                            </>
+                        )}
                     </>
-                </>
+                </div>
             </div>
         );
     }

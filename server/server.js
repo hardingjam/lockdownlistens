@@ -170,7 +170,8 @@ io.on("connection", async (socket) => {
         const { roomName, userName } = data;
         if (rooms[roomName]) {
             console.log("room already exisits");
-            return;
+            // emit a roomExists, or a noRoomExists depending on the outcome.
+            return io.to(socket.id).emit("room exists");
         }
         console.log("room created:", roomName, "userName", userName);
         rooms[roomName] = {
@@ -188,7 +189,7 @@ io.on("connection", async (socket) => {
         const { roomName, userName } = data;
         if (!rooms[roomName]) {
             console.log("room does not exist, you can create it");
-            return;
+            return io.to(socket.id).emit("no such room");
         }
 
         rooms[roomName] = {
@@ -202,11 +203,19 @@ io.on("connection", async (socket) => {
         io.to(roomName).emit("new room member", rooms[roomName]);
     });
 
-    // take th
-
     socket.on("toggleReady", (data) => {
         console.log("toggling ready in server.js");
         io.to(data.myRoom.roomName).emit("ready or not", data.activeUser);
+    });
+
+    socket.on("selectForAll", (data) => {
+        console.log("playing in:", data.roomName);
+        io.to(data.roomName).emit("select for all", data.playerUrl);
+    });
+
+    socket.on("playForAll", (roomName) => {
+        console.log("playing in:", roomName);
+        io.to(roomName).emit("play for all");
     });
 
     // socket.on("allUsersReady")

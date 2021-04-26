@@ -1,6 +1,12 @@
 import io from "socket.io-client";
 
-import { joinRoom, activeUser, toggleReady } from "./actions";
+import {
+    joinRoom,
+    activeUser,
+    toggleReady,
+    setPlayerUrl,
+    setPlaying,
+} from "./actions";
 
 export let socket;
 export const init = (store) => {
@@ -27,5 +33,12 @@ export const init = (store) => {
             console.log("ready or not", userId);
             store.dispatch(toggleReady(userId));
         });
+
+        socket.on("select for all", (playerUrl) => {
+            console.log(playerUrl);
+            store.dispatch(setPlayerUrl(playerUrl));
+        });
+
+        // when recieveing errors.
     }
 };
