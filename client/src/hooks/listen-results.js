@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { formatRelative, parseISO } from "date-fns";
 import { setPlayerUrl } from "../actions";
+import { socket } from "../socket";
 
 // import Assert from "assert";
 
@@ -10,14 +11,19 @@ export default function Results() {
     const timezone = useSelector((state) => state.timezone);
     const weekDay = useSelector((state) => state.weekDay);
     const partOfDay = useSelector((state) => state.partOfDay);
-
+    const playerUrl = useSelector((state) => state.playerUrl);
+    const myRoom = useSelector((state) => state.room);
     const dispatch = useDispatch();
 
     const [hover, setHover] = useState(false);
 
     useEffect(() => {
-        console.log("mounting");
-    }, []);
+        if (myRoom) {
+            console.log("updating playerUrl from listen-results");
+            const data = { roomName: myRoom.roomName, playerUrl };
+            socket.emit("updateUrl", data);
+        }
+    }, [playerUrl]);
 
     function handleMouseEnter(id) {
         setHover(id);
@@ -31,24 +37,9 @@ export default function Results() {
         console.log(url);
         dispatch(setPlayerUrl(url));
     }
-
-    if (!results || !results.length) {
-        return (
-            <div className="loading-container">
-                <div className="lds-roller">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-            </div>
-        );
+    if (!results) {
+        return <p>Loading</p>;
     }
-
     return (
         <div className="results-container">
             <div className="first-result">

@@ -30,6 +30,10 @@ export default function App() {
         setPlaying(true);
     }
 
+    function seekTest() {
+        playerRef.seekTo(300, seconds);
+    }
+
     return (
         <div id="app-component">
             <BrowserRouter>
@@ -44,6 +48,7 @@ export default function App() {
                 <Route path="/submit/" component={Submit} />
                 <Route path="/room/" component={Room} />
             </BrowserRouter>
+            <button onClick={(e) => seekTest(e)}>try and seek</button>
             <ReactPlayer
                 ref={playerRef}
                 className="jukebox"

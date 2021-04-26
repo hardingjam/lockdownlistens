@@ -35,6 +35,7 @@ export const init = (store) => {
         });
 
         socket.on("update playerUrl", (playerUrl) => {
+            console.log("server udating playeUrl");
             store.dispatch(setPlayerUrl(playerUrl));
         });
 

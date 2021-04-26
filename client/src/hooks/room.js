@@ -15,7 +15,6 @@ export default function Room() {
     const [userName, setUserName] = useState("");
     const [allReady, setAllReady] = useState(false);
     const [admin, setAdmin] = useState(false);
-
     // socket.on (either error) setError.
 
     socket.on("room exists", () => {
@@ -183,7 +182,7 @@ export default function Room() {
                         </div>
                         {allReady && admin && (
                             <>
-                                <p>All users are ready</p>
+                                <p>Everyone's ready</p>
                                 <button
                                     name="playForAll"
                                     onClick={(e) => handleClick(e)}

@@ -211,6 +211,15 @@ io.on("connection", async (socket) => {
         io.to(roomName).emit("new room member", rooms[roomName]);
     });
 
+    socket.on("updateUrl", (data) => {
+        const { playerUrl, roomName } = data;
+        rooms[roomName] = {
+            ...rooms[roomName],
+            playerUrl: playerUrl,
+        };
+        io.to(roomName).emit("update playerUrl", playerUrl);
+    });
+
     socket.on("toggleReady", (data) => {
         console.log("toggling ready in server.js");
         io.to(data.myRoom.roomName).emit("ready or not", data.activeUser);
