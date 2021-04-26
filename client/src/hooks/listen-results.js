@@ -33,7 +33,20 @@ export default function Results() {
     }
 
     if (!results || !results.length) {
-        return "Loading...";
+        return (
+            <div className="loading-container">
+                <div className="lds-roller">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        );
     }
 
     return (
@@ -49,8 +62,8 @@ export default function Results() {
             </div>
             {results
                 .filter((item) => item.preview)
-                .map((result) => (
-                    <div id="result-container" key={result.id}>
+                .map((result, i) => (
+                    <div id="result-container" key={i}>
                         <div
                             className="result-preview"
                             id={result.id}
@@ -58,10 +71,17 @@ export default function Results() {
                             onMouseLeave={handleMouseLeave}
                         >
                             <div className="image-container">
-                                <img
-                                    className="medium"
-                                    src={result.preview.img}
-                                />
+                                {result.preview.img ? (
+                                    <img
+                                        className="medium"
+                                        src={result.preview.img}
+                                    />
+                                ) : (
+                                    <img
+                                        className="medium"
+                                        src="https://lockdownlistens.s3.eu-central-1.amazonaws.com/pp-2.jpg"
+                                    />
+                                )}
                             </div>
                             {hover == result.id && (
                                 <div className="result-info">

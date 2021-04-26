@@ -6,14 +6,12 @@ import { socket } from "../socket";
 // should I use a hashrouter for the various room states?
 
 export default function Room() {
-    const dispatch = useDispatch();
-
-    const onlineUsers = useSelector((state) => state.onlineUsers);
-
+    const myRoom = useSelector((state) => state.room);
+    const playerUrl = useSelector((state) => state.playerUrl);
+    const activeUser = useSelector((state) => state.activeUser);
     const [roomName, setRoomName] = useState("");
     const [error, setError] = useState("");
-    const [connected, setConnected] = useState(false);
-    const [ready, setReady] = useState(false);
+    const [userName, setUserName] = useState("");
 
     useEffect(() => {
         console.log("On the room!");
@@ -23,54 +21,122 @@ export default function Room() {
         if (e.target.name == "roomName") {
             setRoomName(e.target.value);
         }
+        if (e.target.name == "userName") {
+            setUserName(e.target.value);
+        }
     }
 
     function handleClick(e) {
         if (e.target.name == "create") {
             if (!roomName || roomName == "") {
                 setError("Please name your room");
+            } else {
+                // useSelector room
+                socket.emit("createRoom", { roomName, userName });
             }
-            dispatch(createNewRoom(roomName));
-            socket.emit("joinRoom", roomName);
         }
         if (e.target.name == "join") {
-            const joiningRoomName = prompt(
+            const roomName = prompt(
                 "Enter the name of the room you'd like to join"
             );
-            socket.emit("joinRoom", joiningRoomName);
+            const data = { roomName, userName };
+            // dispatch the room join
+            socket.emit("joinRoom", data);
+        }
+        if (e.target.name == "setName") {
+            console.log("setting name");
+        }
+
+        if (e.target.name == "toggleReady") {
+            const data = { myRoom, activeUser };
+            console.log("toggling ready");
+            socket.emit("toggleReady", data);
         }
     }
 
-    return (
-        <div id="room-container">
-            {!connected && (
+    if (!myRoom) {
+        return (
+            <div id="room-lobby-container">
                 <>
                     <h1>This is your listening room</h1>
-                    <p>Give your room a name...</p>
+                    <p>What's your name?</p>
                     <input
                         className="input-field narrow"
-                        name="roomName"
                         type="text"
-                        placeholder="Room name"
+                        name="userName"
                         onChange={(e) => handleChange(e)}
-                    />
+                    ></input>
+                    {userName && (
+                        <>
+                            <p>What shall we call your room?</p>
+                            <input
+                                className="input-field narrow"
+                                name="roomName"
+                                type="text"
+                                placeholder="Room name"
+                                onChange={(e) => handleChange(e)}
+                            />
 
-                    <button name="create" onClick={(e) => handleClick(e)}>
-                        Create Room
-                    </button>
-                    {error && <p>{error}</p>}
-                    <p>
-                        Or{" "}
-                        <a
-                            className="blue-link"
-                            name="join"
-                            onClick={(e) => handleClick(e)}
-                        >
-                            join an existing room.
-                        </a>
-                    </p>
+                            <button
+                                name="create"
+                                onClick={(e) => handleClick(e)}
+                            >
+                                Create Room
+                            </button>
+                            {error && <p>{error}</p>}
+                            <p>
+                                Alternatively, you can{" "}
+                                <a
+                                    className="blue-link"
+                                    name="join"
+                                    onClick={(e) => handleClick(e)}
+                                >
+                                    join an existing room.
+                                </a>
+                            </p>
+                        </>
+                    )}
                 </>
-            )}
-        </div>
-    );
+            </div>
+        );
+    }
+
+    if (myRoom) {
+        return (
+            <div id="room-container">
+                <>
+                    <h1>This is your room</h1>
+                    <h2>
+                        {
+                            myRoom.users.filter(
+                                (member) => member.admin == true
+                            ).name
+                        }{" "}
+                        is the host. When their guests, we will play their
+                        selection.
+                    </h2>
+                    <>
+                        <div id="room-members-container">
+                            {myRoom.users.map((member, i) => (
+                                <div id="member" key={i}>
+                                    <p>{member.name}</p>
+                                    <span className="readyOrNot">
+                                        {member.ready ? <>🟢</> : <>🔴</>}
+                                    </span>
+                                    {member.id == activeUser && (
+                                        <button
+                                            name="toggleReady"
+                                            onClick={(e) => handleClick(e)}
+                                        >
+                                            {member.ready ? "Unready" : "Ready"}
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </>
+                </>
+            </div>
+        );
+    }
 }

@@ -10,8 +10,7 @@ export async function setTimezone(data) {
 
 export async function getResults(timeNow, timezone) {
     console.log(timeNow, timezone);
-    axios.post("/timezone/");
-
+    const setTz = await axios.post("/timezone/", { timezone });
     const { data } = await axios.get(`/api/listen-now/`, {
         params: { timeNow },
     });
@@ -30,12 +29,6 @@ export async function setPlayerUrl(url) {
     };
 }
 
-export async function clearBoard() {
-    return {
-        type: "CLEAR_BOARD",
-    };
-}
-
 export async function sendPost(link, message, tags) {
     let data = {
         link,
@@ -50,16 +43,23 @@ export async function sendPost(link, message, tags) {
     };
 }
 
-export async function createNewRoom(roomName) {
+export async function joinRoom(data) {
     return {
-        type: "CREATE_ROOM",
-        data: roomName,
+        type: "JOIN_ROOM",
+        data,
     };
 }
 
-export async function joinRoom(roomName) {
+export async function activeUser(socketId) {
     return {
-        type: "JOIN_ROOM",
-        data: roomName,
+        type: "ACTIVE_USER",
+        socketId,
+    };
+}
+
+export async function toggleReady(userId) {
+    return {
+        type: "TOGGLE_READY",
+        userId,
     };
 }

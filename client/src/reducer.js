@@ -1,3 +1,5 @@
+import { activeUser } from "./actions";
+
 export default function (
     state = {
         room: null,
@@ -34,18 +36,44 @@ export default function (
     }
 
     if (action.type == "SUBMIT_POST") {
-        console.log(action.data.data);
         state = {
             ...state,
             results: [action.data.data[0], ...state.results],
         };
     }
 
-    if (action.type == "CREATE_ROOM") {
-        console.log(action.data);
+    if (action.type == "JOIN_ROOM") {
         state = {
             ...state,
             room: action.data,
+        };
+    }
+
+    if (action.type == "ACTIVE_USER") {
+        state = {
+            ...state,
+            activeUser: action.socketId,
+        };
+    }
+
+    if (action.type == "TOGGLE_READY") {
+        console.log("action userId", action.userId);
+        state = {
+            ...state,
+            room: {
+                ...state.room,
+                users: state.room.users.map((user) => {
+                    if (user.id == action.userId) {
+                        if (user.ready == true) {
+                            return { ...user, ready: false };
+                        } else {
+                            return { ...user, ready: true };
+                        }
+                    } else {
+                        return user;
+                    }
+                }),
+            },
         };
     }
 

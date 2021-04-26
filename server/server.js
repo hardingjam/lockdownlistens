@@ -84,8 +84,10 @@ app.get("/", (req, res) => {
 });
 
 app.post("/timezone/", (req, res) => {
+    console.log(req.body);
+    req.session.tz = req.body.timezone;
     req.session.userId = uuidv4();
-    console.log(req.session.userId);
+    console.log("userId", req.session.userId);
     res.json({ success: true });
 });
 
@@ -151,29 +153,63 @@ server.listen(process.env.PORT || 3001, function () {
 
 /* SOCKETS */
 
+let rooms = {};
 let onlineUsers = {};
 
 io.on("connection", async (socket) => {
-    const socketUserId = socket.request.session.userId;
-    console.log("socketUserId", socketUserId);
-    onlineUsers[socket.id] = socketUserId;
+    // const socketUserId = socket.request.session.userId;
 
-    io.sockets.emit("userJoined", onlineUsers);
+    onlineUsers[socket.id] = socket.id;
 
-    socket.on("joinRoom", (roomName) => {
-        console.log("joining room", roomName);
+    // to individual socketid (private message)
+    io.to(socket.id).emit("your socket", socket.id);
+    //this is listening to who joined a room...
+    socket.on("createRoom", (data) => {
+        // this will be different depending on which user creates
+
+        const { roomName, userName } = data;
+        if (rooms[roomName]) {
+            console.log("room already exisits");
+            return;
+        }
+        console.log("room created:", roomName, "userName", userName);
+        rooms[roomName] = {
+            roomName,
+            users: [
+                { id: socket.id, name: userName, ready: false, admin: true },
+            ],
+        };
+        // include a display name here.
         socket.join(roomName);
-        // do i need the callback here in order to see who's in the room?
+        io.to(roomName).emit("new room member", rooms[roomName]);
     });
 
-    // socket.on("toggleReady", ({ user, room, isReady }) => {
-    //     const payload = {
-    //         user,
-    //         room,
-    //         isReady,
-    //     };
-    //     socket.to(room).emit("readyOrNot", payload);
-    // });
+    socket.on("joinRoom", (data) => {
+        const { roomName, userName } = data;
+        if (!rooms[roomName]) {
+            console.log("room does not exist, you can create it");
+            return;
+        }
+
+        rooms[roomName] = {
+            ...rooms[roomName],
+            users: [
+                ...rooms[roomName].users,
+                { id: socket.id, name: userName, ready: false },
+            ],
+        };
+        socket.join(roomName);
+        io.to(roomName).emit("new room member", rooms[roomName]);
+    });
+
+    // take th
+
+    socket.on("toggleReady", (data) => {
+        console.log("toggling ready in server.js");
+        io.to(data.myRoom.roomName).emit("ready or not", data.activeUser);
+    });
+
+    // socket.on("allUsersReady")
 
     socket.on("disconnect", () => {
         io.sockets.emit("userLeft", onlineUsers[socket.id]);

@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import reduxPromise from "redux-promise";
 import { composeWithDevTools } from "redux-devtools-extension";
 import reducer from "./reducer";
+
 let elem;
 
 const store = createStore(
@@ -26,9 +27,5 @@ if (location.pathname == "/welcome") {
         </Provider>
     );
 }
-
-// init(store);
-// init is socket
-// giving socket.js access to the Redux store. Allowing us to use dispatch etc.
 
 ReactDOM.render(elem, document.querySelector("main"));

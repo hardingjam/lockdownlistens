@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TagsInput from "react-tagsinput";
 import { sendPost } from "../actions";
+import { browserHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 
 export default function Submit() {
     const weekDay = useSelector((state) => state.weekDay);
     const partOfDay = useSelector((state) => state.partOfDay);
-
+    const history = useHistory();
     const [tags, setTags] = useState([]);
     const [errors, setErrors] = useState([]);
     const [link, setLink] = useState("");
@@ -18,7 +20,6 @@ export default function Submit() {
         noTags: "Please add at least one tag 🍸",
         notUrl: "That's not even a URL 😒",
     };
-
     const detectUrls = function (str) {
         var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
         return str.match(urlRegex);
@@ -68,12 +69,11 @@ export default function Submit() {
             handleError(possErrs.notUrl);
         }
         if (!tags.length) {
-            console.log("no tags");
             handleError(possErrs.noTags);
         } else {
             console.log("dispatching");
             dispatch(sendPost(link, message, tags));
-            location.replace("/listen-now");
+            history.push("/listen-now/");
         }
     }
 
