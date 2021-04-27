@@ -1,7 +1,7 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { HashRouter, Link } from "react-router-dom";
-import { createNewRoom, setPlayerUrl } from "../actions";
+import { Link } from "react-router-dom";
+import { createNewRoom, setPlayerUrl, setPlaying } from "../actions";
 import { socket } from "../socket";
 
 // should I use a hashrouter for the various room states?
@@ -19,6 +19,11 @@ export default function Room() {
 
     const dispatch = useDispatch();
     // socket.on (either error) setError.
+
+    const detectUrls = function (str) {
+        var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+        return str.match(urlRegex);
+    };
 
     socket.on("room exists", () => {
         setError("That name is taken, please choose another.");
@@ -93,6 +98,7 @@ export default function Room() {
         }
 
         if (e.target.name == "syncWithHost") {
+            dispatch(setPlaying(true));
             socket.emit("syncWithHost", myRoom.roomName);
         }
 
@@ -100,10 +106,21 @@ export default function Room() {
             const newLink = prompt(
                 "Enter the URL of the music you'd like to share..."
             );
-            socket.emit("updateUrl", {
-                roomName: myRoom.roomName,
-                playerUrl: newLink,
-            });
+            if (
+                detectUrls(newLink) &&
+                newLink.indexOf("soundcloud") == -1 &&
+                newLink.indexOf("mixcloud") == -1
+            ) {
+                setError(
+                    "Currently only SoundCloud and MixCloud link are supported."
+                );
+            } else {
+                setError("");
+                socket.emit("updateUrl", {
+                    roomName: myRoom.roomName,
+                    playerUrl: newLink,
+                });
+            }
         }
     }
 
@@ -111,7 +128,7 @@ export default function Room() {
         return (
             <div id="room-lobby-container">
                 <div id="room-form">
-                    <h1>Music sounds better with you</h1>
+                    <h1>Music sounds better with you.</h1>
                     <h3>
                         In a listening room, friends can enjoy music together.
                     </h3>
@@ -192,38 +209,56 @@ export default function Room() {
                         </p>
                     )}
                     {admin && (
-                        <p>
-                            If you'd like to host some music not in our
-                            catalogue,{" "}
-                            <a
-                                name="chooseLink"
-                                className="blue-link"
-                                onClick={(e) => handleClick(e)}
-                            >
-                                click here.
-                            </a>
-                        </p>
+                        <>
+                            <p>
+                                If you'd like to host some music not in our
+                                catalogue,{" "}
+                                <a
+                                    name="chooseLink"
+                                    className="blue-link"
+                                    onClick={(e) => handleClick(e)}
+                                >
+                                    click here.
+                                </a>
+                            </p>
+                            {error && <p className="error">{error}</p>}
+                        </>
                     )}
                     <>
+                        {myRoom.hostPlaying && !admin && (
+                            <p>
+                                The music has started -{" "}
+                                <a
+                                    className="blue-link"
+                                    name="syncWithHost"
+                                    onClick={(e) => handleClick(e)}
+                                >
+                                    sync with host?
+                                </a>
+                            </p>
+                        )}
                         <div id="room-members-container">
                             {myRoom.users.map((member, i) => (
                                 <div id="member" key={i}>
                                     <span className="readyOrNot">
-                                        {member.ready ? <>🟢</> : <>🔴</>}
+                                        {!member.ready ? <>🔴</> : <>🟢</>}
                                     </span>
                                     <p>{member.name}</p>
-                                    {member.id == activeUser && (
-                                        <button
-                                            name="toggleReady"
-                                            onClick={(e) => handleClick(e)}
-                                        >
-                                            {member.ready ? "Unready" : "Ready"}
-                                        </button>
-                                    )}
+                                    {member.id == activeUser &&
+                                        !myRoom.hostPlaying && (
+                                            <button
+                                                name="toggleReady"
+                                                onClick={(e) => handleClick(e)}
+                                            >
+                                                {member.ready
+                                                    ? "Unready"
+                                                    : "Ready"}
+                                            </button>
+                                        )}
                                 </div>
                             ))}
                         </div>
-                        {allReady && admin && (
+                        {allReady && admin && !isPlaying && (
                             <>
                                 <p>
                                     Everyone's ready,{" "}
@@ -235,18 +270,7 @@ export default function Room() {
                                         start the music
                                     </a>
                                 </p>
-                                {error && !playerUrl && (
-                                    <p className="error">{error}</p>
-                                )}
                             </>
-                        )}
-                        {!admin && isPlaying && (
-                            <button
-                                name="syncWithHost"
-                                onClick={(e) => handleClick(e)}
-                            >
-                                Sync with host
-                            </button>
                         )}
                     </>
                 </div>

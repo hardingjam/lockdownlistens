@@ -7,6 +7,8 @@ import Navbar from "./hooks/navbar";
 import Results from "./hooks/listen-results";
 import Submit from "./hooks/submit";
 import Room from "./hooks/room";
+import About from "./hooks/about";
+import Search from "./hooks/search";
 import { socket } from "./socket";
 import { setPlaying } from "./actions";
 
@@ -65,6 +67,8 @@ export default function App() {
                 <Route path="/listen-now/" component={Results} />
                 <Route path="/submit/" component={Submit} />
                 <Route path="/room/" component={Room} />
+                <Route path="/about/" component={About} />
+                <Route path="/search/" component={Search} />
             </BrowserRouter>
 
             <ReactPlayer

@@ -34,7 +34,8 @@ button:hover {
 }
 
 #timezone-container,
-#room-container {
+#room-container,
+#room-lobby-container {
     width: 60vw;
     align-self: center;
     margin-top: 8vh;
@@ -137,16 +138,40 @@ h4 {
 
 #navbar-container {
     display: flex;
-    width: 420px;
+    width: 40vw;
     height: 5vh;
     text-decoration: none;
     margin-left: auto;
     margin-top: 10px;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    margin-right: 10px;
+}
+
+#about-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 8vh;
+    width: 60vw;
+    align-self: center;
+}
+
+#about-section {
+    display: flex;
+    flex-direction: column;
+}
+
+#about-section > h1 {
+    margin-bottom: 20px;
+}
+
+#about-section > p {
+    margin-bottom: 10px;
 }
 
 h1 {
     font-weight: 200;
+    font-size: 2rem;
 }
 h3 {
     font-weight: 200;
@@ -165,9 +190,31 @@ h3 {
 
 #submit-container,
 #room-lobby-container,
-#room-container {
+#room-container,
+#search-container {
     display: flex;
     justify-content: center;
+    margin-top: 8vh;
+}
+#search-section {
+    width: 60vw;
+}
+#search-section > h3 {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+#search-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-right: 15vw;
+}
+#search-form > p {
+    margin-bottom: 15px;
+}
+#search-form > p > h3 {
+    margin-bottom: 10px;
 }
 #room-form {
     display: flex;
@@ -199,13 +246,13 @@ h3 {
 }
 
 .margin-top {
-    margin-top: 30px;
+    margin-top: 25px;
 }
 
-#submit-form {
-    width: 60vw;
-    height: 60vh;
-    margin-top: 10vh;
+#submit-form-fields {
+    display: flex;
+    flex-direction: column;
+    max-width: 50vw;
 }
 
 #submit-form > input {
@@ -216,9 +263,7 @@ h3 {
     font-weight: 100;
     margin-bottom: 20px;
 }
-#submit-form > h2 {
-    color: black;
-    font-weight: 100;
+#submit-form > h1 {
     margin-bottom: 20px;
 }
 

@@ -10,7 +10,7 @@ export async function setTimezone(data) {
 
 export async function getResults(timeNow, timezone) {
     console.log(timeNow, timezone);
-    const setTz = await axios.post("/timezone/", { timezone });
+    await axios.post("/timezone/", { timezone });
     const { data } = await axios.get(`/api/listen-now/`, {
         params: { timeNow },
     });
@@ -83,4 +83,10 @@ export async function toggleHostPlaying(boolean) {
         type: "TOGGLE_HOST_PLAYING",
         boolean,
     };
+}
+
+export async function getSearchResults(params) {
+    console.log("action.js", params);
+    const { data } = await axios.get("/api/search/", { params });
+    console.log(data);
 }

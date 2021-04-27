@@ -80,16 +80,16 @@ export default function Submit() {
     return (
         <div id="submit-container">
             <section id="submit-form">
-                <h2>
+                <h1>
                     What are you listening to this {weekDay} {partOfDay}?
-                </h2>
+                </h1>
                 <p>Lockdown Listens accepts Mixcloud and SoundCloud links.</p>
                 <p>
                     Please tailor your submission to the time of day, and day of
                     the week.
                 </p>
                 <h4></h4>
-                <div id="sumbit-form">
+                <div id="submit-form-fields">
                     <input
                         type="text"
                         className="input-field"

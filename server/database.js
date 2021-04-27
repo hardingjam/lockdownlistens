@@ -1,8 +1,11 @@
 const spicedPg = require("spiced-pg");
 
 const db = spicedPg(
-    // left hand side for heroku || right hand side for localhost //
     process.env.DATABASE_URL || "postgres:jharding@localhost/lockdownlistens"
+);
+
+const herokudb = spicedPg(
+    "postgres://uqbyrenrijufdp:d09af078db1059214ea06a18a2697c9be60cf25504ef6dbca18690b878ec4d63@ec2-54-220-170-192.eu-west-1.compute.amazonaws.com:5432/ddibs9drp11kg9"
 );
 
 module.exports.initialPopulate = function (timestamp, message, link, tags) {
@@ -11,8 +14,22 @@ module.exports.initialPopulate = function (timestamp, message, link, tags) {
                     ON CONFLICT ON CONSTRAINT posts_link_key
                     DO UPDATE SET votes = posts.votes + 1 WHERE posts.link = $3;`;
     const params = [timestamp, message, link, tags];
-    return db.query(query, params).then(({ rows }) => {
+    return herokudb.query(query, params).then(({ rows }) => {
         return rows;
+    });
+};
+
+module.exports.setupHeroku = function () {
+    const query = `CREATE TABLE posts(
+    id SERIAL PRIMARY KEY,
+    posted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    message VARCHAR(255),
+    link VARCHAR(255) NOT NULL UNIQUE,
+    tags TEXT [],
+    votes INT default 0
+    );`;
+    return herokudb.query(query).then((data) => {
+        return data;
     });
 };
 

@@ -4,9 +4,9 @@ const compression = require("compression");
 // shrinking files
 const path = require("path");
 const cookieSession = require("cookie-session");
-const { hash, compare } = require("./bc");
+
 const { scrape } = require("./scrape");
-const uidSafe = require("uid-safe");
+
 const { v4: uuidv4 } = require("uuid");
 const { getResultsByTimeOfDay, submitPost } = require("./database");
 
@@ -23,11 +23,7 @@ const week = [
 
 // to, body, subject
 const csurf = require("csurf");
-const cryptoRandomString = require("crypto-random-string");
-// create PW recovery codes
-const secretCode = cryptoRandomString({
-    length: 6,
-});
+
 // creating the initial handshake between socket and our server (cannot use Express for this)
 const server = require("http").Server(app);
 const io = require("socket.io")(server, {
@@ -128,6 +124,11 @@ app.get("/api/listen-now/", async (req, res) => {
         weekDay,
     };
     res.json(resp);
+});
+
+app.get("/api/search/", async (req, res) => {
+    const { day, time } = req.query;
+    console.log(day, time);
 });
 
 app.post("/submit/", async (req, res) => {

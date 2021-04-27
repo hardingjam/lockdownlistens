@@ -1,5 +1,3 @@
-import { activeUser } from "./actions";
-
 export default function (
     state = {
         room: null,
