@@ -32,7 +32,7 @@ const io = require("socket.io")(server, {
             null,
             req.headers.referer.startsWith(
                 "https://lockdownlistens.herokuapp.com/"
-            )
+            ) || req.headers.referer.startsWith("http://localhost:3000/")
         ),
 });
 
