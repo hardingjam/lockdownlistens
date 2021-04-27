@@ -33,7 +33,10 @@ const io = require("socket.io")(server, {
             null,
             req.headers.referer.startsWith(
                 // is this right?
-                "http://localhost:3000" || "https://localhost:3000"
+                "http://localhost:3000" ||
+                    "https://localhost:3000" ||
+                    "https://lockdownlistens.herokuapp.com/" ||
+                    "http://lockdownlistens.herokuapp.com/"
             )
         ),
 });
