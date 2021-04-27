@@ -32,11 +32,8 @@ const io = require("socket.io")(server, {
         callback(
             null,
             req.headers.referer.startsWith(
-                // is this right?
-                "http://localhost:3000" ||
-                    "https://localhost:3000" ||
-                    "https://lockdownlistens.herokuapp.com/" ||
-                    "http://lockdownlistens.herokuapp.com/"
+                "https://lockdownlistens.herokuapp.com/" ||
+                    "http://localhost:3000"
             )
         ),
 });
@@ -57,6 +54,7 @@ const cookieSessionMiddleware = cookieSession({
 // cookiesession is split into two steps, instead of one app.use call. This is bc we are using it twice.
 // Here, we are giving socket access to the cookieSession.
 app.use(cookieSessionMiddleware);
+
 io.use(function (socket, next) {
     cookieSessionMiddleware(socket.request, socket.request.res, next);
 });
