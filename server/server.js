@@ -177,6 +177,7 @@ io.on("connection", async (socket) => {
         rooms[roomName] = {
             roomName,
             playerUrl,
+            host: socket.id,
             users: [
                 {
                     id: socket.id,
@@ -188,7 +189,21 @@ io.on("connection", async (socket) => {
         };
         // include a display name here.
         socket.join(roomName);
+        console.log(rooms[roomName]);
         io.to(roomName).emit("new room member", rooms[roomName]);
+    });
+
+    socket.on("hostProgress", (data) => {
+        const { progress, roomName } = data;
+        rooms[roomName] = {
+            ...rooms[roomName],
+            hostProgress: progress,
+        };
+    });
+
+    socket.on("syncWithHost", (roomName) => {
+        console.log(roomName);
+        io.to(socket.id).emit("sync with host", rooms[roomName].hostProgress);
     });
 
     socket.on("joinRoom", (data) => {
@@ -225,14 +240,27 @@ io.on("connection", async (socket) => {
         io.to(data.myRoom.roomName).emit("ready or not", data.activeUser);
     });
 
-    socket.on("selectForAll", (data) => {
-        console.log("playing in:", data.roomName);
-        io.to(data.roomName).emit("select for all", data.playerUrl);
-    });
-
     socket.on("playForAll", (data) => {
         console.log("playing in:", data);
+        console.log(rooms[data.roomName]);
         io.to(data.roomName).emit("play for all");
+    });
+
+    socket.on("hostToggledPlaying", (roomName) => {
+        console.log(roomName);
+        if (!rooms[roomName].hostPlaying) {
+            rooms[roomName] = {
+                ...rooms[roomName],
+                hostPlaying: true,
+            };
+        } else {
+            rooms[roomName] = {
+                ...rooms[roomName],
+                hostPlaying: false,
+            };
+        }
+        console.log(rooms[roomName]);
+        io.to(roomName).emit("host toggled playing", rooms[roomName]);
     });
 
     // socket.on("allUsersReady")

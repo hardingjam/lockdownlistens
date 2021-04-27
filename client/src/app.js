@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import SetLocation from "./hooks/setLocation";
 import ReactPlayer from "react-player";
 import Navbar from "./hooks/navbar";
@@ -8,31 +8,49 @@ import Results from "./hooks/listen-results";
 import Submit from "./hooks/submit";
 import Room from "./hooks/room";
 import { socket } from "./socket";
+import { setPlaying } from "./actions";
 
 export default function App() {
     const playerUrl = useSelector((state) => state.playerUrl || "");
-    const [playing, setPlaying] = useState(false);
-    const [progress, setProgress] = useState("");
+    const playing = useSelector((state) => state.isPlaying);
     const playerRef = useRef(null);
+    const [progress, setProgress] = useState("");
+    const myRoom = useSelector((state) => state.room);
+    const activeUser = useSelector((state) => state.activeUser);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log(progress.playedSeconds);
+        if (myRoom && myRoom.host == activeUser) {
+            console.log(progress.playedSeconds);
+            const data = {
+                progress: progress.playedSeconds,
+                roomName: myRoom.roomName,
+            };
+            socket.emit("hostProgress", data);
+        }
     }, [progress]);
 
-    socket.on("play for all", () => {
-        setPlaying(true);
-    });
+    useEffect(() => {
+        if (myRoom && myRoom.host == activeUser) {
+            console.log(playing);
+            socket.emit("hostToggledPlaying", myRoom.roomName);
+        }
+    }, [playing]);
+
+    useEffect(() => {
+        //adding an event listener
+        socket.on("sync with host", (seconds) => {
+            playerRef.current.seekTo(seconds);
+        });
+    }, []);
 
     function handlePause() {
-        setPlaying(false);
+        dispatch(setPlaying(false));
     }
     function handlePlay() {
-        setPlaying(true);
+        dispatch(setPlaying(true));
     }
-
-    function seekTest() {
-        playerRef.seekTo(300, seconds);
-    }
+    console.log("component is re-rendering");
 
     return (
         <div id="app-component">
@@ -48,7 +66,7 @@ export default function App() {
                 <Route path="/submit/" component={Submit} />
                 <Route path="/room/" component={Room} />
             </BrowserRouter>
-            <button onClick={(e) => seekTest(e)}>try and seek</button>
+
             <ReactPlayer
                 ref={playerRef}
                 className="jukebox"

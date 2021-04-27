@@ -77,6 +77,30 @@ export default function (
         };
     }
 
+    if (action.type == "SET_PLAYER_PROGRESS") {
+        console.log(action.progress);
+        state = {
+            ...state,
+            playerProgress: action.progress,
+        };
+    }
+
+    if (action.type == "SET_PLAYING") {
+        state = {
+            ...state,
+            isPlaying: action.boolean,
+        };
+    }
+
+    if (action.type == "TOGGLE_HOST_PLAYING") {
+        state = {
+            ...state,
+            room: {
+                ...state.room,
+                hostPlaying: action.boolean,
+            },
+        };
+    }
     // final return of state
     return state;
 }

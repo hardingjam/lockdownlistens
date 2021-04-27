@@ -5,7 +5,9 @@ import {
     activeUser,
     toggleReady,
     setPlayerUrl,
+    setPlayerProgress,
     setPlaying,
+    toggleHostPlaying,
 } from "./actions";
 
 export let socket;
@@ -25,6 +27,10 @@ export const init = (store) => {
             // client needs to know who's in their room.
         });
 
+        socket.on("host toggled playing", (data) => {
+            console.log(data);
+        });
+
         socket.on("your socket", (data) => {
             store.dispatch(activeUser(data));
         });
@@ -39,6 +45,19 @@ export const init = (store) => {
             store.dispatch(setPlayerUrl(playerUrl));
         });
 
+        socket.on("sync with host", (progress) => {
+            console.log(progress);
+            store.dispatch(setPlayerProgress(progress));
+        });
+
+        socket.on("host toggled playing", (room) => {
+            console.log(room.hostPlaying);
+            store.dispatch(toggleHostPlaying(room.hostPlaying));
+        });
+
+        socket.on("play for all", () => {
+            store.dispatch(setPlaying(true));
+        });
         // when recieveing errors.
     }
 };

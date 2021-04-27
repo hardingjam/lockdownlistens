@@ -63,3 +63,24 @@ export async function toggleReady(userId) {
         userId,
     };
 }
+
+export async function setPlayerProgress(progress) {
+    return {
+        type: "SET_PLAYER_PROGRESS",
+        progress,
+    };
+}
+
+export async function setPlaying(boolean) {
+    return {
+        type: "SET_PLAYING",
+        boolean,
+    };
+}
+
+export async function toggleHostPlaying(boolean) {
+    return {
+        type: "TOGGLE_HOST_PLAYING",
+        boolean,
+    };
+}

@@ -178,9 +178,14 @@ h3 {
     display: flex;
     flex-direction: column;
 }
+#room-users > p {
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
 #room-users > h3 {
     margin-top: 20px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 #room-users > .error {
     margin-bottom: 10px;
@@ -290,6 +295,12 @@ h3 {
 .blue-link {
     color: royalblue;
     cursor: pointer;
+    text-decoration: none;
+}
+
+.blue-link:hover {
+    font-weight: 400;
+    text-decoration: underline;
 }
 
 .lds-roller {
@@ -380,9 +391,15 @@ h3 {
 #member {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    width: 50%;
 }
+
+#member > span {
+    margin-right: 5px;
+}
+
 #member > button {
     margin-left: auto;
     align-self: center;
@@ -394,4 +411,8 @@ h3 {
 }
 
 #room-members-container {
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    margin-left: 10%;
 }

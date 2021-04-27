@@ -1,20 +1,23 @@
 import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { HashRouter, Link } from "react-router-dom";
-import { createNewRoom } from "../actions";
+import { createNewRoom, setPlayerUrl } from "../actions";
 import { socket } from "../socket";
+
 // should I use a hashrouter for the various room states?
 
 export default function Room() {
     const myRoom = useSelector((state) => state.room);
     const playerUrl = useSelector((state) => state.playerUrl);
     const activeUser = useSelector((state) => state.activeUser);
-
+    const isPlaying = useSelector((state) => state.isPlaying);
     const [roomName, setRoomName] = useState("");
     const [error, setError] = useState("");
     const [userName, setUserName] = useState("");
     const [allReady, setAllReady] = useState(false);
     const [admin, setAdmin] = useState(false);
+
+    const dispatch = useDispatch();
     // socket.on (either error) setError.
 
     socket.on("room exists", () => {
@@ -80,8 +83,27 @@ export default function Room() {
         }
 
         if (e.target.name == "playForAll") {
-            const data = { roomName: myRoom.roomName, playerUrl };
-            socket.emit("playForAll", data);
+            if (!playerUrl) {
+                setError("Please select some music for the room.");
+                console.log("no music chosen");
+            } else {
+                const data = { roomName: myRoom.roomName, playerUrl };
+                socket.emit("playForAll", data);
+            }
+        }
+
+        if (e.target.name == "syncWithHost") {
+            socket.emit("syncWithHost", myRoom.roomName);
+        }
+
+        if (e.target.name == "chooseLink") {
+            const newLink = prompt(
+                "Enter the URL of the music you'd like to share..."
+            );
+            socket.emit("updateUrl", {
+                roomName: myRoom.roomName,
+                playerUrl: newLink,
+            });
         }
     }
 
@@ -155,10 +177,31 @@ export default function Room() {
                         is the host. When all guests are ready, the party can
                         begin.
                     </h3>
+                    {myRoom.users.length == 1 && (
+                        <p>
+                            Feel free to browse through the catalogue until your
+                            guests arrive.
+                        </p>
+                    )}
                     {admin && !playerUrl && (
                         <p className="error">
                             As the admin, it's up to you to{" "}
-                            <Link to="/listen-now">pick the music</Link>
+                            <Link className="blue-link" to="/listen-now">
+                                pick the music
+                            </Link>
+                        </p>
+                    )}
+                    {admin && (
+                        <p>
+                            If you'd like to host some music not in our
+                            catalogue,{" "}
+                            <a
+                                name="chooseLink"
+                                className="blue-link"
+                                onClick={(e) => handleClick(e)}
+                            >
+                                click here.
+                            </a>
                         </p>
                     )}
                     <>
@@ -182,14 +225,28 @@ export default function Room() {
                         </div>
                         {allReady && admin && (
                             <>
-                                <p>Everyone's ready</p>
-                                <button
-                                    name="playForAll"
-                                    onClick={(e) => handleClick(e)}
-                                >
-                                    Start the music
-                                </button>
+                                <p>
+                                    Everyone's ready,{" "}
+                                    <a
+                                        className="blue-link"
+                                        name="playForAll"
+                                        onClick={(e) => handleClick(e)}
+                                    >
+                                        start the music
+                                    </a>
+                                </p>
+                                {error && !playerUrl && (
+                                    <p className="error">{error}</p>
+                                )}
                             </>
+                        )}
+                        {!admin && isPlaying && (
+                            <button
+                                name="syncWithHost"
+                                onClick={(e) => handleClick(e)}
+                            >
+                                Sync with host
+                            </button>
                         )}
                     </>
                 </div>
