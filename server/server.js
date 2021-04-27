@@ -86,11 +86,10 @@ app.post("/timezone/", (req, res) => {
     res.json({ success: true });
 });
 
-app.get("/welcome", (req, res) => {
-    if (req.session.userId) {
+app.get("/listen-now", (req, res) => {
+    console.log("tz in listen now:", req.session.tz);
+    if (!req.session.tz) {
         res.redirect("/");
-    } else {
-        res.sendFile(path.join(__dirname, "..", "client", "index.html"));
     }
 });
 
@@ -140,8 +139,9 @@ app.post("/submit/", async (req, res) => {
 /* ===== NEVER DELETE OR COMMENT OUT THIS ROUTE ===== */
 
 app.get("*", function (req, res) {
-    if (!req.session.userId) {
-        res.redirect("/welcome");
+    console.log(req.session.tz);
+    if (!req.session.tz) {
+        res.redirect("/");
     } else {
         res.sendFile(path.join(__dirname, "..", "client", "index.html"));
     }
@@ -263,10 +263,9 @@ io.on("connection", async (socket) => {
         io.to(roomName).emit("host toggled playing", rooms[roomName]);
     });
 
-    // socket.on("allUsersReady")
-
     socket.on("disconnect", () => {
-        io.sockets.emit("userLeft", onlineUsers[socket.id]);
+        console.log(rooms);
+        io.emit("userleft", onlineUsers[socket.id]);
         delete onlineUsers[socket.id];
     });
 });

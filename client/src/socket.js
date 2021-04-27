@@ -8,13 +8,13 @@ import {
     setPlayerProgress,
     setPlaying,
     toggleHostPlaying,
+    userLeft,
 } from "./actions";
 
 export let socket;
 export const init = (store) => {
     if (!socket) {
         socket = io.connect();
-
         socket.on("new room member", (data) => {
             console.log("socket.js join roomm data:", data);
             store.dispatch(joinRoom(data));
@@ -53,6 +53,11 @@ export const init = (store) => {
 
         socket.on("play for all", () => {
             store.dispatch(setPlaying(true));
+        });
+
+        socket.on("userleft", (id) => {
+            console.log("id of user leaving:", id);
+            store.dispatch(userLeft(id));
         });
         // when recieveing errors.
     }

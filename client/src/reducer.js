@@ -99,6 +99,16 @@ export default function (
             },
         };
     }
+
+    if (action.type == "USER_LEFT") {
+        state = {
+            ...state,
+            room: {
+                ...state.room,
+                users: state.room.users.filter((user) => user.id !== action.id),
+            },
+        };
+    }
     // final return of state
     return state;
 }

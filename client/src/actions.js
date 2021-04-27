@@ -86,7 +86,14 @@ export async function toggleHostPlaying(boolean) {
 }
 
 export async function getSearchResults(params) {
-    console.log("action.js", params);
     const { data } = await axios.get("/api/search/", { params });
     console.log(data);
+}
+
+export async function userLeft(id) {
+    console.log("id in actions.js", id);
+    return {
+        type: "USER_LEFT",
+        id,
+    };
 }
