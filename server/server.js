@@ -28,12 +28,10 @@ const csurf = require("csurf");
 const server = require("http").Server(app);
 const io = require("socket.io")(server, {
     allowRequest: (req, callback) =>
-        // allowRequest is socket.io's way of filtering out traffic from unauthorized sites.
         callback(
             null,
             req.headers.referer.startsWith(
-                "https://lockdownlistens.herokuapp.com/" ||
-                    "http://localhost:3000"
+                "https://lockdownlistens.herokuapp.com/"
             )
         ),
 });

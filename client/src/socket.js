@@ -14,10 +14,6 @@ export let socket;
 export const init = (store) => {
     if (!socket) {
         socket = io.connect();
-        //listen to events from the server
-        // updating readiness
-        // add members
-        // add the socket.id to redux state
 
         socket.on("new room member", (data) => {
             console.log("socket.js join roomm data:", data);
