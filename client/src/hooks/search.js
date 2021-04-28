@@ -7,7 +7,7 @@ import { setPlayerUrl } from "../actions";
 
 export default function Search() {
     const searchResults = useSelector((state) => state.searchResults);
-    const [time, setTime] = useState("Night");
+    const [time, setTime] = useState("Evening");
     const [day, setDay] = useState("Fri-Sat");
     const timezone = useSelector((state) => state.timezone);
     const weekDay = useSelector((state) => state.weekDay);
@@ -75,7 +75,7 @@ export default function Search() {
                             onChange={(e) => handleChange(e)}
                         >
                             <option value="Sun-Tues">Sun-Tues</option>
-                            <option value="Weds-Thurs">Weds-Thurs</option>
+                            <option value="Weds-Thurs">Wed-Thurs</option>
                             <option value="Fri-Sat">Fri-Sat</option>
                         </select>
                     </>
