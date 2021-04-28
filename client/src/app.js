@@ -77,7 +77,7 @@ export default function App() {
                     className="jukebox"
                     wrapper="div"
                     width="100vw"
-                    height="100px"
+                    height="150px"
                     url={playerUrl}
                     controls={true}
                     playing={playing}
