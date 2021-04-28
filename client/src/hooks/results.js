@@ -13,13 +13,14 @@ export default function Results() {
     const partOfDay = useSelector((state) => state.partOfDay);
     const playerUrl = useSelector((state) => state.playerUrl);
     const myRoom = useSelector((state) => state.room);
+
     const dispatch = useDispatch();
 
     const [hover, setHover] = useState(false);
 
     useEffect(() => {
         if (myRoom) {
-            console.log("updating playerUrl from listen-results");
+            console.log("updating playerUrl from results");
             const data = { roomName: myRoom.roomName, playerUrl };
             socket.emit("updateUrl", data);
         }
@@ -38,7 +39,11 @@ export default function Results() {
         dispatch(setPlayerUrl(url));
     }
     if (!results) {
-        return <p>Loading</p>;
+        return (
+            <div className="loading">
+                <h3>Loading Listens...</h3>
+            </div>
+        );
     }
     return (
         <div className="results-container">
@@ -75,14 +80,13 @@ export default function Results() {
                                 )}
                             </div>
                             {hover == result.id && (
-                                <div className="result-info">
-                                    <h2
-                                        onClick={() => {
-                                            handleClick(result.link);
-                                        }}
-                                    >
-                                        {result.preview.title}
-                                    </h2>
+                                <div
+                                    className="result-info pointer"
+                                    onClick={() => {
+                                        handleClick(result.link);
+                                    }}
+                                >
+                                    <h2>{result.preview.title}</h2>
                                     <h2>
                                         {formatRelative(
                                             parseISO(result.posted_at),
@@ -97,7 +101,7 @@ export default function Results() {
                                         ))}
                                     {result.message !== "" && (
                                         <p className="result-message">
-                                            "{result.message}"
+                                            {result.message}
                                         </p>
                                     )}
                                 </div>

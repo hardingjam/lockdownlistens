@@ -14,7 +14,7 @@ module.exports.initialPopulate = function (timestamp, message, link, tags) {
                     ON CONFLICT ON CONSTRAINT posts_link_key
                     DO UPDATE SET votes = posts.votes + 1 WHERE posts.link = $3;`;
     const params = [timestamp, message, link, tags];
-    return herokudb.query(query, params).then(({ rows }) => {
+    return db.query(query, params).then(({ rows }) => {
         return rows;
     });
 };
@@ -67,6 +67,35 @@ module.exports.submitPost = function (link, message, tags) {
                     DO UPDATE SET votes = posts.votes + 1 WHERE posts.link = $1
                     RETURNING *;`;
     const params = [link, message, tags];
+    return db.query(query, params).then(({ rows }) => {
+        return rows;
+    });
+};
+
+module.exports.getResultsByTimeOfDay = function (
+    dayOfWeek,
+    timeOfDay,
+    fuzzFactor
+) {
+    console.log(dayOfWeek, timeOfDay);
+    const query = `SELECT * FROM posts
+                    WHERE EXTRACT(DOW FROM posted_at) IN ($1)
+                    AND (extract('hour' from posted_at) >=
+                    (EXTRACT('hour' from TO_TIMESTAMP($2, 'MM/DD/YYYY HH12:MI:SS PM')) - $3)
+                    AND extract('hour' from posted_at) <= 
+                    (EXTRACT('hour' from TO_TIMESTAMP($2, 'MM/DD/YYYY HH12:MI:SS PM')) + $3))
+                    ORDER BY RANDOM();`;
+    const params = [dayOfWeek, timeOfDay, fuzzFactor];
+    return db.query(query, params).then(({ rows }) => {
+        return rows;
+    });
+};
+module.exports.getResultsBySearch = function (dayRange, hourRange) {
+    console.log(dayRange, hourRange);
+    const query = `SELECT * FROM posts
+                    WHERE EXTRACT(DOW FROM posted_at) IN ($1, $2)
+                    AND (extract('hour' from posted_at) IN ($3, $4));`;
+    const params = [dayRange[0], dayRange[1], hourRange[0], hourRange[1]];
     return db.query(query, params).then(({ rows }) => {
         return rows;
     });

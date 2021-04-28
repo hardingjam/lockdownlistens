@@ -65,8 +65,8 @@ export default function Room() {
             if (!roomName || roomName == "") {
                 setError("Please name your room");
             } else {
-                // useSelector room
                 socket.emit("createRoom", { roomName, userName, playerUrl });
+                setError("");
             }
         }
         if (e.target.name == "join") {
@@ -76,6 +76,7 @@ export default function Room() {
             const data = { roomName, userName };
             // dispatch the room join
             socket.emit("joinRoom", data);
+            setError("");
         }
         if (e.target.name == "setName") {
             console.log("setting name");
@@ -187,7 +188,7 @@ export default function Room() {
         return (
             <div id="room-container">
                 <div id="room-users">
-                    <h1>{myRoom.roomName}</h1>
+                    <h1>Welcome to {myRoom.roomName}</h1>
 
                     <h3>
                         {myRoom.users.filter((member) => member.admin)[0].name}{" "}

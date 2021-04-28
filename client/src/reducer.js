@@ -109,6 +109,13 @@ export default function (
             },
         };
     }
+
+    if (action.type == "GET_SEARCH_RESULTS") {
+        state = {
+            ...state,
+            searchResults: action.data,
+        };
+    }
     // final return of state
     return state;
 }

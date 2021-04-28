@@ -80,9 +80,14 @@ export default function Submit() {
     return (
         <div id="submit-container">
             <section id="submit-form">
-                <h1>
-                    What are you listening to this {weekDay} {partOfDay}?
-                </h1>
+                {weekDay && partOfDay ? (
+                    <h1>
+                        What are you listening to this {weekDay} {partOfDay}?
+                    </h1>
+                ) : (
+                    <h1>What are you listening to right now?</h1>
+                )}
+
                 <p>Lockdown Listens accepts Mixcloud and SoundCloud links.</p>
                 <p>
                     Please tailor your submission to the time of day, and day of

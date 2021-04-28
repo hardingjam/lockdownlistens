@@ -8,7 +8,11 @@ const cookieSession = require("cookie-session");
 const { scrape } = require("./scrape");
 
 const { v4: uuidv4 } = require("uuid");
-const { getResultsByTimeOfDay, submitPost } = require("./database");
+const {
+    getResultsByTimeOfDay,
+    submitPost,
+    getResultsBySearch,
+} = require("./database");
 
 // ???
 const week = [
@@ -23,6 +27,7 @@ const week = [
 
 // to, body, subject
 const csurf = require("csurf");
+const { start } = require("repl");
 
 // creating the initial handshake between socket and our server (cannot use Express for this)
 const server = require("http").Server(app);
@@ -127,6 +132,26 @@ app.get("/api/listen-now/", async (req, res) => {
 app.get("/api/search/", async (req, res) => {
     const { day, time } = req.query;
     console.log(day, time);
+    let dayRange = [0, 2];
+    if (day == "Weds-Thurs") {
+        dayRange = [3, 4];
+    } else if (day == "Fri-Sat") {
+        dayRange = [5, 6];
+    }
+    let hourRange = [4, 12];
+    if (time == "Afternoon") {
+        hourRange = [12, 17];
+    }
+    if (time == "Evening") {
+        hourRange = [17, 18];
+    }
+    if (time == "Night") {
+        hourRange = [17, 24];
+    }
+
+    const data = await getResultsBySearch(dayRange, hourRange);
+    const resp = await scrape(data);
+    res.json(resp);
 });
 
 app.post("/submit/", async (req, res) => {
@@ -212,6 +237,7 @@ io.on("connection", async (socket) => {
             console.log("room does not exist, you can create it");
             return io.to(socket.id).emit("no such room");
         }
+        console.log(rooms[roomName]);
 
         rooms[roomName] = {
             ...rooms[roomName],
@@ -264,6 +290,9 @@ io.on("connection", async (socket) => {
     });
 
     socket.on("disconnect", () => {
+        Object.values(rooms).forEach((o) => {
+            o.users = o.users.filter(({ id }) => id !== socket.id);
+        });
         console.log(rooms);
         io.emit("userleft", onlineUsers[socket.id]);
         delete onlineUsers[socket.id];

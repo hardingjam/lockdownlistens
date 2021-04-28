@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import SetLocation from "./hooks/setLocation";
 import ReactPlayer from "react-player";
 import Navbar from "./hooks/navbar";
-import Results from "./hooks/listen-results";
+import Results from "./hooks/results";
 import Submit from "./hooks/submit";
 import Room from "./hooks/room";
 import About from "./hooks/about";
@@ -19,6 +19,7 @@ export default function App() {
     const [progress, setProgress] = useState("");
     const myRoom = useSelector((state) => state.room);
     const activeUser = useSelector((state) => state.activeUser);
+    const results = useSelector((state) => state.results);
     const dispatch = useDispatch();
 
     useEffect(() => {
