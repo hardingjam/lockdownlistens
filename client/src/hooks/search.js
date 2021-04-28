@@ -103,7 +103,7 @@ export default function Search() {
                     {searchResults
                         .filter((item) => item.preview)
                         .map((result, i) => (
-                            <div id="result-container small" key={i}>
+                            <div className="result-container small" key={i}>
                                 <div
                                     className="result-preview small"
                                     id={result.id}

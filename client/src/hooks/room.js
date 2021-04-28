@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { createNewRoom, setPlayerUrl, setPlaying } from "../actions";
+import { createNewRoom, toggleReady, setPlaying } from "../actions";
 import { socket } from "../socket";
 
 // should I use a hashrouter for the various room states?
 
 export default function Room() {
+    const results = useSelector((state) => state.results);
     const myRoom = useSelector((state) => state.room);
     const playerUrl = useSelector((state) => state.playerUrl);
     const activeUser = useSelector((state) => state.activeUser);
@@ -84,7 +85,6 @@ export default function Room() {
 
         if (e.target.name == "toggleReady") {
             const data = { myRoom, activeUser };
-            console.log("toggling ready");
             socket.emit("toggleReady", data);
         }
 
@@ -204,9 +204,15 @@ export default function Room() {
                     {admin && !playerUrl && (
                         <p className="error">
                             As the admin, it's up to you to{" "}
-                            <Link className="blue-link" to="/listen-now">
-                                pick the music
-                            </Link>
+                            {results ? (
+                                <Link className="blue-link" to="/listen-now">
+                                    pick the music
+                                </Link>
+                            ) : (
+                                <Link className="blue-link" to="/">
+                                    pick the music
+                                </Link>
+                            )}
                         </p>
                     )}
                     {admin && (
@@ -242,7 +248,11 @@ export default function Room() {
                             {myRoom.users.map((member, i) => (
                                 <div id="member" key={i}>
                                     <span className="readyOrNot">
-                                        {!member.ready ? <>🔴</> : <>🟢</>}
+                                        {member.ready || myRoom.hostplaying ? (
+                                            <>🟢</>
+                                        ) : (
+                                            <>🔴</>
+                                        )}
                                     </span>
                                     <p>{member.name}</p>
                                     {member.id == activeUser &&

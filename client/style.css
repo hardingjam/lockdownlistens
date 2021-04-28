@@ -6,11 +6,12 @@
 
 body {
     background-color: #dde5ed;
-    font-size: 1.2em;
+    font-size: 1em;
 }
 
 p {
     font-weight: 100;
+    line-height: 1.4rem;
 }
 
 button {
@@ -20,6 +21,7 @@ button {
     padding: 5px;
     width: 80px;
     cursor: pointer;
+    font-size: 1rem;
 }
 
 button:hover {
@@ -146,7 +148,7 @@ h4 {
     pointer-events: none;
 }
 
-#result-container {
+.result-container {
     position: relative;
 }
 
@@ -253,6 +255,9 @@ h3 {
 .search-text > h1 {
     margin-bottom: 10px;
 }
+.search-text > h3 {
+    line-height: 1.5rem;
+}
 #search-form {
     display: flex;
     flex-direction: column;
@@ -280,13 +285,7 @@ h3 {
 #search-form > button {
     margin-left: 10px;
     margin-top: 5px;
-    height: 25px;
-    align-self: center;
-}
-#search-form > button {
-    margin-left: 10px;
-    margin-top: 5px;
-    height: 25px;
+    height: 35px;
     align-self: center;
 }
 
@@ -355,6 +354,7 @@ h3 {
     border: none;
     border-bottom: 1px solid #ccc;
     border-radius: 2px;
+    font-size: 1rem;
 }
 
 .narrow {

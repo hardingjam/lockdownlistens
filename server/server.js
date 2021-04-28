@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const compression = require("compression");
-// shrinking files
+
 const path = require("path");
 const cookieSession = require("cookie-session");
 
@@ -14,7 +14,6 @@ const {
     getResultsBySearch,
 } = require("./database");
 
-// ???
 const week = [
     "Sunday",
     "Monday",
@@ -25,9 +24,7 @@ const week = [
     "Saturday",
 ];
 
-// to, body, subject
 const csurf = require("csurf");
-const { start } = require("repl");
 
 // creating the initial handshake between socket and our server (cannot use Express for this)
 const server = require("http").Server(app);
@@ -182,16 +179,11 @@ let rooms = {};
 let onlineUsers = {};
 
 io.on("connection", async (socket) => {
-    // const socketUserId = socket.request.session.userId;
-
     onlineUsers[socket.id] = socket.id;
-
     // to individual socketid (private message)
     io.to(socket.id).emit("your socket", socket.id);
-    //this is listening to who joined a room...
-    socket.on("createRoom", (data) => {
-        // this will be different depending on which user creates
 
+    socket.on("createRoom", (data) => {
         const { roomName, userName, playerUrl } = data;
         if (rooms[roomName]) {
             console.log("room already exisits");
@@ -262,7 +254,10 @@ io.on("connection", async (socket) => {
     });
 
     socket.on("toggleReady", (data) => {
-        console.log("toggling ready in server.js");
+        console.log("data.myRoom:", data.myRoom);
+        console.log("socket-side room", rooms[data.myRoom.roomName]);
+        // rooms[data.myRoom.roomName] = data.myRoom;
+        // write a function here to update the server-side
         io.to(data.myRoom.roomName).emit("ready or not", data.activeUser);
     });
 
@@ -290,8 +285,11 @@ io.on("connection", async (socket) => {
     });
 
     socket.on("disconnect", () => {
-        Object.values(rooms).forEach((o) => {
-            o.users = o.users.filter(({ id }) => id !== socket.id);
+        Object.values(rooms).forEach((room) => {
+            if (room.users.length) {
+                console.log("in disconnect:", room.users);
+                room.users = room.users.filter((user) => user.id !== socket.id);
+            }
         });
         console.log(rooms);
         io.emit("userleft", onlineUsers[socket.id]);
