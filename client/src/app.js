@@ -71,21 +71,22 @@ export default function App() {
                 <Route path="/about/" component={About} />
                 <Route path="/search/" component={Search} />
             </BrowserRouter>
-
-            <ReactPlayer
-                ref={playerRef}
-                className="jukebox"
-                wrapper="div"
-                width="100vw"
-                height="150px"
-                url={playerUrl}
-                controls={true}
-                playing={playing}
-                onPlay={(e) => handlePlay(e)}
-                onPause={(e) => handlePause(e)}
-                onProgress={setProgress}
-                progressInterval={3000}
-            />
+            {playerUrl && (
+                <ReactPlayer
+                    ref={playerRef}
+                    className="jukebox"
+                    wrapper="div"
+                    width="100vw"
+                    height="150px"
+                    url={playerUrl}
+                    controls={true}
+                    playing={playing}
+                    onPlay={(e) => handlePlay(e)}
+                    onPause={(e) => handlePause(e)}
+                    onProgress={setProgress}
+                    progressInterval={3000}
+                />
+            )}
         </div>
     );
 }

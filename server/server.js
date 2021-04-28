@@ -74,6 +74,13 @@ app.use(
     })
 );
 
+app.use((req, res, next) => {
+    if (req.headers["x-forwarded-proto"].startsWith("https")) {
+        return next();
+    }
+    return res.redirect(`https://${req.hostname}${req.url}`);
+});
+
 /* ====== ROUTES ====== */
 
 app.get("/", (req, res) => {
