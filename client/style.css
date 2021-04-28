@@ -8,6 +8,7 @@ body {
     background-color: #dde5ed;
     font-size: 1em;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 p {
@@ -175,7 +176,7 @@ h4 {
     margin-left: auto;
     margin-top: 10px;
     justify-content: space-between;
-    margin-right: 10px;
+    margin-right: 20px;
     min-width: 520px;
 }
 
