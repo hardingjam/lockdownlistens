@@ -6,6 +6,7 @@ import { browserHistory } from "react-router";
 import { useHistory } from "react-router-dom";
 
 export default function Submit() {
+    const results = useSelector((state) => state.results);
     const weekDay = useSelector((state) => state.weekDay);
     const partOfDay = useSelector((state) => state.partOfDay);
     const history = useHistory();
@@ -73,7 +74,11 @@ export default function Submit() {
         } else {
             ("dispatching");
             dispatch(sendPost(link, message, tags));
-            history.push("/listen-now/");
+            if (results) {
+                history.push("/listen-now/");
+            } else {
+                history.push("/");
+            }
         }
     }
 
