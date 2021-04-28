@@ -1,7 +1,7 @@
 import axios from "./axios";
 
 export async function setTimezone(data) {
-    console.log(data);
+    data;
     return {
         type: "SET_TIMEZONE",
         data,
@@ -9,7 +9,7 @@ export async function setTimezone(data) {
 }
 
 export async function getResults(timeNow, timezone) {
-    console.log(timeNow, timezone);
+    timeNow, timezone;
     await axios.post("/timezone/", { timezone });
     const { data } = await axios.get(`/api/listen-now/`, {
         params: { timeNow },
@@ -87,7 +87,7 @@ export async function toggleHostPlaying(boolean) {
 
 export async function getSearchResults(params) {
     const { data } = await axios.get("/api/search/", { params });
-    console.log(data);
+    data;
     return {
         type: "GET_SEARCH_RESULTS",
         data,
@@ -95,7 +95,7 @@ export async function getSearchResults(params) {
 }
 
 export async function userLeft(id) {
-    console.log("id in actions.js", id);
+    "id in actions.js", id;
     return {
         type: "USER_LEFT",
         id,

@@ -19,7 +19,7 @@ export default function Search() {
 
     useEffect(() => {
         if (myRoom) {
-            console.log("updating playerUrl from results");
+            ("updating playerUrl from results");
             const data = { roomName: myRoom.roomName, playerUrl };
             socket.emit("updateUrl", data);
         }
@@ -27,22 +27,22 @@ export default function Search() {
 
     function handleChange(e) {
         if (e.target.name == "day") {
-            console.log(e.target.value);
+            e.target.value;
             setDay(e.target.value);
         }
         if (e.target.name == "time") {
-            console.log(e.target.value);
+            e.target.value;
             setTime(e.target.value);
         }
     }
     function handleClick(e) {
         if (e.target.name == "search") {
-            console.log("searching", day, time);
+            "searching", day, time;
             const data = { day, time };
             dispatch(getSearchResults(data));
         }
         if (e.target.name == "result") {
-            console.log(e);
+            e;
         }
     }
 

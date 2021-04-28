@@ -5,7 +5,7 @@ export default function Name() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log("On the hook!");
+        ("On the hook!");
     }, []);
 
     return <div id="hook-container"></div>;

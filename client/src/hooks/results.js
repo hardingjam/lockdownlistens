@@ -20,7 +20,7 @@ export default function Results() {
 
     useEffect(() => {
         if (myRoom) {
-            console.log("updating playerUrl from results");
+            ("updating playerUrl from results");
             const data = { roomName: myRoom.roomName, playerUrl };
             socket.emit("updateUrl", data);
         }
@@ -35,7 +35,7 @@ export default function Results() {
     }
 
     function handleClick(url) {
-        console.log(url);
+        url;
         dispatch(setPlayerUrl(url));
     }
     if (!results) {
@@ -59,7 +59,7 @@ export default function Results() {
             {results
                 .filter((item) => item.preview)
                 .map((result, i) => (
-                    <div id="result-container" key={i}>
+                    <div className="result-container" key={i}>
                         <div
                             className="result-preview"
                             id={result.id}

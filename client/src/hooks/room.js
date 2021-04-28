@@ -80,7 +80,7 @@ export default function Room() {
             setError("");
         }
         if (e.target.name == "setName") {
-            console.log("setting name");
+            ("setting name");
         }
 
         if (e.target.name == "toggleReady") {
@@ -91,7 +91,7 @@ export default function Room() {
         if (e.target.name == "playForAll") {
             if (!playerUrl) {
                 setError("Please select some music for the room.");
-                console.log("no music chosen");
+                ("no music chosen");
             } else {
                 const data = { roomName: myRoom.roomName, playerUrl };
                 socket.emit("playForAll", data);

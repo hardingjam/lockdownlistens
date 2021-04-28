@@ -17,7 +17,7 @@ export default function SetLocation() {
             const localTime = new Date().toLocaleString("en-US", {
                 timeZone: tz,
             });
-            console.log("local time:", localTime);
+            "local time:", localTime;
             dispatch(getResults(localTime, tz));
         }
     }

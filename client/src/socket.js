@@ -16,7 +16,7 @@ export const init = (store) => {
     if (!socket) {
         socket = io.connect();
         socket.on("new room member", (data) => {
-            console.log("socket.js join roomm data:", data);
+            "socket.js join roomm data:", data;
             store.dispatch(joinRoom(data));
             // this happens when you JOIN a ROOM update the user's room in state.
             // dispatch some redux action here, with new member,
@@ -24,7 +24,7 @@ export const init = (store) => {
         });
 
         socket.on("host toggled playing", (data) => {
-            console.log(data);
+            data;
         });
 
         socket.on("your socket", (data) => {
@@ -32,22 +32,22 @@ export const init = (store) => {
         });
 
         socket.on("ready or not", (userId) => {
-            console.log("ready or not", userId);
+            "ready or not", userId;
             store.dispatch(toggleReady(userId));
         });
 
         socket.on("update playerUrl", (playerUrl) => {
-            console.log("server udating playeUrl");
+            ("server udating playeUrl");
             store.dispatch(setPlayerUrl(playerUrl));
         });
 
         socket.on("sync with host", (progress) => {
-            console.log(progress);
+            progress;
             store.dispatch(setPlayerProgress(progress));
         });
 
         socket.on("host toggled playing", (room) => {
-            console.log(room.hostPlaying);
+            room.hostPlaying;
             store.dispatch(toggleHostPlaying(room.hostPlaying));
         });
 
@@ -56,7 +56,7 @@ export const init = (store) => {
         });
 
         socket.on("userleft", (id) => {
-            console.log("id of user leaving:", id);
+            "id of user leaving:", id;
             store.dispatch(userLeft(id));
         });
         // when recieveing errors.

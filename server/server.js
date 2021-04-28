@@ -81,15 +81,15 @@ app.get("/", (req, res) => {
 });
 
 app.post("/timezone/", (req, res) => {
-    console.log(req.body);
+    req.body;
     req.session.tz = req.body.timezone;
     req.session.userId = uuidv4();
-    console.log("userId", req.session.userId);
+    "userId", req.session.userId;
     res.json({ success: true });
 });
 
 app.get("/listen-now", (req, res) => {
-    console.log("tz in listen now:", req.session.tz);
+    "tz in listen now:", req.session.tz;
     if (!req.session.tz) {
         res.redirect("/");
     }
@@ -128,7 +128,7 @@ app.get("/api/listen-now/", async (req, res) => {
 
 app.get("/api/search/", async (req, res) => {
     const { day, time } = req.query;
-    console.log(day, time);
+    day, time;
     let dayRange = [0, 2];
     if (day == "Weds-Thurs") {
         dayRange = [3, 4];
@@ -161,7 +161,7 @@ app.post("/submit/", async (req, res) => {
 /* ===== NEVER DELETE OR COMMENT OUT THIS ROUTE ===== */
 
 app.get("*", function (req, res) {
-    console.log(req.session.tz);
+    req.session.tz;
     if (!req.session.tz) {
         res.redirect("/");
     } else {
@@ -170,7 +170,7 @@ app.get("*", function (req, res) {
 });
 
 server.listen(process.env.PORT || 3001, function () {
-    console.log("I'm listening.");
+    ("I'm listening.");
 });
 
 /* SOCKETS */
@@ -186,11 +186,11 @@ io.on("connection", async (socket) => {
     socket.on("createRoom", (data) => {
         const { roomName, userName, playerUrl } = data;
         if (rooms[roomName]) {
-            console.log("room already exisits");
+            ("room already exisits");
             // emit a roomExists, or a noRoomExists depending on the outcome.
             return io.to(socket.id).emit("room exists");
         }
-        console.log("room created:", roomName, "userName", userName);
+        "room created:", roomName, "userName", userName;
         rooms[roomName] = {
             roomName,
             playerUrl,
@@ -206,7 +206,7 @@ io.on("connection", async (socket) => {
         };
         // include a display name here.
         socket.join(roomName);
-        console.log(rooms[roomName]);
+        rooms[roomName];
         io.to(roomName).emit("new room member", rooms[roomName]);
     });
 
@@ -219,17 +219,17 @@ io.on("connection", async (socket) => {
     });
 
     socket.on("syncWithHost", (roomName) => {
-        console.log(roomName);
+        roomName;
         io.to(socket.id).emit("sync with host", rooms[roomName].hostProgress);
     });
 
     socket.on("joinRoom", (data) => {
         const { roomName, userName } = data;
         if (!rooms[roomName]) {
-            console.log("room does not exist, you can create it");
+            ("room does not exist, you can create it");
             return io.to(socket.id).emit("no such room");
         }
-        console.log(rooms[roomName]);
+        rooms[roomName];
 
         rooms[roomName] = {
             ...rooms[roomName],
@@ -254,21 +254,21 @@ io.on("connection", async (socket) => {
     });
 
     socket.on("toggleReady", (data) => {
-        console.log("data.myRoom:", data.myRoom);
-        console.log("socket-side room", rooms[data.myRoom.roomName]);
+        "data.myRoom:", data.myRoom;
+        "socket-side room", rooms[data.myRoom.roomName];
         // rooms[data.myRoom.roomName] = data.myRoom;
         // write a function here to update the server-side
         io.to(data.myRoom.roomName).emit("ready or not", data.activeUser);
     });
 
     socket.on("playForAll", (data) => {
-        console.log("playing in:", data);
-        console.log(rooms[data.roomName]);
+        "playing in:", data;
+        rooms[data.roomName];
         io.to(data.roomName).emit("play for all");
     });
 
     socket.on("hostToggledPlaying", (roomName) => {
-        console.log(roomName);
+        roomName;
         if (!rooms[roomName].hostPlaying) {
             rooms[roomName] = {
                 ...rooms[roomName],
@@ -280,18 +280,18 @@ io.on("connection", async (socket) => {
                 hostPlaying: false,
             };
         }
-        console.log(rooms[roomName]);
+        rooms[roomName];
         io.to(roomName).emit("host toggled playing", rooms[roomName]);
     });
 
     socket.on("disconnect", () => {
         Object.values(rooms).forEach((room) => {
             if (room.users.length) {
-                console.log("in disconnect:", room.users);
+                "in disconnect:", room.users;
                 room.users = room.users.filter((user) => user.id !== socket.id);
             }
         });
-        console.log(rooms);
+        rooms;
         io.emit("userleft", onlineUsers[socket.id]);
         delete onlineUsers[socket.id];
     });

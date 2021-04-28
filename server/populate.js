@@ -9,7 +9,7 @@ const messagesWithGoodLinks = messagesWithLinksInside.filter(
         message.links[0].indexOf("mixcloud") > 0
 );
 
-console.log(messagesWithGoodLinks.length);
+messagesWithGoodLinks.length;
 
 messagesWithGoodLinks.forEach((post) => {
     initialPopulate(
@@ -18,6 +18,6 @@ messagesWithGoodLinks.forEach((post) => {
         post.links[0],
         post.hashtags
     )
-        .then(() => console.log("done"))
-        .catch((err) => console.log(err));
+        .then(() => "done")
+        .catch((err) => err);
 });

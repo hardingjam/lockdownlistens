@@ -19,7 +19,7 @@ const store = createStore(
 if (location.pathname == "/welcome") {
     elem = <SetLocation />;
 } else {
-    console.log("Path name is not welcome!");
+    ("Path name is not welcome!");
     init(store);
     elem = (
         <Provider store={store}>

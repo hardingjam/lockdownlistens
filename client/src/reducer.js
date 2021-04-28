@@ -17,7 +17,7 @@ export default function (
     }
 
     if (action.type == "GET_RESULTS") {
-        console.log("action.payload", action.data);
+        "action.payload", action.data;
         state = {
             ...state,
             results: action.data.results,
@@ -55,7 +55,7 @@ export default function (
     }
 
     if (action.type == "TOGGLE_READY") {
-        console.log("action userId", action.userId);
+        "action userId", action.userId;
         state = {
             ...state,
             room: {
@@ -76,7 +76,7 @@ export default function (
     }
 
     if (action.type == "SET_PLAYER_PROGRESS") {
-        console.log(action.progress);
+        action.progress;
         state = {
             ...state,
             playerProgress: action.progress,

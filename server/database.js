@@ -77,7 +77,7 @@ module.exports.getResultsByTimeOfDay = function (
     timeOfDay,
     fuzzFactor
 ) {
-    console.log(dayOfWeek, timeOfDay);
+    dayOfWeek, timeOfDay;
     const query = `SELECT * FROM posts
                     WHERE EXTRACT(DOW FROM posted_at) IN ($1)
                     AND (extract('hour' from posted_at) >=
@@ -91,7 +91,7 @@ module.exports.getResultsByTimeOfDay = function (
     });
 };
 module.exports.getResultsBySearch = function (dayRange, hourRange) {
-    console.log(dayRange, hourRange);
+    dayRange, hourRange;
     const query = `SELECT * FROM posts
                     WHERE EXTRACT(DOW FROM posted_at) IN ($1, $2)
                     AND (extract('hour' from posted_at) IN ($3, $4));`;

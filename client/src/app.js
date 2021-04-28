@@ -24,7 +24,7 @@ export default function App() {
 
     useEffect(() => {
         if (myRoom && myRoom.host == activeUser) {
-            console.log(progress.playedSeconds);
+            progress.playedSeconds;
             const data = {
                 progress: progress.playedSeconds,
                 roomName: myRoom.roomName,
@@ -35,7 +35,7 @@ export default function App() {
 
     useEffect(() => {
         if (myRoom && myRoom.host == activeUser) {
-            console.log(playing);
+            playing;
             socket.emit("hostToggledPlaying", myRoom.roomName);
         }
     }, [playing]);
@@ -53,7 +53,7 @@ export default function App() {
     function handlePlay() {
         dispatch(setPlaying(true));
     }
-    console.log("component is re-rendering");
+    ("component is re-rendering");
 
     return (
         <div id="app-component">

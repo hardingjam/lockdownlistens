@@ -14,7 +14,7 @@ export default function Submit() {
     const [link, setLink] = useState("");
     const [message, setMessage] = useState("");
     const dispatch = useDispatch();
-    console.log(sendPost);
+    sendPost;
     const possErrs = {
         badUrl: "That doesn't appear to be a SoundCloud or MixCloud link 🕵",
         noTags: "Please add at least one tag 🍸",
@@ -31,7 +31,7 @@ export default function Submit() {
         }
         if (tags.length) {
             setErrors([]);
-            console.log(errors);
+            errors;
         }
     }, [link, tags]);
 
@@ -46,7 +46,7 @@ export default function Submit() {
 
     function handleTags(tags) {
         setTags(tags);
-        console.log("handling tags");
+        ("handling tags");
     }
 
     function handleError(err) {
@@ -56,7 +56,7 @@ export default function Submit() {
     }
 
     function handleClick() {
-        console.log("clicked submit");
+        ("clicked submit");
         if (detectUrls(link)) {
             if (link.indexOf("soundcloud") == -1) {
                 handleError(possErrs.badUrl);
@@ -71,7 +71,7 @@ export default function Submit() {
         if (!tags.length) {
             handleError(possErrs.noTags);
         } else {
-            console.log("dispatching");
+            ("dispatching");
             dispatch(sendPost(link, message, tags));
             history.push("/listen-now/");
         }

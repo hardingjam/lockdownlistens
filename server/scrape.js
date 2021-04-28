@@ -38,7 +38,7 @@ module.exports.scrape = async function (data) {
                 // if there are chained thens, the last chained callback will be returned.
                 // to keep the data when you're calling from somewhere else, return things all the way through.
             })
-            .catch((err) => console.log(err))
+            .catch((err) => err)
     );
 };
 
