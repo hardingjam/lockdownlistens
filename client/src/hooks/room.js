@@ -271,7 +271,7 @@ export default function Room() {
                         </div>
                         {allReady && admin && !isPlaying && (
                             <>
-                                <p>
+                                <p className="space-above">
                                     Everyone's ready,{" "}
                                     <a
                                         className="blue-link"

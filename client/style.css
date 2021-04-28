@@ -19,6 +19,7 @@ button {
     border: 1px solid grey;
     background-color: white;
     padding: 5px;
+    padding-top: 7px;
     width: 80px;
     cursor: pointer;
     font-size: 1rem;
@@ -476,4 +477,12 @@ h3 {
     align-self: flex-end;
     margin-bottom: 15px;
     margin-left: 20px;
+}
+.indent-left {
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.space-above {
+    margin-top: 20px;
 }

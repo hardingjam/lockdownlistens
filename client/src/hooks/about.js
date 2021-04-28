@@ -33,7 +33,15 @@ export default function About() {
                 </p>
 
                 <p>Stay healthy, and happy listening!</p>
-                <p>🍸 Jamie Harding 2021</p>
+                <p className="indent-left">
+                    🍸{" "}
+                    <a
+                        className="blue-link"
+                        href="https://github.com/hardingjam"
+                    >
+                        Jamie Harding 2021
+                    </a>
+                </p>
             </section>
         </div>
     );
