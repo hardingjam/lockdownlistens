@@ -7,7 +7,7 @@
 body {
     background-color: #dde5ed;
     font-size: 1em;
-    overflow-y: hidden;
+    overflow-y: scroll;
 }
 
 p {
