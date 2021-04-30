@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { createNewRoom, toggleReady, setPlaying } from "../actions";
+import { setPlaying } from "../actions";
 import { socket } from "../socket";
+import { setMyName } from "../actions";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
+import Chat from "../hooks/chat";
 
 // should I use a hashrouter for the various room states?
 
@@ -12,6 +16,7 @@ export default function Room() {
     const playerUrl = useSelector((state) => state.playerUrl);
     const activeUser = useSelector((state) => state.activeUser);
     const isPlaying = useSelector((state) => state.isPlaying);
+
     const [roomName, setRoomName] = useState("");
     const [error, setError] = useState("");
     const [userName, setUserName] = useState("");
@@ -67,6 +72,7 @@ export default function Room() {
             if (!roomName || roomName == "") {
                 setError("Please name your room");
             } else {
+                dispatch(setMyName(userName));
                 socket.emit("createRoom", { roomName, userName, playerUrl });
                 setError("");
             }
@@ -75,6 +81,7 @@ export default function Room() {
             const roomName = prompt(
                 "Enter the name of the room you'd like to join"
             );
+            dispatch(setMyName(userName));
             const data = { roomName, userName };
             // dispatch the room join
             socket.emit("joinRoom", data);
@@ -242,52 +249,70 @@ export default function Room() {
                             {error && <p className="error">{error}</p>}
                         </>
                     )}
-                    <>
-                        <div id="room-members-container">
-                            {myRoom.users.map((member, i) => (
-                                <div className="member" key={i}>
-                                    <p>{member.name}</p>
 
-                                    {member.id == activeUser && (
-                                        <select
-                                            name="userIcon"
-                                            value={userIcon}
-                                            onChange={(e) => handleChange(e)}
-                                        >
-                                            <option value="🍸">🍸</option>
-                                            <option value="🦄">🦄</option>
-                                            <option value="🦢">🦢</option>
-                                            <option value="🎵">🎵</option>
-                                            <option value="💗">💗</option>
-                                            <option value="💦">💦</option>
-                                            <option value="🚑">🚑</option>
-                                            <option value="🕊">🕊</option>
-                                        </select>
-                                    )}
-                                    {member.id == activeUser ? (
-                                        <span className="user-icon">
-                                            {userIcon}
-                                        </span>
-                                    ) : (
-                                        <span className="user-icon">
-                                            {member.icon}
-                                        </span>
-                                    )}
+                    <div id="room-members-container">
+                        <Tabs>
+                            <TabList>
+                                <Tab>Listeners</Tab>
+                                <Tab>Chat</Tab>
+                            </TabList>
+                            <TabPanel>
+                                <div className="chat-messages-container">
+                                    {myRoom.users.map((member, i) => (
+                                        <div className="member" key={i}>
+                                            <p>{member.name}</p>
+
+                                            {member.id == activeUser && (
+                                                <select
+                                                    name="userIcon"
+                                                    value={userIcon}
+                                                    onChange={(e) =>
+                                                        handleChange(e)
+                                                    }
+                                                >
+                                                    <option value="🍸">
+                                                        🍸
+                                                    </option>
+                                                    <option value="🦄">
+                                                        🦄
+                                                    </option>
+                                                    <option value="🦢">
+                                                        🦢
+                                                    </option>
+                                                    <option value="🎵">
+                                                        🎵
+                                                    </option>
+                                                    <option value="💗">
+                                                        💗
+                                                    </option>
+                                                    <option value="💦">
+                                                        💦
+                                                    </option>
+                                                    <option value="🚑">
+                                                        🚑
+                                                    </option>
+                                                    <option value="🕊">🕊</option>
+                                                </select>
+                                            )}
+                                            {member.id == activeUser ? (
+                                                <span className="user-icon">
+                                                    {userIcon}
+                                                </span>
+                                            ) : (
+                                                <span className="user-icon">
+                                                    {member.icon}
+                                                </span>
+                                            )}
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
-                        {admin && !isPlaying && (
-                            <p className="space-above">
-                                <a
-                                    className="blue-link"
-                                    name="playForAll"
-                                    onClick={(e) => handleClick(e)}
-                                >
-                                    Let the music play!
-                                </a>
-                            </p>
-                        )}
-                    </>
+                            </TabPanel>
+
+                            <TabPanel>
+                                <Chat icon={userIcon} />
+                            </TabPanel>
+                        </Tabs>
+                    </div>
                 </div>
             </div>
         );

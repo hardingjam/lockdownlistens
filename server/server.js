@@ -205,6 +205,7 @@ io.on("connection", async (socket) => {
             roomName,
             playerUrl,
             host: socket.id,
+            messages: [],
             users: [
                 {
                     id: socket.id,
@@ -263,12 +264,13 @@ io.on("connection", async (socket) => {
         io.to(roomName).emit("update playerUrl", playerUrl);
     });
 
-    socket.on("toggleReady", (data) => {
-        "data.myRoom:", data.myRoom;
-        "socket-side room", rooms[data.myRoom.roomName];
-        // rooms[data.myRoom.roomName] = data.myRoom;
-        // write a function here to update the server-side
-        io.to(data.myRoom.roomName).emit("ready or not", data.activeUser);
+    socket.on("newChatMessage", (data) => {
+        const { roomName, user, message } = data;
+        rooms[roomName] = {
+            ...rooms[roomName],
+            messages: [...rooms[roomName].messages, { user, message }],
+        };
+        io.to(roomName).emit("new chat message", { user, message });
     });
 
     socket.on("playForAll", (data) => {

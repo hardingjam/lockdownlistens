@@ -54,27 +54,6 @@ export default function (
         };
     }
 
-    if (action.type == "TOGGLE_READY") {
-        "action userId", action.userId;
-        state = {
-            ...state,
-            room: {
-                ...state.room,
-                users: state.room.users.map((user) => {
-                    if (user.id == action.userId) {
-                        if (user.ready == true) {
-                            return { ...user, ready: false };
-                        } else {
-                            return { ...user, ready: true };
-                        }
-                    } else {
-                        return user;
-                    }
-                }),
-            },
-        };
-    }
-
     if (action.type == "SET_PLAYER_PROGRESS") {
         action.progress;
         state = {
@@ -121,6 +100,24 @@ export default function (
         state = {
             ...state,
             room: action.data,
+        };
+    }
+
+    if (action.type == "SET_MY_NAME") {
+        state = {
+            ...state,
+            myName: action.name,
+        };
+    }
+
+    if (action.type == "ADD_CHAT_MESSAGE") {
+        console.log(action.data);
+        state = {
+            ...state,
+            room: {
+                ...state.room,
+                messages: [...state.room.messages, action.data],
+            },
         };
     }
     // final return of state

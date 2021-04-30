@@ -7,9 +7,9 @@ import {
     setPlayerUrl,
     setPlayerProgress,
     setPlaying,
-    toggleHostPlaying,
     userLeft,
     updateRoomState,
+    newChatMessage,
 } from "./actions";
 
 export let socket;
@@ -59,6 +59,11 @@ export const init = (store) => {
             console.log("new room state");
             store.dispatch(updateRoomState(room));
         });
+
+        socket.on("new chat message", (data) => {
+            store.dispatch(newChatMessage(data));
+        });
+
         // when recieveing errors.
     }
 };

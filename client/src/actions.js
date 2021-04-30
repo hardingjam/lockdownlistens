@@ -101,3 +101,18 @@ export async function updateRoomState(data) {
         data,
     };
 }
+
+export async function setMyName(name) {
+    return {
+        type: "SET_MY_NAME",
+        name,
+    };
+}
+
+export async function newChatMessage(data) {
+    console.log(data);
+    return {
+        type: "ADD_CHAT_MESSAGE",
+        data,
+    };
+}
