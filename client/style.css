@@ -337,6 +337,10 @@ h3 {
     max-width: 50vw;
 }
 
+#room-users > h4 {
+    font-weight: 200;
+}
+
 #submit-form > input {
     border: none;
 }
@@ -431,19 +435,32 @@ h3 {
     text-decoration: underline;
 }
 
-#member {
+.member {
     display: flex;
     align-items: center;
     margin-bottom: 5px;
     margin-top: 15px;
-    width: 50%;
+    width: 100%;
+    justify-content: end;
 }
 
-#member > span {
+.member > span {
+    margin-right: 5px;
+    margin-left: auto;
+}
+
+.member > span {
     margin-right: 5px;
 }
 
-#member > button {
+.member > select {
+    margin-left: 10px;
+    font-size: 1.5rem;
+    background-color: transparent;
+    border: none;
+}
+
+.member > button {
     margin-left: auto;
     align-self: center;
     margin-top: auto;
@@ -458,6 +475,7 @@ h3 {
     display: flex;
     flex-direction: column;
     margin-left: 10%;
+    max-width: 300px;
 }
 
 .pointer {
@@ -487,4 +505,10 @@ h3 {
 
 .space-above {
     margin-top: 20px;
+}
+
+.user-icon {
+    font-size: 2.5rem;
+    margin-left: 15px;
+    margin-right: 5px;
 }

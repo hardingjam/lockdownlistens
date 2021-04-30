@@ -116,6 +116,13 @@ export default function (
             searchResults: action.data,
         };
     }
+
+    if (action.type == "UPDATE_ROOM_STATE") {
+        state = {
+            ...state,
+            room: action.data,
+        };
+    }
     // final return of state
     return state;
 }

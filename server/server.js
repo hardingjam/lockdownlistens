@@ -74,12 +74,14 @@ app.use(
     })
 );
 
-app.use((req, res, next) => {
-    if (req.headers["x-forwarded-proto"].startsWith("https")) {
-        return next();
-    }
-    return res.redirect(`https://${req.hostname}${req.url}`);
-});
+// Only use this in production:
+
+// app.use((req, res, next) => {
+//     if (req.headers["x-forwarded-proto"].startsWith("https")) {
+//         return next();
+//     }
+//     return res.redirect(`https://${req.hostname}${req.url}`);
+// });
 
 /* ====== ROUTES ====== */
 
@@ -189,6 +191,7 @@ io.on("connection", async (socket) => {
     onlineUsers[socket.id] = socket.id;
     // to individual socketid (private message)
     io.to(socket.id).emit("your socket", socket.id);
+    console.log("new socket:", socket.id);
 
     socket.on("createRoom", (data) => {
         const { roomName, userName, playerUrl } = data;
@@ -197,7 +200,7 @@ io.on("connection", async (socket) => {
             // emit a roomExists, or a noRoomExists depending on the outcome.
             return io.to(socket.id).emit("room exists");
         }
-        "room created:", roomName, "userName", userName;
+        console.log("room created:", roomName, "userName", userName);
         rooms[roomName] = {
             roomName,
             playerUrl,
@@ -206,14 +209,14 @@ io.on("connection", async (socket) => {
                 {
                     id: socket.id,
                     name: userName,
-                    ready: false,
                     admin: true,
+                    icon: "🍸",
                 },
             ],
         };
         // include a display name here.
         socket.join(roomName);
-        rooms[roomName];
+        console.log(Object.keys(rooms));
         io.to(roomName).emit("new room member", rooms[roomName]);
     });
 
@@ -242,7 +245,7 @@ io.on("connection", async (socket) => {
             ...rooms[roomName],
             users: [
                 ...rooms[roomName].users,
-                { id: socket.id, name: userName, ready: false },
+                { id: socket.id, name: userName, icon: "🍸" },
             ],
         };
         socket.join(roomName);
@@ -274,27 +277,44 @@ io.on("connection", async (socket) => {
         io.to(data.roomName).emit("play for all");
     });
 
-    socket.on("hostToggledPlaying", (roomName) => {
-        roomName;
-        if (!rooms[roomName].hostPlaying) {
-            rooms[roomName] = {
-                ...rooms[roomName],
-                hostPlaying: true,
-            };
-        } else {
-            rooms[roomName] = {
-                ...rooms[roomName],
-                hostPlaying: false,
-            };
-        }
-        rooms[roomName];
+    socket.on("setUserIcon", (data) => {
+        console.log("new icon:", data);
+        const { roomName, activeUser, userIcon } = data;
+        rooms[roomName] = {
+            ...rooms[roomName],
+            users: rooms[roomName].users.map((user) => {
+                if (user.id == activeUser) {
+                    return {
+                        ...user,
+                        icon: userIcon,
+                    };
+                } else {
+                    return user;
+                }
+            }),
+        };
+        io.to(roomName).emit("user updated icon", rooms[roomName]);
+    });
+
+    socket.on("hostPaused", (roomName) => {
+        rooms[roomName] = {
+            ...rooms[roomName],
+            hostPlaying: false,
+        };
+        io.to(roomName).emit("host toggled playing", rooms[roomName]);
+    });
+
+    socket.on("hostPlayed", (roomName) => {
+        rooms[roomName] = {
+            ...rooms[roomName],
+            hostPlaying: true,
+        };
         io.to(roomName).emit("host toggled playing", rooms[roomName]);
     });
 
     socket.on("disconnect", () => {
         Object.values(rooms).forEach((room) => {
             if (room.users.length) {
-                "in disconnect:", room.users;
                 room.users = room.users.filter((user) => user.id !== socket.id);
             }
         });

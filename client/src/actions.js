@@ -78,13 +78,6 @@ export async function setPlaying(boolean) {
     };
 }
 
-export async function toggleHostPlaying(boolean) {
-    return {
-        type: "TOGGLE_HOST_PLAYING",
-        boolean,
-    };
-}
-
 export async function getSearchResults(params) {
     const { data } = await axios.get("/api/search/", { params });
     data;
@@ -99,5 +92,12 @@ export async function userLeft(id) {
     return {
         type: "USER_LEFT",
         id,
+    };
+}
+
+export async function updateRoomState(data) {
+    return {
+        type: "UPDATE_ROOM_STATE",
+        data,
     };
 }

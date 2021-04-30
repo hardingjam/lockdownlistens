@@ -34,13 +34,6 @@ export default function App() {
     }, [progress]);
 
     useEffect(() => {
-        if (myRoom && myRoom.host == activeUser) {
-            playing;
-            socket.emit("hostToggledPlaying", myRoom.roomName);
-        }
-    }, [playing]);
-
-    useEffect(() => {
         //adding an event listener
         socket.on("sync with host", (seconds) => {
             playerRef.current.seekTo(seconds);
@@ -48,9 +41,15 @@ export default function App() {
     }, []);
 
     function handlePause() {
+        if (myRoom && myRoom.host == activeUser) {
+            socket.emit("hostPaused", myRoom.roomName);
+        }
         dispatch(setPlaying(false));
     }
     function handlePlay() {
+        if (myRoom && myRoom.host == activeUser) {
+            socket.emit("hostPlayed", myRoom.roomName);
+        }
         dispatch(setPlaying(true));
     }
     ("component is re-rendering");

@@ -15,8 +15,8 @@ export default function Room() {
     const [roomName, setRoomName] = useState("");
     const [error, setError] = useState("");
     const [userName, setUserName] = useState("");
-    const [allReady, setAllReady] = useState(false);
     const [admin, setAdmin] = useState(false);
+    const [userIcon, setUserIcon] = useState("🍸");
 
     const dispatch = useDispatch();
     // socket.on (either error) setError.
@@ -37,15 +37,6 @@ export default function Room() {
     useEffect(() => {
         if (
             myRoom &&
-            myRoom.users.length ==
-                myRoom.users.filter((user) => user.ready).length
-        ) {
-            setAllReady(true);
-        } else {
-            setAllReady(false);
-        }
-        if (
-            myRoom &&
             myRoom.users.filter((user) => user.id == activeUser)[0].admin
         ) {
             setAdmin(true);
@@ -58,6 +49,16 @@ export default function Room() {
         }
         if (e.target.name == "userName") {
             setUserName(e.target.value);
+        }
+        if (e.target.name == "userIcon") {
+            console.log("changing icon", e.target.value);
+            setUserIcon(e.target.value);
+            const data = {
+                roomName: myRoom.roomName,
+                activeUser,
+                userIcon: e.target.value,
+            };
+            socket.emit("setUserIcon", data);
         }
     }
 
@@ -192,9 +193,19 @@ export default function Room() {
 
                     <h3>
                         {myRoom.users.filter((member) => member.admin)[0].name}{" "}
-                        is the host. When all guests are ready, the party can
-                        begin.
+                        selecting...
                     </h3>
+                    {!admin && (
+                        <h4>
+                            <a
+                                className="blue-link"
+                                name="syncWithHost"
+                                onClick={(e) => handleClick(e)}
+                            >
+                                Sync with host.
+                            </a>
+                        </h4>
+                    )}
                     {myRoom.users.length == 1 && (
                         <p>
                             Feel free to browse through the catalogue until your
@@ -232,56 +243,49 @@ export default function Room() {
                         </>
                     )}
                     <>
-                        {myRoom.hostPlaying && !admin && (
-                            <p>
-                                The music has started -{" "}
-                                <a
-                                    className="blue-link"
-                                    name="syncWithHost"
-                                    onClick={(e) => handleClick(e)}
-                                >
-                                    sync with host?
-                                </a>
-                            </p>
-                        )}
                         <div id="room-members-container">
                             {myRoom.users.map((member, i) => (
-                                <div id="member" key={i}>
-                                    <span className="readyOrNot">
-                                        {member.ready || myRoom.hostplaying ? (
-                                            <>🟢</>
-                                        ) : (
-                                            <>🔴</>
-                                        )}
-                                    </span>
+                                <div className="member" key={i}>
                                     <p>{member.name}</p>
-                                    {member.id == activeUser &&
-                                        !myRoom.hostPlaying && (
-                                            <button
-                                                name="toggleReady"
-                                                onClick={(e) => handleClick(e)}
-                                            >
-                                                {member.ready
-                                                    ? "Unready"
-                                                    : "Ready"}
-                                            </button>
-                                        )}
+
+                                    {member.id == activeUser && (
+                                        <select
+                                            name="userIcon"
+                                            value={userIcon}
+                                            onChange={(e) => handleChange(e)}
+                                        >
+                                            <option value="🍸">🍸</option>
+                                            <option value="🦄">🦄</option>
+                                            <option value="🦢">🦢</option>
+                                            <option value="🎵">🎵</option>
+                                            <option value="💗">💗</option>
+                                            <option value="💦">💦</option>
+                                            <option value="🚑">🚑</option>
+                                            <option value="🕊">🕊</option>
+                                        </select>
+                                    )}
+                                    {member.id == activeUser ? (
+                                        <span className="user-icon">
+                                            {userIcon}
+                                        </span>
+                                    ) : (
+                                        <span className="user-icon">
+                                            {member.icon}
+                                        </span>
+                                    )}
                                 </div>
                             ))}
                         </div>
-                        {allReady && admin && !isPlaying && (
-                            <>
-                                <p className="space-above">
-                                    Everyone's ready,{" "}
-                                    <a
-                                        className="blue-link"
-                                        name="playForAll"
-                                        onClick={(e) => handleClick(e)}
-                                    >
-                                        start the music
-                                    </a>
-                                </p>
-                            </>
+                        {admin && !isPlaying && (
+                            <p className="space-above">
+                                <a
+                                    className="blue-link"
+                                    name="playForAll"
+                                    onClick={(e) => handleClick(e)}
+                                >
+                                    Let the music play!
+                                </a>
+                            </p>
                         )}
                     </>
                 </div>

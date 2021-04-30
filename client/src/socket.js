@@ -9,6 +9,7 @@ import {
     setPlaying,
     toggleHostPlaying,
     userLeft,
+    updateRoomState,
 } from "./actions";
 
 export let socket;
@@ -21,10 +22,6 @@ export const init = (store) => {
             // this happens when you JOIN a ROOM update the user's room in state.
             // dispatch some redux action here, with new member,
             // client needs to know who's in their room.
-        });
-
-        socket.on("host toggled playing", (data) => {
-            data;
         });
 
         socket.on("your socket", (data) => {
@@ -47,8 +44,7 @@ export const init = (store) => {
         });
 
         socket.on("host toggled playing", (room) => {
-            room.hostPlaying;
-            store.dispatch(toggleHostPlaying(room.hostPlaying));
+            store.dispatch(updateRoomState(room));
         });
 
         socket.on("play for all", () => {
@@ -56,8 +52,12 @@ export const init = (store) => {
         });
 
         socket.on("userleft", (id) => {
-            "id of user leaving:", id;
             store.dispatch(userLeft(id));
+        });
+
+        socket.on("user updated icon", (room) => {
+            console.log("new room state");
+            store.dispatch(updateRoomState(room));
         });
         // when recieveing errors.
     }
