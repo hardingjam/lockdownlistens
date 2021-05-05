@@ -109,11 +109,13 @@ app.get("/api/listen-now/", async (req, res) => {
     const dayOfWeek = new Date(time).getUTCDay();
     const curHr = new Date(time).getHours();
     let partOfDay;
-    if (curHr < 4 && curHr > 21) {
-        partOfDay = "night";
+    if (curHr > 20 && curHr <= 23) {
+        if (curHr >= 0 && curHr <= 4) {
+            partOfDay = "night";
+        }
     } else if (curHr > 4 && curHr < 12) {
         partOfDay = "morning";
-    } else if (curHr >= 12 && curHr < 17) {
+    } else if (curHr >= 12 && curHr <= 17) {
         partOfDay = "afternoon";
     } else {
         partOfDay = "evening";
