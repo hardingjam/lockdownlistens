@@ -110,9 +110,10 @@ app.get("/api/listen-now/", async (req, res) => {
     const curHr = new Date(time).getHours();
     let partOfDay;
     if (curHr > 20 && curHr <= 23) {
-        if (curHr >= 0 && curHr <= 4) {
-            partOfDay = "night";
-        }
+        partOfDay = "night";
+    }
+    if (curHr >= 0 && curHr <= 4) {
+        partOfDay = "night";
     } else if (curHr > 4 && curHr < 12) {
         partOfDay = "morning";
     } else if (curHr >= 12 && curHr <= 17) {
@@ -120,6 +121,7 @@ app.get("/api/listen-now/", async (req, res) => {
     } else {
         partOfDay = "evening";
     }
+    console.log(curHr, partOfDay);
     let fuzzFactor = 1;
     let data = await getResultsByTimeOfDay(dayOfWeek, time, fuzzFactor);
     while (data.length < 15) {
