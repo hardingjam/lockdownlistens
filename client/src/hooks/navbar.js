@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-
 export default function Navbar() {
     const results = useSelector((state) => state.results);
+
     return (
         <div id="navbar-container">
             <>

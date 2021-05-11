@@ -159,6 +159,8 @@ app.get("/api/search/", async (req, res) => {
         hourRange = [17, 24];
     }
 
+    // fix this to purify night results
+
     const data = await getResultsBySearch(dayRange, hourRange);
     const resp = await scrape(data);
     res.json(resp);

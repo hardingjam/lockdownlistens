@@ -21,7 +21,7 @@ export default function Room() {
     const [error, setError] = useState("");
     const [userName, setUserName] = useState("");
     const [admin, setAdmin] = useState(false);
-    const [userIcon, setUserIcon] = useState("🍸");
+    const [userIcon, setUserIcon] = useState("🎵");
 
     const dispatch = useDispatch();
     // socket.on (either error) setError.
@@ -56,7 +56,6 @@ export default function Room() {
             setUserName(e.target.value);
         }
         if (e.target.name == "userIcon") {
-            console.log("changing icon", e.target.value);
             setUserIcon(e.target.value);
             const data = {
                 roomName: myRoom.roomName,
@@ -270,20 +269,24 @@ export default function Room() {
                                                         handleChange(e)
                                                     }
                                                 >
+                                                    <option value="🎵">
+                                                        🎵
+                                                    </option>
                                                     <option value="🍸">
                                                         🍸
                                                     </option>
                                                     <option value="🦄">
                                                         🦄
                                                     </option>
+                                                    <option value="🤌">🤌</option>
                                                     <option value="🦢">
                                                         🦢
                                                     </option>
-                                                    <option value="🎵">
-                                                        🎵
-                                                    </option>
                                                     <option value="💗">
                                                         💗
+                                                    </option>
+                                                    <option value="💀">
+                                                        💀
                                                     </option>
                                                     <option value="💦">
                                                         💦
