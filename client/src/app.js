@@ -34,7 +34,6 @@ export default function App() {
     }, [progress]);
 
     useEffect(() => {
-        //adding an event listener
         socket.on("sync with host", (seconds) => {
             playerRef.current.seekTo(seconds);
         });
@@ -58,12 +57,7 @@ export default function App() {
         <div id="app-component">
             <BrowserRouter>
                 <Navbar />
-                <Route
-                    exact
-                    path="/"
-                    // exact path prevents double matches and overlaying components
-                    component={SetLocation}
-                />
+                <Route exact path="/" component={SetLocation} />
                 <Route path="/listen-now/" component={Results} />
                 <Route path="/submit/" component={Submit} />
                 <Route path="/room/" component={Room} />

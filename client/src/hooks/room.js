@@ -8,8 +8,6 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import Chat from "../hooks/chat";
 
-// should I use a hashrouter for the various room states?
-
 export default function Room() {
     const results = useSelector((state) => state.results);
     const myRoom = useSelector((state) => state.room);
@@ -24,7 +22,6 @@ export default function Room() {
     const [userIcon, setUserIcon] = useState("🎵");
 
     const dispatch = useDispatch();
-    // socket.on (either error) setError.
 
     const detectUrls = function (str) {
         var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
@@ -82,7 +79,7 @@ export default function Room() {
             );
             dispatch(setMyName(userName));
             const data = { roomName, userName };
-            // dispatch the room join
+
             socket.emit("joinRoom", data);
             setError("");
         }

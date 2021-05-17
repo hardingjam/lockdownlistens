@@ -19,9 +19,6 @@ export const init = (store) => {
         socket.on("new room member", (data) => {
             "socket.js join roomm data:", data;
             store.dispatch(joinRoom(data));
-            // this happens when you JOIN a ROOM update the user's room in state.
-            // dispatch some redux action here, with new member,
-            // client needs to know who's in their room.
         });
 
         socket.on("your socket", (data) => {
@@ -63,7 +60,5 @@ export const init = (store) => {
         socket.on("new chat message", (data) => {
             store.dispatch(newChatMessage(data));
         });
-
-        // when recieveing errors.
     }
 };

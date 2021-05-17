@@ -26,7 +26,6 @@ const week = [
 
 const csurf = require("csurf");
 
-// creating the initial handshake between socket and our server (cannot use Express for this)
 const server = require("http").Server(app);
 const io = require("socket.io")(server, {
     allowRequest: (req, callback) =>
@@ -41,18 +40,14 @@ const io = require("socket.io")(server, {
 // ===== MIDDLEWARE ==== //
 
 app.use(compression());
-// should be used in every server we ever create.
-// this is a middleware that reduces the size of the responses we send, automatically
 
 app.use(express.static(path.join(__dirname, "..", "client")));
-// we are looking in ../client/public
 
 const cookieSessionMiddleware = cookieSession({
     secret: `I'm always angry.`,
     maxAge: 1000 * 60 * 60 * 24,
 });
-// cookiesession is split into two steps, instead of one app.use call. This is bc we are using it twice.
-// Here, we are giving socket access to the cookieSession.
+
 app.use(cookieSessionMiddleware);
 
 io.use(function (socket, next) {
@@ -195,7 +190,7 @@ let onlineUsers = {};
 
 io.on("connection", async (socket) => {
     onlineUsers[socket.id] = socket.id;
-    // to individual socketid (private message)
+
     io.to(socket.id).emit("your socket", socket.id);
     console.log("new socket:", socket.id);
 
@@ -203,7 +198,7 @@ io.on("connection", async (socket) => {
         const { roomName, userName, playerUrl } = data;
         if (rooms[roomName]) {
             ("room already exisits");
-            // emit a roomExists, or a noRoomExists depending on the outcome.
+
             return io.to(socket.id).emit("room exists");
         }
         console.log("room created:", roomName, "userName", userName);
@@ -221,7 +216,7 @@ io.on("connection", async (socket) => {
                 },
             ],
         };
-        // include a display name here.
+
         socket.join(roomName);
         console.log(Object.keys(rooms));
         io.to(roomName).emit("new room member", rooms[roomName]);

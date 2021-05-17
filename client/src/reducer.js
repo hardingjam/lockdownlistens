@@ -120,6 +120,6 @@ export default function (
             },
         };
     }
-    // final return of state
+
     return state;
 }

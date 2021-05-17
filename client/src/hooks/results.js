@@ -4,8 +4,6 @@ import { formatRelative, parseISO } from "date-fns";
 import { setPlayerUrl } from "../actions";
 import { socket } from "../socket";
 
-// import Assert from "assert";
-
 export default function Results() {
     const results = useSelector((state) => state.results);
     const timezone = useSelector((state) => state.timezone);
