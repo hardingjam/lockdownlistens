@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { setPlaying } from "../actions";
@@ -48,9 +48,11 @@ export default function Room() {
     function handleChange(e) {
         if (e.target.name == "roomName") {
             setRoomName(e.target.value);
+            console.log(roomName);
         }
         if (e.target.name == "userName") {
             setUserName(e.target.value);
+            console.log(userName);
         }
         if (e.target.name == "userIcon") {
             setUserIcon(e.target.value);
@@ -62,17 +64,32 @@ export default function Room() {
             socket.emit("setUserIcon", data);
         }
     }
+    function handleKeyPress(e) {
+        console.log(e);
+        const { code } = e;
+        console.log(code);
+        if (code === "Enter" && !myRoom) {
+            if (!myRoom) {
+                createRoom();
+            }
+        }
+    }
+
+    function createRoom() {
+        if (!roomName || roomName == "") {
+            setError("Please name your room");
+        } else {
+            dispatch(setMyName(userName));
+            socket.emit("createRoom", { roomName, userName, playerUrl });
+            setError("");
+        }
+    }
 
     function handleClick(e) {
         if (e.target.name == "create") {
-            if (!roomName || roomName == "") {
-                setError("Please name your room");
-            } else {
-                dispatch(setMyName(userName));
-                socket.emit("createRoom", { roomName, userName, playerUrl });
-                setError("");
-            }
+            createRoom();
         }
+
         if (e.target.name == "join") {
             const roomName = prompt(
                 "Enter the name of the room you'd like to join"
@@ -87,15 +104,9 @@ export default function Room() {
             ("setting name");
         }
 
-        if (e.target.name == "toggleReady") {
-            const data = { myRoom, activeUser };
-            socket.emit("toggleReady", data);
-        }
-
         if (e.target.name == "playForAll") {
             if (!playerUrl) {
                 setError("Please select some music for the room.");
-                ("no music chosen");
             } else {
                 const data = { roomName: myRoom.roomName, playerUrl };
                 socket.emit("playForAll", data);
@@ -161,6 +172,7 @@ export default function Room() {
                                 type="text"
                                 placeholder="Room name"
                                 onChange={(e) => handleChange(e)}
+                                onKeyPress={(e) => handleKeyPress(e)}
                             />
 
                             <button

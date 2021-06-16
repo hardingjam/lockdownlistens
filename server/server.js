@@ -71,12 +71,12 @@ app.use(
 
 // Only use this in production:
 
-app.use((req, res, next) => {
-    if (req.headers["x-forwarded-proto"].startsWith("https")) {
-        return next();
-    }
-    return res.redirect(`https://${req.hostname}${req.url}`);
-});
+// app.use((req, res, next) => {
+//     if (req.headers["x-forwarded-proto"].startsWith("https")) {
+//         return next();
+//     }
+//     return res.redirect(`https://${req.hostname}${req.url}`);
+// });
 
 /* ====== ROUTES ====== */
 

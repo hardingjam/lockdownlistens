@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SelectTimezoneMaterialUi from "select-timezone-material-ui";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -17,7 +17,6 @@ export default function SetLocation() {
             const localTime = new Date().toLocaleString("en-US", {
                 timeZone: tz,
             });
-            "local time:", localTime;
             dispatch(getResults(localTime, tz));
         }
     }
@@ -29,7 +28,7 @@ export default function SetLocation() {
             <div className="timezone-selector">
                 <SelectTimezoneMaterialUi
                     label="Location"
-                    helperText="Please select a timezone from the list"
+                    helperText="Start typing to find your city."
                     onChange={(e) => {
                         handleChange(e);
                     }}
