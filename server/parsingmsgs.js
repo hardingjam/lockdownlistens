@@ -1,9 +1,3 @@
-const https = require("https");
-const express = require("express");
-const app = express();
-const fs = require("fs");
-const { clearScreenDown } = require("readline");
-
 module.exports.checkLinksFrom = (site, linksList) => {
     const links = [];
     for (let i = 0; i < linksList.length; i++) {

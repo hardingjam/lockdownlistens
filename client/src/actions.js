@@ -80,7 +80,6 @@ export async function setPlaying(boolean) {
 
 export async function getSearchResults(params) {
     const { data } = await axios.get("/api/search/", { params });
-    data;
     return {
         type: "GET_SEARCH_RESULTS",
         data,
@@ -88,7 +87,6 @@ export async function getSearchResults(params) {
 }
 
 export async function userLeft(id) {
-    "id in actions.js", id;
     return {
         type: "USER_LEFT",
         id,

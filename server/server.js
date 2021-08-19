@@ -85,10 +85,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/timezone/", (req, res) => {
-    req.body;
     req.session.tz = req.body.timezone;
-    req.session.userId = uuidv4();
-    "userId", req.session.userId;
     res.json({ success: true });
 });
 
@@ -135,6 +132,7 @@ app.get("/api/listen-now/", async (req, res) => {
 });
 
 app.get("/api/search/", async (req, res) => {
+    console.log("searching");
     const { day, time } = req.query;
     day, time;
     let dayRange = [0, 2];
@@ -153,8 +151,6 @@ app.get("/api/search/", async (req, res) => {
     if (time == "Night") {
         hourRange = [17, 24];
     }
-
-    // fix this to purify night results
 
     const data = await getResultsBySearch(dayRange, hourRange);
     const resp = await scrape(data);

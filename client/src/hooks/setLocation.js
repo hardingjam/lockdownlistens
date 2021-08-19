@@ -24,7 +24,7 @@ export default function SetLocation() {
     return (
         <div id="timezone-container">
             <h1 className="headline">Welcome to Lockdown Listens</h1>
-            <h3>Please select your timezone</h3>
+            <h3>Where in the world are you?</h3>
             <div className="timezone-selector">
                 <SelectTimezoneMaterialUi
                     label="Location"
