@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { msgLinkObj } = require("./functions");
+const { msgLinkObj } = require("./parsingmsgs");
 
 // msgLinkObj requires an array, I get this from messages that contain URLs.
 
