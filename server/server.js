@@ -336,6 +336,9 @@ io.on("connection", async (socket) => {
         console.log("socket disconnected", socket.id);
 
         Object.values(rooms).forEach((room) => {
+            if (room.host === socket.id) {
+                io.to(room.roomName).emit("host left the room", room.roomName);
+            }
             if (room.users.length) {
                 room.users = room.users.filter((user) => user.id !== socket.id);
             }

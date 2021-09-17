@@ -48,13 +48,15 @@ export const init = (store) => {
             store.dispatch(setPlaying(true));
         });
 
-        socket.on("userleft", (id) => {
+        socket.on("user left", (id) => {
+            // needs room name
             store.dispatch(userLeft(id));
         });
 
-        socket.on("change host", () => {
-            console.log("changing host");
-        });
+        // socket.on("change host", () => {
+        //     console.log("changing host");
+        //     store.dispatch(changeHost)
+        // });
 
         socket.on("user updated icon", (room) => {
             console.log("new room state");

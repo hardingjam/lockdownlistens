@@ -79,6 +79,7 @@ export default function (
     }
 
     if (action.type == "USER_LEFT") {
+        console.log("id");
         state = {
             ...state,
             room: {
