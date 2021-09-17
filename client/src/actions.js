@@ -87,6 +87,7 @@ export async function getSearchResults(params) {
 }
 
 export async function userLeft(id) {
+    // room name here too
     return {
         type: "USER_LEFT",
         id,
@@ -111,6 +112,14 @@ export async function newChatMessage(data) {
     console.log(data);
     return {
         type: "ADD_CHAT_MESSAGE",
+        data,
+    };
+}
+
+export async function changeHost(roomName, previousHostId) {
+    const data = { roomName, previousHostId };
+    return {
+        type: "CHANGE_HOST",
         data,
     };
 }

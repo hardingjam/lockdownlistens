@@ -216,12 +216,6 @@ export default function Room() {
                             </a>
                         </h4>
                     )}
-                    {myRoom.users.length == 1 && (
-                        <p>
-                            Feel free to browse through the catalogue until your
-                            guests arrive.
-                        </p>
-                    )}
                     {admin && !playerUrl && (
                         <p className="error">
                             As the admin, it's up to you to{" "}

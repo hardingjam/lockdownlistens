@@ -337,13 +337,16 @@ io.on("connection", async (socket) => {
 
         Object.values(rooms).forEach((room) => {
             if (room.host === socket.id) {
-                io.to(room.roomName).emit("host left the room", room.roomName);
+                io.to(room.roomName).emit(
+                    "host left the room",
+                    room.roomName,
+                    socket.id
+                );
             }
             if (room.users.length) {
                 room.users = room.users.filter((user) => user.id !== socket.id);
             }
         });
-
         io.emit("user left", onlineUsers[socket.id]);
     });
 });

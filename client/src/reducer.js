@@ -79,7 +79,6 @@ export default function (
     }
 
     if (action.type == "USER_LEFT") {
-        console.log("id");
         state = {
             ...state,
             room: {
@@ -117,6 +116,19 @@ export default function (
             room: {
                 ...state.room,
                 messages: [...state.room.messages, action.data],
+            },
+        };
+    }
+
+    if (action.type == "CHANGE_HOST") {
+        console.log("changing host:", action.data);
+        state = {
+            ...state,
+            room: {
+                ...state.room,
+                host: state.room.users.find(
+                    (user) => user.id != action.data.previousHostId
+                ).id,
             },
         };
     }

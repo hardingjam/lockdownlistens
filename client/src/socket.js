@@ -10,6 +10,7 @@ import {
     userLeft,
     updateRoomState,
     newChatMessage,
+    changeHost,
 } from "./actions";
 
 export let socket;
@@ -53,10 +54,10 @@ export const init = (store) => {
             store.dispatch(userLeft(id));
         });
 
-        // socket.on("change host", () => {
-        //     console.log("changing host");
-        //     store.dispatch(changeHost)
-        // });
+        socket.on("host left the room", (roomName, prevHostId) => {
+            console.log("changing host");
+            store.dispatch(changeHost(roomName, prevHostId));
+        });
 
         socket.on("user updated icon", (room) => {
             console.log("new room state");
