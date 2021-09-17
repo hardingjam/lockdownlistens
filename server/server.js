@@ -44,7 +44,7 @@ app.use(compression());
 app.use(express.static(path.join(__dirname, "..", "client")));
 
 const cookieSessionMiddleware = cookieSession({
-    secret: `I'm always angry.`,
+    secret: `Don't tell a soul.`,
     maxAge: 1000 * 60 * 60 * 24,
 });
 
@@ -189,33 +189,54 @@ io.on("connection", async (socket) => {
 
     io.to(socket.id).emit("your socket", socket.id);
     console.log("new socket:", socket.id);
+    console.log(rooms);
 
-    socket.on("createRoom", (data) => {
+    socket.on("createOrJoinRoom", (data) => {
         const { roomName, userName, playerUrl } = data;
         if (rooms[roomName]) {
-            ("room already exisits");
+            console.log("room already exisits");
+            rooms[roomName] = {
+                ...rooms[roomName],
+                users: [
+                    ...rooms[roomName].users,
+                    { id: socket.id, name: userName, admin: false, icon: "🍸" },
+                ],
+            };
+            socket.join(roomName);
 
-            return io.to(socket.id).emit("room exists");
+            io.to(socket.id).emit(
+                "update playerUrl",
+                rooms[roomName].playerUrl
+            );
+            console.log(rooms[roomName]);
+
+            io.to(socket.id).emit(
+                "sync with host",
+                rooms[roomName].hostProgress
+            );
+
+            io.to(roomName).emit("new room member", rooms[roomName]);
+        } else {
+            console.log("room created:", roomName, "userName", userName);
+            rooms[roomName] = {
+                roomName,
+                playerUrl,
+                host: socket.id,
+                hostName: userName,
+                messages: [],
+                users: [
+                    {
+                        id: socket.id,
+                        name: userName,
+                        admin: true,
+                        icon: "🍸",
+                    },
+                ],
+            };
+            socket.join(roomName);
+            console.log(Object.keys(rooms));
+            io.to(roomName).emit("new room member", rooms[roomName]);
         }
-        console.log("room created:", roomName, "userName", userName);
-        rooms[roomName] = {
-            roomName,
-            playerUrl,
-            host: socket.id,
-            messages: [],
-            users: [
-                {
-                    id: socket.id,
-                    name: userName,
-                    admin: true,
-                    icon: "🍸",
-                },
-            ],
-        };
-
-        socket.join(roomName);
-        console.log(Object.keys(rooms));
-        io.to(roomName).emit("new room member", rooms[roomName]);
     });
 
     socket.on("hostProgress", (data) => {
@@ -234,10 +255,10 @@ io.on("connection", async (socket) => {
     socket.on("joinRoom", (data) => {
         const { roomName, userName } = data;
         if (!rooms[roomName]) {
-            ("room does not exist, you can create it");
+            // if the room does not exist, create it here.
+
             return io.to(socket.id).emit("no such room");
         }
-        rooms[roomName];
 
         rooms[roomName] = {
             ...rooms[roomName],
@@ -312,13 +333,14 @@ io.on("connection", async (socket) => {
     });
 
     socket.on("disconnect", () => {
+        console.log("socket disconnected", socket.id);
+
         Object.values(rooms).forEach((room) => {
             if (room.users.length) {
                 room.users = room.users.filter((user) => user.id !== socket.id);
             }
         });
-        rooms;
-        io.emit("userleft", onlineUsers[socket.id]);
-        delete onlineUsers[socket.id];
+
+        io.emit("user left", onlineUsers[socket.id]);
     });
 });

@@ -28,13 +28,13 @@ export default function Room() {
         return str.match(urlRegex);
     };
 
-    socket.on("room exists", () => {
-        setError("That name is taken, please choose another.");
-    });
+    // socket.on("room exists", () => {
+    //     setError("That name is taken, please choose another.");
+    // });
 
-    socket.on("no such room", () => {
-        setError("No such room exists.");
-    });
+    // socket.on("no such room", () => {
+    //     setError("No such room exists.");
+    // });
 
     useEffect(() => {
         if (
@@ -65,44 +65,40 @@ export default function Room() {
         }
     }
     function handleKeyPress(e) {
-        console.log(e);
         const { code } = e;
-        console.log(code);
         if (code === "Enter" && !myRoom) {
             if (!myRoom) {
-                createRoom();
+                createOrJoinRoom();
             }
         }
     }
 
-    function createRoom() {
+    function createOrJoinRoom() {
         if (!roomName || roomName == "") {
             setError("Please name your room");
         } else {
             dispatch(setMyName(userName));
-            socket.emit("createRoom", { roomName, userName, playerUrl });
+            socket.emit("createOrJoinRoom", { roomName, userName, playerUrl });
             setError("");
         }
     }
 
     function handleClick(e) {
-        if (e.target.name == "create") {
-            createRoom();
-        }
-
-        if (e.target.name == "join") {
-            const roomName = prompt(
-                "Enter the name of the room you'd like to join"
-            );
+        if (e.target.name == "Go") {
             dispatch(setMyName(userName));
-            const data = { roomName, userName };
+            createOrJoinRoom();
+        }
 
-            socket.emit("joinRoom", data);
-            setError("");
-        }
-        if (e.target.name == "setName") {
-            ("setting name");
-        }
+        // if (e.target.name == "join") {
+        //     const roomName = prompt(
+        //         "Enter the name of the room you'd like to join"
+        //     );
+        //     dispatch(setMyName(userName));
+        //     const data = { roomName, userName };
+
+        //     socket.emit("joinRoom", data);
+        //     setError("");
+        // }
 
         if (e.target.name == "playForAll") {
             if (!playerUrl) {
@@ -164,7 +160,9 @@ export default function Room() {
                     {userName && (
                         <>
                             <p className="margin-top">
-                                What shall we call your room?
+                                Enter a room name - if it already exists, you
+                                will join the room. <br />
+                                If not, we'll spin up a new room for you
                             </p>
                             <input
                                 className="input-field narrow"
@@ -177,13 +175,13 @@ export default function Room() {
 
                             <button
                                 className="create-room"
-                                name="create"
+                                name="Go"
                                 onClick={(e) => handleClick(e)}
                             >
-                                Create Room
+                                Go
                             </button>
                             {error && <p className="error">{error}</p>}
-                            <p>
+                            {/* <p>
                                 Alternatively, you can{" "}
                                 <a
                                     className="blue-link"
@@ -192,7 +190,7 @@ export default function Room() {
                                 >
                                     join an existing room.
                                 </a>
-                            </p>
+                            </p> */}
                         </>
                     )}
                 </div>
@@ -206,10 +204,7 @@ export default function Room() {
                 <div id="room-users">
                     <h1>Welcome to {myRoom.roomName}</h1>
 
-                    <h3>
-                        {myRoom.users.filter((member) => member.admin)[0].name}{" "}
-                        selecting...
-                    </h3>
+                    <h3>{myRoom.hostName} selecting...</h3>
                     {!admin && (
                         <h4>
                             <a

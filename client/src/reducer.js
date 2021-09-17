@@ -1,7 +1,6 @@
 export default function (
     state = {
         room: null,
-        members: [],
         name: null,
         playerUrl: "",
         // this can solve the delay in awaiting returned new state

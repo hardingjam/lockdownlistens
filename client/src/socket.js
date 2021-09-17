@@ -33,10 +33,10 @@ export const init = (store) => {
         socket.on("update playerUrl", (playerUrl) => {
             ("server udating playeUrl");
             store.dispatch(setPlayerUrl(playerUrl));
+            store.dispatch(setPlaying(true));
         });
 
         socket.on("sync with host", (progress) => {
-            progress;
             store.dispatch(setPlayerProgress(progress));
         });
 
@@ -50,6 +50,10 @@ export const init = (store) => {
 
         socket.on("userleft", (id) => {
             store.dispatch(userLeft(id));
+        });
+
+        socket.on("change host", () => {
+            console.log("changing host");
         });
 
         socket.on("user updated icon", (room) => {
