@@ -11,6 +11,7 @@ import Chat from "../hooks/chat";
 export default function Room() {
     const results = useSelector((state) => state.results);
     const myRoom = useSelector((state) => state.room);
+    // const hostName = useSelector((state) => state.room.hostName);
     const playerUrl = useSelector((state) => state.playerUrl);
     const activeUser = useSelector((state) => state.activeUser);
     const isPlaying = useSelector((state) => state.isPlaying);
@@ -27,6 +28,8 @@ export default function Room() {
         var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
         return str.match(urlRegex);
     };
+
+    // need to update
 
     // socket.on("room exists", () => {
     //     setError("That name is taken, please choose another.");
@@ -48,11 +51,9 @@ export default function Room() {
     function handleChange(e) {
         if (e.target.name == "roomName") {
             setRoomName(e.target.value);
-            console.log(roomName);
         }
         if (e.target.name == "userName") {
             setUserName(e.target.value);
-            console.log(userName);
         }
         if (e.target.name == "userIcon") {
             setUserIcon(e.target.value);

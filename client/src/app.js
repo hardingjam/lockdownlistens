@@ -51,7 +51,6 @@ export default function App() {
         }
         dispatch(setPlaying(true));
     }
-    ("component is re-rendering");
 
     return (
         <div id="app-component">

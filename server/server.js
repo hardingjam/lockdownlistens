@@ -188,8 +188,7 @@ io.on("connection", async (socket) => {
     onlineUsers[socket.id] = socket.id;
 
     io.to(socket.id).emit("your socket", socket.id);
-    console.log("new socket:", socket.id);
-    console.log(rooms);
+    // console.log("new socket:", socket.id);
 
     socket.on("createOrJoinRoom", (data) => {
         const { roomName, userName, playerUrl } = data;
@@ -333,8 +332,7 @@ io.on("connection", async (socket) => {
     });
 
     socket.on("disconnect", () => {
-        console.log("socket disconnected", socket.id);
-
+        // This function only runs properly if room.host is updated in sockets object.
         Object.values(rooms).forEach((room) => {
             if (room.host === socket.id) {
                 io.to(room.roomName).emit(
