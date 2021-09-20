@@ -5,7 +5,11 @@
 }
 
 body {
-    background-color: #dde5ed;
+    background: rgb(221, 229, 237);
+    background: linear-gradient(
+        rgba(221, 229, 237, 1) 48%,
+        rgba(228, 199, 231, 1) 100%
+    );
     font-size: 1em;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -474,8 +478,8 @@ h3 {
     justify-content: center;
     display: flex;
     flex-direction: column;
-    margin-left: 10%;
-    max-width: 400px;
+    max-width: 600px;
+    min-width: 600px;
     max-height: 40vh;
     margin-top: 20px;
 }
@@ -593,6 +597,7 @@ h3 {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding-top: 1rem;
 }
 
 .chat-message > h4 {
@@ -604,6 +609,7 @@ h3 {
     margin-left: 15px;
     font-weight: 200;
     color: black;
+    padding-left: 1rem;
 }
 /* 
 @media only screen and (max-device-width: 1224px) {
