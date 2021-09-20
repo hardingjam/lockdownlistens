@@ -1,5 +1,3 @@
-import { socket } from "./socket";
-
 export default function (
     state = {
         room: null,

@@ -11,10 +11,9 @@ import Chat from "../hooks/chat";
 export default function Room() {
     const results = useSelector((state) => state.results);
     const myRoom = useSelector((state) => state.room);
-    // const hostName = useSelector((state) => state.room.hostName);
     const playerUrl = useSelector((state) => state.playerUrl);
     const activeUser = useSelector((state) => state.activeUser);
-    const isPlaying = useSelector((state) => state.isPlaying);
+    // const isPlaying = useSelector((state) => state.isPlaying);
 
     const [roomName, setRoomName] = useState("");
     const [error, setError] = useState("");
@@ -40,11 +39,12 @@ export default function Room() {
     // });
 
     useEffect(() => {
-        if (
-            myRoom &&
-            myRoom.users.filter((user) => user.id == activeUser)[0].admin
-        ) {
+        console.log(myRoom);
+        if (myRoom && myRoom.host === activeUser) {
             setAdmin(true);
+        }
+        if (myRoom) {
+            socket.emit("roomChanged", myRoom);
         }
     }, [myRoom]);
 

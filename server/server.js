@@ -7,7 +7,7 @@ const cookieSession = require("cookie-session");
 
 const { scrape } = require("./scrape");
 
-const { v4: uuidv4 } = require("uuid");
+// const { v4: uuidv4 } = require("uuid");
 const {
     getResultsByTimeOfDay,
     submitPost,
@@ -198,7 +198,7 @@ io.on("connection", async (socket) => {
                 ...rooms[roomName],
                 users: [
                     ...rooms[roomName].users,
-                    { id: socket.id, name: userName, admin: false, icon: "🍸" },
+                    { id: socket.id, name: userName, icon: "🍸" },
                 ],
             };
             socket.join(roomName);
@@ -227,7 +227,6 @@ io.on("connection", async (socket) => {
                     {
                         id: socket.id,
                         name: userName,
-                        admin: true,
                         icon: "🍸",
                     },
                 ],
@@ -315,23 +314,30 @@ io.on("connection", async (socket) => {
         io.to(roomName).emit("user updated icon", rooms[roomName]);
     });
 
-    socket.on("hostPaused", (roomName) => {
-        rooms[roomName] = {
-            ...rooms[roomName],
-            hostPlaying: false,
-        };
-        io.to(roomName).emit("host toggled playing", rooms[roomName]);
-    });
+    // socket.on("hostPaused", (roomName) => {
+    //     rooms[roomName] = {
+    //         ...rooms[roomName],
+    //         hostPlaying: false,
+    //     };
+    //     io.to(roomName).emit("host toggled playing", rooms[roomName]);
+    // });
 
-    socket.on("hostPlayed", (roomName) => {
-        rooms[roomName] = {
-            ...rooms[roomName],
-            hostPlaying: true,
-        };
-        io.to(roomName).emit("host toggled playing", rooms[roomName]);
+    // socket.on("hostPlayed", (roomName) => {
+    //     rooms[roomName] = {
+    //         ...rooms[roomName],
+    //         hostPlaying: true,
+    //     };
+    //     io.to(roomName).emit("host toggled playing", rooms[roomName]);
+    // });
+
+    socket.on("roomChanged", (data) => {
+        console.log("roomChanged");
+        rooms[data.roomName] = data;
     });
 
     socket.on("disconnect", () => {
+        console.log("Scocket is connecting");
+        // console.log(rooms);
         // This function only runs properly if room.host is updated in sockets object.
         Object.values(rooms).forEach((room) => {
             if (room.host === socket.id) {

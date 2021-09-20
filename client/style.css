@@ -66,6 +66,7 @@ button {
 
 .results-container {
     display: flex;
+    /* height: 100%; */
     overflow-x: auto;
     overflow-y: hidden;
 }

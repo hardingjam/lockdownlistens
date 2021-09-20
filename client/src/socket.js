@@ -56,6 +56,7 @@ export const init = (store) => {
 
         socket.on("host left the room", (roomName, prevHostId) => {
             console.log("changing host socket.js");
+            socket.emit("hostChanged", roomName, prevHostId);
             store.dispatch(changeHost(roomName, prevHostId));
         });
 
