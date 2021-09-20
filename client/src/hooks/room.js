@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { setPlaying } from "../actions";
@@ -28,22 +28,13 @@ export default function Room() {
         return str.match(urlRegex);
     };
 
-    // need to update
-
-    // socket.on("room exists", () => {
-    //     setError("That name is taken, please choose another.");
-    // });
-
-    // socket.on("no such room", () => {
-    //     setError("No such room exists.");
-    // });
-
     useEffect(() => {
         console.log(myRoom);
         if (myRoom && myRoom.host === activeUser) {
             setAdmin(true);
         }
         if (myRoom) {
+            console.log(myRoom.playerUrl);
             socket.emit("roomChanged", myRoom);
         }
     }, [myRoom]);

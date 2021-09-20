@@ -207,7 +207,6 @@ io.on("connection", async (socket) => {
                 "update playerUrl",
                 rooms[roomName].playerUrl
             );
-            console.log(rooms[roomName]);
 
             io.to(socket.id).emit(
                 "sync with host",
@@ -232,7 +231,6 @@ io.on("connection", async (socket) => {
                 ],
             };
             socket.join(roomName);
-            console.log(Object.keys(rooms));
             io.to(roomName).emit("new room member", rooms[roomName]);
         }
     });
