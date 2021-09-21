@@ -8,7 +8,6 @@ export default function Chat() {
     const elemRef = useRef();
     const myRoom = useSelector((state) => state.room);
     const myName = useSelector((state) => state.myName);
-    // const hostProgress = useSelector((state) => state.room.hostProgress);
     const activeUser = useSelector((state) => state.activeUser);
     const roomMessages = useSelector((state) => state.room.messages || []);
     const focusBottom = () => {

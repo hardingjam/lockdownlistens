@@ -81,6 +81,26 @@ export default function Room() {
             createOrJoinRoom();
         }
 
+        // if (e.target.name == "join") {
+        //     const roomName = prompt(
+        //         "Enter the name of the room you'd like to join"
+        //     );
+        //     dispatch(setMyName(userName));
+        //     const data = { roomName, userName };
+
+        //     socket.emit("joinRoom", data);
+        //     setError("");
+        // }
+
+        if (e.target.name == "playForAll") {
+            if (!playerUrl) {
+                setError("Please select some music for the room.");
+            } else {
+                const data = { roomName: myRoom.roomName, playerUrl };
+                socket.emit("playForAll", data);
+            }
+        }
+
         if (e.target.name == "syncWithHost") {
             dispatch(setPlaying(true));
             socket.emit("syncWithHost", myRoom.roomName);
@@ -100,7 +120,10 @@ export default function Room() {
                 );
             } else {
                 setError("");
+<<<<<<< HEAD
                 console.log("updating URL from link in Room");
+=======
+>>>>>>> parent of 614db3d (new BG color)
                 socket.emit("updateUrl", {
                     roomName: myRoom.roomName,
                     playerUrl: newLink,
