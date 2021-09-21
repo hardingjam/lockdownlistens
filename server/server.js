@@ -203,15 +203,17 @@ io.on("connection", async (socket) => {
             };
             socket.join(roomName);
 
-            io.to(socket.id).emit(
-                "update playerUrl",
-                rooms[roomName].playerUrl
-            );
+            if (rooms[roomName].playerUrl) {
+                io.to(socket.id).emit(
+                    "update playerUrl",
+                    rooms[roomName].playerUrl
+                );
 
-            io.to(socket.id).emit(
-                "sync with host",
-                rooms[roomName].hostProgress
-            );
+                io.to(socket.id).emit(
+                    "sync with host",
+                    rooms[roomName].hostProgress
+                );
+            }
 
             io.to(roomName).emit("new room member", rooms[roomName]);
         } else {
@@ -270,7 +272,6 @@ io.on("connection", async (socket) => {
     });
 
     socket.on("updateUrl", (data) => {
-        console.log("updating playerURL");
         const { playerUrl, roomName } = data;
         rooms[roomName] = {
             ...rooms[roomName],
@@ -331,11 +332,12 @@ io.on("connection", async (socket) => {
     // });
 
     socket.on("roomChanged", (data) => {
+        console.log("room changed");
         rooms[data.roomName] = data;
     });
 
     socket.on("disconnect", () => {
-        console.log("Scocket is connecting");
+        console.log("Scocket is disconnecting");
         // console.log(rooms);
         // This function only runs properly if room.host is updated in sockets object.
         Object.values(rooms).forEach((room) => {

@@ -29,10 +29,6 @@ export default function (
         console.log("setting playerURL in reducer");
         state = {
             ...state,
-            room: {
-                ...state.room,
-                playerUrl: action.url,
-            },
             playerUrl: action.url,
         };
     }

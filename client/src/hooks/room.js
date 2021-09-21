@@ -29,12 +29,10 @@ export default function Room() {
     };
 
     useEffect(() => {
-        console.log(myRoom);
         if (myRoom && myRoom.host === activeUser) {
             setAdmin(true);
         }
         if (myRoom) {
-            console.log(myRoom.playerUrl);
             socket.emit("roomChanged", myRoom);
         }
     }, [myRoom]);
@@ -120,10 +118,6 @@ export default function Room() {
                 );
             } else {
                 setError("");
-<<<<<<< HEAD
-                console.log("updating URL from link in Room");
-=======
->>>>>>> parent of 614db3d (new BG color)
                 socket.emit("updateUrl", {
                     roomName: myRoom.roomName,
                     playerUrl: newLink,
@@ -241,57 +235,62 @@ export default function Room() {
                             </TabList>
                             <TabPanel>
                                 <div className="chat-messages-container">
-                                    {myRoom.users.map((member, i) => (
-                                        <div className="member" key={i}>
-                                            <p>{member.name}</p>
+                                    {myRoom &&
+                                        myRoom.users.map((member, i) => (
+                                            <div className="member" key={i}>
+                                                <p>{member.name}</p>
 
-                                            {member.id == activeUser && (
-                                                <select
-                                                    name="userIcon"
-                                                    value={userIcon}
-                                                    onChange={(e) =>
-                                                        handleChange(e)
-                                                    }
-                                                >
-                                                    <option value="🎵">
-                                                        🎵
-                                                    </option>
-                                                    <option value="🍸">
-                                                        🍸
-                                                    </option>
-                                                    <option value="🦄">
-                                                        🦄
-                                                    </option>
-                                                    <option value="🤌">🤌</option>
-                                                    <option value="🦢">
-                                                        🦢
-                                                    </option>
-                                                    <option value="💗">
-                                                        💗
-                                                    </option>
-                                                    <option value="💀">
-                                                        💀
-                                                    </option>
-                                                    <option value="💦">
-                                                        💦
-                                                    </option>
-                                                    <option value="🚑">
-                                                        🚑
-                                                    </option>
-                                                    <option value="🕊">🕊</option>
-                                                </select>
-                                            )}
-                                            {member.id == activeUser ? (
-                                                <span className="user-icon">
-                                                    {userIcon}
-                                                </span>
-                                            ) : (
-                                                <span className="user-icon">
-                                                    {member.icon}
-                                                </span>
-                                            )}
-                                        </div>
-                                    ))}
+                                                {member.id == activeUser && (
+                                                    <select
+                                                        name="userIcon"
+                                                        value={userIcon}
+                                                        onChange={(e) =>
+                                                            handleChange(e)
+                                                        }
+                                                    >
+                                                        <option value="🎵">
+                                                            🎵
+                                                        </option>
+                                                        <option value="🍸">
+                                                            🍸
+                                                        </option>
+                                                        <option value="🦄">
+                                                            🦄
+                                                        </option>
+                                                        <option value="🤌">
+                                                            🤌
+                                                        </option>
+                                                        <option value="🦢">
+                                                            🦢
+                                                        </option>
+                                                        <option value="💗">
+                                                            💗
+                                                        </option>
+                                                        <option value="💀">
+                                                            💀
+                                                        </option>
+                                                        <option value="💦">
+                                                            💦
+                                                        </option>
+                                                        <option value="🚑">
+                                                            🚑
+                                                        </option>
+                                                        <option value="🕊">
+                                                            🕊
+                                                        </option>
+                                                    </select>
+                                                )}
+                                                {member.id == activeUser ? (
+                                                    <span className="user-icon">
+                                                        {userIcon}
+                                                    </span>
+                                                ) : (
+                                                    <span className="user-icon">
+                                                        {member.icon}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        ))}
                                 </div>
                             </TabPanel>
 
