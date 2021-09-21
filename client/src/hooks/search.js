@@ -9,9 +9,6 @@ export default function Search() {
     const searchResults = useSelector((state) => state.searchResults);
     const [time, setTime] = useState("Evening");
     const [day, setDay] = useState("Fri-Sat");
-    const timezone = useSelector((state) => state.timezone);
-    const weekDay = useSelector((state) => state.weekDay);
-    const partOfDay = useSelector((state) => state.partOfDay);
     const playerUrl = useSelector((state) => state.playerUrl);
     const myRoom = useSelector((state) => state.room);
     const [hover, setHover] = useState(false);
@@ -40,9 +37,6 @@ export default function Search() {
             "searching", day, time;
             const data = { day, time };
             dispatch(getSearchResults(data));
-        }
-        if (e.target.name == "result") {
-            e;
         }
     }
 

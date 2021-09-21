@@ -26,8 +26,13 @@ export default function (
         };
     }
     if (action.type == "SET_PLAYER_URL") {
+        console.log("setting playerURL in reducer");
         state = {
             ...state,
+            room: {
+                ...state.room,
+                playerUrl: action.url,
+            },
             playerUrl: action.url,
         };
     }

@@ -270,11 +270,13 @@ io.on("connection", async (socket) => {
     });
 
     socket.on("updateUrl", (data) => {
+        console.log("updating playerURL");
         const { playerUrl, roomName } = data;
         rooms[roomName] = {
             ...rooms[roomName],
             playerUrl: playerUrl,
         };
+        console.log(rooms[roomName]);
         io.to(roomName).emit("update playerUrl", playerUrl);
     });
 
@@ -329,7 +331,6 @@ io.on("connection", async (socket) => {
     // });
 
     socket.on("roomChanged", (data) => {
-        console.log("roomChanged");
         rooms[data.roomName] = data;
     });
 

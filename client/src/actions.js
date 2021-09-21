@@ -23,6 +23,7 @@ export async function getResults(timeNow, timezone) {
 }
 
 export async function setPlayerUrl(url) {
+    console.log("setting playerURL in actions");
     return {
         type: "SET_PLAYER_URL",
         url,
@@ -109,7 +110,6 @@ export async function setMyName(name) {
 }
 
 export async function newChatMessage(data) {
-    console.log(data);
     return {
         type: "ADD_CHAT_MESSAGE",
         data,

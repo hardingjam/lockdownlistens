@@ -100,7 +100,7 @@ export default function Room() {
                 );
             } else {
                 setError("");
-                // socket.emit("roomChanged", myRoom);
+                console.log("updating URL from link in Room");
                 socket.emit("updateUrl", {
                     roomName: myRoom.roomName,
                     playerUrl: newLink,
@@ -154,16 +154,6 @@ export default function Room() {
                                 Go
                             </button>
                             {error && <p className="error">{error}</p>}
-                            {/* <p>
-                                Alternatively, you can{" "}
-                                <a
-                                    className="blue-link"
-                                    name="join"
-                                    onClick={(e) => handleClick(e)}
-                                >
-                                    join an existing room.
-                                </a>
-                            </p> */}
                         </>
                     )}
                 </div>

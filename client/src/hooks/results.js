@@ -33,7 +33,6 @@ export default function Results() {
     }
 
     function handleClick(url) {
-        url;
         dispatch(setPlayerUrl(url));
     }
     if (!results) {
