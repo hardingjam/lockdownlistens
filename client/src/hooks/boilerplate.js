@@ -1,9 +1,6 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
 
 export default function Name() {
-    const dispatch = useDispatch();
-
     useEffect(() => {
         ("On the hook!");
     }, []);

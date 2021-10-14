@@ -6,6 +6,7 @@ CREATE TABLE posts(
     link VARCHAR(255) NOT NULL UNIQUE,
     tags TEXT [],
     votes INT default 0
+    
 );
 
 DROP TABLE IF EXISTS users;
@@ -26,14 +27,9 @@ EXTRACT('hour' from TO_TIMESTAMP('4/23/2021 5:16:09 PM', 'MM/DD/YYYY HH12:MI:SS 
         "hashtags": ["#vintagecheddar"]
     },
 
--- CREATE TABLE messages(
---     id SERIAL PRIMARY KEY,
---     sender_id INT REFERENCES users(id) NOT NULL,
---     recipient_id INT REFERENCES users(id),
---     message VARCHAR(255) NOT NULL,
---     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
--- );
 
+
+CREATE TABLE
 
 SELECT COUNT(*) FROM posts
 WHERE EXTRACT(ISODOW FROM posted_at) IN (5)

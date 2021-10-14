@@ -1,4 +1,4 @@
-const chatHistory = require("../client/public/message-objects.js");
+const chatHistory = require("../client/public/octoberLinks.js");
 const { initialPopulate } = require("./database");
 
 const messagesWithLinksInside = chatHistory.filter((message) => message.links);

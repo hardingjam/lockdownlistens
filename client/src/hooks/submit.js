@@ -116,7 +116,7 @@ export default function Submit() {
                     <TagsInput
                         value={tags}
                         inputProps={{
-                            placeholder: "Tags go here",
+                            placeholder: "Type a tag, then press enter...",
                         }}
                         onChange={handleTags}
                     />

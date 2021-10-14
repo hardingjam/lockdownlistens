@@ -9,7 +9,6 @@ export async function setTimezone(data) {
 }
 
 export async function getResults(timeNow, timezone) {
-    timeNow, timezone;
     await axios.post("/timezone/", { timezone });
     const { data } = await axios.get(`/api/listen-now/`, {
         params: { timeNow },

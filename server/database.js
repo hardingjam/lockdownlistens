@@ -14,7 +14,8 @@ module.exports.initialPopulate = function (timestamp, message, link, tags) {
                     ON CONFLICT ON CONSTRAINT posts_link_key
                     DO UPDATE SET votes = posts.votes + 1 WHERE posts.link = $3;`;
     const params = [timestamp, message, link, tags];
-    return db.query(query, params).then(({ rows }) => {
+    return herokudb.query(query, params).then(({ rows }) => {
+        console.log("success", rows.length);
         return rows;
     });
 };
