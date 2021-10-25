@@ -111,7 +111,6 @@ export default function (
     }
 
     if (action.type == "ADD_CHAT_MESSAGE") {
-        console.log(action.data);
         state = {
             ...state,
             room: {
@@ -122,7 +121,6 @@ export default function (
     }
 
     if (action.type == "CHANGE_HOST") {
-        console.log("changing host:", action.data);
         const newHost = state.room.users.find(
             (user) => user.id != action.data.previousHostId
         );

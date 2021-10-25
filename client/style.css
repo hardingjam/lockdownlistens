@@ -311,6 +311,7 @@ h3 {
 #room-users {
     display: flex;
     flex-direction: column;
+    width: 60vw;
 }
 #room-users > p {
     margin-bottom: 10px;
@@ -478,8 +479,7 @@ h3 {
     justify-content: center;
     display: flex;
     flex-direction: column;
-    max-width: 600px;
-    min-width: 400px;
+    width: 50vw;
     max-height: 40vh;
     margin-top: 20px;
 }
@@ -608,9 +608,10 @@ h3 {
     padding-left: 1rem;
 }
 .chat-message > p {
-    margin-left: 15px;
+    margin-left: 3rem;
     font-weight: 200;
     color: black;
+    text-align: right;
 }
 /* 
 @media only screen and (max-device-width: 1224px) {
